@@ -1,0 +1,150 @@
+﻿.Navigation {
+    position: absolute;
+    width: 175px;
+    height: 514px;
+    left: 152px;
+    top: 104px;
+    background: #3485FF;
+    border-radius: 5px;
+}
+
+.Button {
+    background-color: #3485FF;
+    border: none;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.Groups {
+    position: absolute;
+    width: 246px;
+    height: 520px;
+    left: 370px;
+    top: 104px;
+    background: #3485FF;
+    border-radius: 5px;
+}
+
+.SearchTextBox {
+    width: 245px;
+    height: 46px;
+    background: #E1EDFF;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.GroupsList {
+    width: 246px;
+    height: 474px;
+    background: transparent;
+    border-radius: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.GroupPanel {
+    display: flex;
+    flex-direction: row;
+    width: 246px;
+    height: 66px;
+    background: #3485FF;
+}
+
+.GroupName {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    align-items: center;
+    color: white;
+    height: 16px;
+}
+
+.Chat {
+    position: absolute;
+    width: 528px;
+    height: 600px;
+    left: 653px;
+    top: 103px;
+    background: transparent;
+    border-radius: 3px;
+    border: 3px solid #000000;
+}
+
+.Line {
+    width: 474px;
+    height: 0px;
+    left: 40px;
+    border: 3px solid #ABABAB;
+}
+
+.MessageArea {
+    width: 528px;
+    height: 71px;
+    background: transparent;
+}
+
+.Circle {
+    width: 50px;
+    height: 50px;
+    margin: 10px 10px;
+}
+
+.MessageTextBox {
+    width: 328px;
+    height: 50px;
+    resize: none;
+    padding: 15px 0px;
+    margin-top: -5px;
+    margin-left: 80px;
+    border: none;
+}
+
+.ButtonSend {
+    position: absolute;
+    width: 95px;
+    height: 42px;
+    left: 420px;
+    top: 535px;
+    background: #3485FF;
+    border: none;
+    border-radius: 15px;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    color: white;
+}
+
+.ChatMessages {
+    width: 520px;
+    height: 500px;
+    background: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.Message {
+    background-color: white;
+    height: 170px;
+    width: 380px;
+    margin: 40px 20px;
+}
+
+.inactive {
+    background: #3485FF;
+}
+
+.active {
+    background: #98BFFA;
+}
+
