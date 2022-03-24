@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceSpam_social_media", "FaceSpam_social_media\FaceSpam_social_media.csproj", "{865BAC1E-70D3-4B4D-83D1-27328D85AFBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{865BAC1E-70D3-4B4D-83D1-27328D85AFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{865BAC1E-70D3-4B4D-83D1-27328D85AFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{865BAC1E-70D3-4B4D-83D1-27328D85AFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{865BAC1E-70D3-4B4D-83D1-27328D85AFBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {241D8E95-B49D-4B5E-8EE8-8BF522BF9BDC}
+	EndGlobalSection
+EndGlobal
