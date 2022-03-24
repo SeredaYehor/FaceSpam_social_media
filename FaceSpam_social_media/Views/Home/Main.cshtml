@@ -1,0 +1,65 @@
+﻿<!--selecting layout with all dependencies-->
+@{
+    Layout = Layout;
+}
+
+@model Main
+
+@{
+    string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
+    string username = Model.user.Name;
+    string description = Model.user.Description;
+}
+
+<div class="Navigation">
+    @foreach (string controller in controllers)
+    {
+        @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+        {
+            <input type="submit" class="Button" value=@controller />
+        }
+    }
+</div>
+
+<div class="UserImage">
+    <input type="submit" class="EditProfile" value="Edit profile" />
+</div>
+
+<div class="Friends">
+    <label style="font-size: 18px; margin: 4px 16px; color: white;">Friends</label>
+    <input type="submit" class="Button" style="margin: 160px 76px; padding: 5px 20px; " value="more..." />
+</div>
+
+<div class="Info">
+    <label style="font-size: 32px; margin: 4px 16px; color: white;">@username</label>
+    <br />
+    <label style="font-size: 18px; margin: 4px 16px; color: #B9B9B9;">@description</label>
+</div>
+
+@using (Html.BeginForm(FormMethod.Post))
+{
+    <div class="Dashboard">
+        @*Now textbox can send input data to controller and then clear it on widget*@
+        @Html.TextBoxFor(model => model.message, new { autocomplete = "off", Class = "Post" })
+        <input type="submit" class="PostButtons" formaction="/Home/SelectFile" value="File" />
+        <input type="submit" class="PostButtons" formaction="/Home/AddPost" value="Write" />
+        <hr class="HorizontalLine" />
+        <div class="DashboardList">
+            @foreach (Post post in Model.posts)
+            {
+                <div class="PostMessage">
+                    <svg style="width: 50px; height: 50px; margin: 10px 10px;" viewBox="0 0 50 50">
+                        <ellipse cx="25" cy="25" rx="25" ry="25" />
+                    </svg>
+                    <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
+                    <label style="margin: 0px 130px; font-size: 14px; color: #3485FF;">@post.TimePosting.ToString()</label>
+                    <br />
+                    <label style="position: relative; left: 20px; color: #3485FF; max-width: 500px; overflow: hidden; word-wrap: break-word; ">@post.Text</label>
+                    <div class="PostInfo" style="height: 100px;">
+                        <!--<label style="color: #3485FF; font-size: 14px;">Likes: 10</label>-->
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
