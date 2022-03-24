@@ -23,6 +23,17 @@ namespace FaceSpam_social_media.Controllers
             return View();
         }
 
+        public IActionResult Auth()
+        {
+            return View();
+        }
+
+        [HttpPost] //Action specified on post requests
+        public IActionResult AuthenticationResult(User_auth model) //Triggers when button submit clicked and gets object of model
+        {
+            return View(model); //return AuthenticationResult page with object data
+        }
+
         public IActionResult ControllerTest()
         {
             return View();
