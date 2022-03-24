@@ -1,0 +1,61 @@
+﻿@model UserChats
+@{
+    string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
+    string a = "";
+}
+
+<link rel="stylesheet" href="~/css/MessagesStyleSheet.css" />
+
+
+<div class="Navigation">
+    @foreach (string controller in controllers)
+    {
+        @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+        {
+            <input type="submit" class="Button" value=@controller />
+        }
+    }
+</div>
+
+<!--HEHE BOI (~w~)-->
+<!--JS scripts with using jQuery and ajax-->
+<!--Kakaya shlyapa-->
+<!--8 realtime hours wasted for adding this functionality-->
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="~/scripts/MessagesScripts.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".SearchTextBox").keyup(function () {
+            var search = this.value;
+            $(".GroupPanel").hide().filter(':contains(' + search + ')').show();
+        })
+    });
+</script>
+
+<div class="Groups">
+    <input type="text" class="SearchTextBox" />
+    <div class="GroupsList" id="groups">
+        @foreach (Chat chat in Model.chats)
+        {
+            <div class="GroupPanel" id="@chat.Name">
+                <svg class="Circle" viewBox="0 0 50 50">
+                    <ellipse cx="25" cy="25" rx="25" ry="25" />
+                </svg>
+                <label class="GroupName" id="@chat.Id">@chat.Name</label>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="Chat">
+    <div class="ChatMessages" id="Chat">
+    </div>
+    <hr class="Line" />
+    <div class="MessageArea">
+        <svg class="Circle" style="position: absolute; top: 521px; " viewBox="0 0 50 50">
+            <ellipse cx="25" cy="25" rx="25" ry="25" />
+        </svg>
+        @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "MessageTextBox" })
+        <input type="submit" class="ButtonSend" formaction="/Home/SendMessage" value="Send" />
+    </div>
+</div>
