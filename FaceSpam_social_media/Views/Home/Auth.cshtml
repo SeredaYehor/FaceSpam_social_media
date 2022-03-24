@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Authentication page";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@*Including User_auth class(model)*@
+@model User_auth
+
+
+@using (Html.BeginForm("AuthenticationResult", "Home", FormMethod.Post))
+{
+    <b>Login:    </b> @Html.TextBoxFor(model => model.Login);
+    <br />
+    <b>Password: </b> @Html.TextBoxFor(model => model.Password);
+    <input type="submit" value="LogIn" />
+}
