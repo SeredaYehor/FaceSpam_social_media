@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Friends page";
+
+    string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
+}
+
+@model FriendsModel
+
+<body style="background-image: url(../Images/image.jpg); background-size: cover;">
+    <link rel="stylesheet" href="~/css/FriendsViewStyleSheet.css">
+<div class="Wrapper">
+    <div class="Navigation">
+        @foreach (string controller in controllers)
+        {
+            @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+            {
+                <input type="submit" class="Button" value=@controller />
+            }
+        }
+    </div>
+
+    <div class="Board">
+        <div style="display: flex; flex-direction: row; margin-top: 10px; background-color: #3485FF;">
+            <b> <label class="FriendsLabel">Friends: &nbsp; </label> </b>
+
+            <form action="SearchFriend">
+                <div style="position: relative; margin-left: 160px">
+                    <input type="text" name="name" class="Search" placeholder="Search" />
+                    <img src="~/Images/glass-icon.png" class="SearchImage" />
+                </div>
+            </form>
+
+        </div>
+
+        <div class="Line"></div>
+
+        <div class="FriendZone">
+            @using (Html.BeginForm(FormMethod.Post))
+            {
+                @foreach (var friend in Model.userName)
+                {
+                    <div style="display: flex; align-items: center; flex-direction: row">
+                        <img src="~/Images/@friend.getPhoto" class="UserImage" />
+
+                        <div>
+                            <label class="Names"> @friend.getName </label>
+                        </div>
+
+                        <div>
+                            <input type="submit" class="FriendButton" formaction="/Home/DeleteFriend?name=@friend.getName" value="Delete" />
+                            &nbsp;
+                            @*Write button does not work. When all formls will be ready it will get the link*@
+                            <input type="submit" class="FriendButton" value="Write" />
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+</body>
