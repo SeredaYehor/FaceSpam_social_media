@@ -12,6 +12,7 @@ namespace FaceSpam_social_media.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        protected static FriendsModel friends = new FriendsModel();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -20,24 +21,59 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Index()
         {
+            friends.userName.Add(new UserModel("Dorenskyi Aleksandr", "Cyberdemon.png"));
+            friends.userName.Add(new UserModel("Mitropolit Vadim", "Vadim.png"));
+            friends.userName.Add(new UserModel("Elon Mask", "Mask.jpg"));
+            friends.userName.Add(new UserModel("Kenoby", "Kenoby.jpg"));
+
             return View();
         }
 
-        public IActionResult ControllerTest()
+        public IActionResult Comments()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Friends()
         {
-            return View();
+            return View(friends);
         }
 
-        public IActionResult ShowData(string data)
+        [HttpPost]
+        public IActionResult DeleteFriend(string name)
         {
-            ViewData["string"] = data; 
+            List<UserModel> temp = new List<UserModel>(friends.userName);
 
-            return View();
+            foreach (var friend in temp)
+            {
+                if (friend.getName.Equals(name))
+                {
+                    friends.userName.Remove(friend);
+                }
+            }
+            temp.Clear();
+
+            return View("Friends", friends);
+        }
+
+        public IActionResult SearchFriend(string name)
+        {
+            FriendsModel searchResult = new FriendsModel();
+
+            if(name == null)
+            {
+                return View("Friends", friends);
+            }
+
+            foreach(var friend in friends.userName)
+            {
+                if (friend.getName.Contains(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    searchResult.userName.Add(friend);
+                }
+            }
+
+            return View("Friends", searchResult);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
