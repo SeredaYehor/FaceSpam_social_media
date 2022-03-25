@@ -136,7 +136,7 @@
     border-radius: 50px;
 }
 
-@media screen and (max-height: 720px) {
+@media screen and (min-height: 520px) {
     .Navigation {
         height: 500px
     }
@@ -151,7 +151,7 @@
     }
 
     .Names {
-        font-size: 20px
+        font-size: 16px
     }
 
     .FriendButton {
@@ -173,7 +173,22 @@
     }
 }
 
-@media screen and (max-width: 1366px) {
+@media screen and (min-height: 800px) {
+    .FriendZone {
+        height: 700px
+    }
+
+    .Navigation {
+        height: 715px
+    }
+
+    .UserImage {
+        height: 100px;
+        width: 100px
+    }
+}
+
+@media screen and (min-width: 1360px) {
     .Board {
         width: 650px
     }
@@ -199,21 +214,22 @@
     }
 }
 
-@media screen and (max-width: 1920px) {
+@media screen and (min-width: 1280px) {
+    .Names {
+        margin-right: 110px
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .Names {
+        margin-right: 110px
+    }
+
     .Navigation {
-        left: 460px;
-        height: 814px
+        left: 450px
     }
 
     .Board {
-        left: 686px
-    }
-
-    .Button {
-        font-size: 20px
-    }
-
-    .FriendZone {
-        height: 791px
+        left: 671px
     }
 }
