@@ -1,0 +1,145 @@
+﻿.Navigation {
+    position: absolute;
+    width: 175px;
+    height: 714px;
+    left: 176px;
+    top: 112px;
+    background: #3485FF;
+    border-radius: 5px;
+}
+
+.Wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.Button {
+    background-color: #3485FF;
+    border: none;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.Names {
+    width: 221px;
+    height: 28px;
+    font-weight: 400;
+    font-size: 24px;
+    color: #FFFFFF;
+    margin-left: 25px;
+    margin-right: 100px;
+    font-family: 'Roboto';
+    font-style: normal;
+}
+
+.FriendButton {
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 0%;
+    background: #FFFFFF;
+    box-shadow: inset 0px 3px 3px rgba(0, 0, 0, 0.10);
+    border-radius: 15px;
+    height: 24px;
+    width: 72px;
+    color: #0066FF;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.Board {
+    position: absolute;
+    left: 392px;
+    top: 112px;
+    height: 71px;
+    width: 675px;
+    background-color: #3485FF;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding-bottom: 30px;
+}
+
+.FriendZone {
+    height: 691px;
+    width: 675px;
+    background-color: #3485FF;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    overflow-x: auto;
+}
+
+.Search {
+    width: 245px;
+    height: 46px;
+    background: #E1EDFF;
+    border: 1.5px solid #000000;
+    box-sizing: border-box;
+    border-radius: 5px;
+    color: #000000;
+    position: absolute;
+    padding-left: 30px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.Line {
+    min-width: 95%;
+    border: 1.5px solid #ABABAB;
+    border-radius: 5%;
+    width: 595px;
+    margin-left: 24px;
+    position: center;
+    margin-top: 5px;
+}
+
+.SearchImage {
+    height: 25px;
+    width: 25px;
+    top: 10px;
+    left: 5px;
+    position: absolute;
+}
+
+.FriendsLabel {
+    width: 234px;
+    height: 15px;
+    color: #FFFFFF;
+    font-weight: 400;
+    margin-left: 22px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-size: 48px;
+    line-height: 56px;
+}
+
+.UserImage {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    width: 100px;
+    height: 100px;
+    margin: 10px 10px;
+    border-radius: 50px;
+}
+
+@media screen and (max-height: 720px){
+
+}
+
+@media screen and (max-width: 1366px){
+
+}
