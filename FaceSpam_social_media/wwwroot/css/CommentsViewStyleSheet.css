@@ -13,6 +13,12 @@
     justify-content: center;
 }
 
+.OverflowZone {
+    overflow: auto;
+    width: 786px;
+    height: 800px;
+}
+
 .Button {
     background-color: #3485FF;
     border: none;
@@ -141,4 +147,86 @@ div.PostImageHeader {
     top: 0;
     margin-top: 23px;
     margin-left: auto;
+}
+
+@media screen and (min-height: 520px) {
+    .Board {
+        top: 60px;
+        height: 570px
+    }
+
+    .OverflowZone {
+        height: 515px
+    }
+
+    .Navigation {
+        top: 70px;
+        height: 520px
+    }
+
+    .WriteZone {
+        top: 630px;
+        height: 80px
+    }
+}
+
+@media screen and (min-height: 800px) {
+    .Board {
+        height: 744px
+    }
+
+    .OverflowZone {
+        height: 744px
+    }
+
+    .Navigation {
+        height: 715px
+    }
+
+    .WriteZone {
+        top: 804px;
+        height: 89px
+    }
+}
+
+@media screen and (min-width: 1360px) {
+    .Navigation {
+        left: 176px;
+    }
+
+    .Board {
+        left: 401px;
+    }
+
+    .WriteZone {
+        left: 401px;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .Navigation {
+        left: 176px;
+    }
+
+    .Board {
+        left: 401px;
+    }
+
+    .WriteZone {
+        left: 401px;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .Navigation {
+        left: 426px;
+    }
+
+    .Board {
+        left: 651px;
+    }
+
+    .WriteZone {
+        left: 651px;
+    }
 }
