@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Comments";
+
+    string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
+}
+
+@model Post
+
+<link rel="stylesheet" href="~/css/CommentsViewStyleSheet.css">
+
+<body style="background-image: url(../Images/image.jpg); background-size: cover">
+    <div class="Wrapper">
+        <div class="Navigation">
+            @foreach (string controller in controllers)
+            {
+                @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value=@controller />
+                }
+            }
+        </div>
+
+        <div class="Board">
+            <div style="overflow: auto; width: 786px; height: 800px">
+                <div>
+                    <div class="PostImageHeader"><img src="~/Images/post.jpg" class="PostImage" /></div>
+                    <br>
+                    <div style="display: flex; align-items: center; flex-direction: row">
+                        <img src="~/Images/Vadim.png" class="UserImage" />
+                        <label class="UserName"> @Model.getUser </label>
+                        <label class="Time"> @Model.getTime.ToString() </label>
+                    </div>
+
+                    <div>
+                        <label class="PostedMessage"> @Model.getMessage </label>
+                    </div>
+                </div>
+
+                <div>
+                    @foreach (PostComment comment in Model.postComments)
+                    {
+                        <div style="display: flex; align-items: center; flex-direction: row">
+                            <img src="~/Images/Cyberdemon.png" class="UserImage" />
+                            <label class="UserName"> @comment.getUser </label>
+                            <label class="Time"> @comment.getTime.ToString() </label>
+                        </div>
+
+                        <div>
+                            <label class="PostedMessage"> @comment.getMessage </label>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm(FormMethod.Post))
+        {
+            <div class="WriteZone">
+                <div class="Line"></div>
+
+                <div style="display: flex; align-items: center; flex-direction: row">
+
+                    <img src="~/Images/Vadim.png" class="UserImage" />
+
+                    <input type="text" name="message" placeholder="Write message ..." class="MessageInput" />
+                    <input type="submit" value="Comment" class="MessageButton" formaction="AddComment">
+                </div>
+            </div>
+        }
+    </div>
+</body>
