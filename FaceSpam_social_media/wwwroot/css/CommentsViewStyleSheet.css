@@ -1,0 +1,144 @@
+﻿.Navigation {
+    position: absolute;
+    width: 175px;
+    height: 714px;
+    left: 176px;
+    top: 112px;
+    background: #3485FF;
+    border-radius: 5px;
+}
+
+.Wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.Button {
+    background-color: #3485FF;
+    border: none;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.Board {
+    position: absolute;
+    width: 786px;
+    height: 811px;
+    left: 401px;
+    top: 104px;
+    background: #FFFFFF;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.WriteZone {
+    height: 108px;
+    width: 786px;
+    position: absolute;
+    background: #FFFFFF;
+    top: 915px;
+    left: 401px;
+}
+
+.Line {
+    width: 691px;
+    height: 0px;
+    border: 2px solid #ABABAB;
+    transform: rotate(0.17deg);
+    margin-left: 29px;
+}
+
+.MessageInput {
+    width: 500px;
+    border: none;
+    color: black;
+    font-weight: 400;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.MessageButton {
+    width: 120px;
+    height: 42px;
+    background: #3485FF;
+    border-radius: 15px;
+    color: #FFFFFF;
+    font-weight: 400;
+    font-size: 24px;
+    border: none;
+    margin-left: 25px;
+}
+
+.PostedMessage {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    color: #000000;
+    margin-left: 87px;
+}
+
+.UserImage {
+    margin-left: 21px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    width: 53px;
+    height: 53px;
+    background-image: url();
+    border-radius: 50px;
+    margin-left: 14px;
+    margin-right: 20px;
+    margin-top: 13px;
+}
+
+.UserName {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    color: #3485FF;
+    margin-right: 353px;
+    width: 200px;
+}
+
+.Time {
+    width: 93px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #3485FF;
+}
+
+div.PostImageHeader {
+    height: 325px;
+    width: 665px;
+    position: center;
+    margin-top: auto;
+    margin-left: auto;
+}
+
+.PostImage {
+    max-width: 100%;
+    max-height: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin-top: 23px;
+    margin-left: auto;
+}
