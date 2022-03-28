@@ -25,9 +25,9 @@ namespace FaceSpam_social_media.Models
             get => text;
         }
 
-        public DateTime TimePosting
+        public string TimePosting
         {
-            get => timePosting;
+            get => timePosting.ToString("dd.MM.yy");
         }
 
         public string Image
