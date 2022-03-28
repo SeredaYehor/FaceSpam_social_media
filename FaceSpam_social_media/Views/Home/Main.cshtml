@@ -1,7 +1,4 @@
-﻿<!--selecting layout with all dependencies-->
-@{
-    Layout = Layout;
-}
+﻿<link href="~/css/MainFormStyleSheet.css" rel="stylesheet" asp-append-version="true" />
 
 @model Main
 
@@ -52,11 +49,14 @@
                         <ellipse cx="25" cy="25" rx="25" ry="25" />
                     </svg>
                     <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
-                    <label style="margin: 0px 130px; font-size: 14px; color: #3485FF;">@post.TimePosting.ToString()</label>
                     <br />
                     <label style="position: relative; left: 20px; color: #3485FF; max-width: 500px; overflow: hidden; word-wrap: break-word; ">@post.Text</label>
-                    <div class="PostInfo" style="height: 100px;">
-                        <!--<label style="color: #3485FF; font-size: 14px;">Likes: 10</label>-->
+                    <div style="background-color:transparent; height:50px;">
+                        <img src="~/images/heart.svg" style="margin-top: 20px; margin-left: 10px;" />
+                        <label style="position: relative; font-size: 12px; color: #3485FF;">likes 10</label>
+                        <img src="~/images/pencil.svg" style="margin-top: 20px; margin-left: 10px;" />
+                        <label style="position: relative; font-size: 12px; color: #3485FF;">comments 10</label>
+                        <label style="display: inline-block; margin-left: 250px; font-size: 14px; color: #3485FF;">@post.TimePosting</label>
                     </div>
                 </div>
             }
