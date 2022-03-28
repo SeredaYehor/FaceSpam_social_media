@@ -156,3 +156,178 @@ body{
     box-shadow: 0 7px 20px rgb(122, 122, 122);
     background: #3958c9;
 }
+@media screen and (max-width: 1280px) {
+    .FaceSpamLogo{
+        margin-right: 5%;
+    }
+}
+@media screen and (max-width: 1145px){
+    .Wrapper{
+        flex-direction: column;
+    }
+    .Card{
+        margin-top: 20px;
+    }
+    .FaceSpamLogo{
+        margin-top: 0px;
+    }
+    .FaceSpamLogo img{
+        width: 350px;
+    }
+}
+@media screen and (max-width: 583px){
+    .InputInterface{
+        /* font-size: 16px; */
+        line-height: 42px;
+        color: black;
+    
+        padding: 0px 20px 0px 20px;
+    }
+    .InputInterface input {
+    
+        width: 280px;
+        height: 40px;
+    
+        background: #f2f2f2;
+        box-sizing: border-box;
+        border-radius: 15px;
+        font-size: 16px;
+        outline: none;
+        border: 0px;
+        transition: 0.5s;
+    }
+    .Button input{
+
+        width: 240px;
+        height: 50px;
+    
+        background: #476DF3;
+        border: 3px solid #FFFFFF;
+        box-sizing: border-box;
+        border-radius: 20px;
+        
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 23px;
+        line-height: 42px;
+    
+        border: none;
+        transition: 0.5s;
+    }
+}
+@media screen and (max-width: 520px){
+    .Login{
+        flex-direction: column;
+    }
+    .Password{
+        flex-direction: column;
+    }
+
+    .ConfirmPassword{
+        flex-direction: column;
+    }
+
+    .Email{
+        flex-direction: column;
+    }
+    .InputInterface *{
+        margin-bottom: 0px;
+    }
+    .InputInterface input{
+        width: 360px;
+    }
+    .Button{
+        margin-top: 10px;
+    }
+    .FaceSpamName{
+        font-size: 26px;
+        margin-bottom: -30px;
+        margin-top: -15px;
+    }
+}
+@media screen and (max-height: 800px){
+    .FaceSpamLogo img{
+        width: 450px;
+    }
+    .InputInterface{
+        font-size: 18px;
+        line-height: 16px;
+        padding: 0px 20px 0px 20px;
+    }
+    .Login{height: 50px;}
+    .LoginText{margin-top: 10px;}
+    .Password{height: 50px;}
+    .PasswordText{margin-top: 10px;}
+    .ConfirmPassword{height: 50px;}
+    .ConfirmPasswordText{margin-top: 10px;}
+    .Email{height: 50px;}
+    .EmailText{margin-top: 10px;}
+    .InputInterface input {
+    
+        width: 250px;
+        font-size: 16px;
+    }
+    .Button input{
+
+        width: 200px;
+        height: 40px;
+        
+        font-size: 23px;
+        line-height: 12px;
+
+        transition: 0.5s;
+    }
+}
+@media screen and (max-height: 745px){
+    .FaceSpamLogo img{
+        width: 250px;
+    }
+    .Card{
+        max-width: 50%;
+        max-height: 370px;
+    }
+    .InputInterface{
+        font-size: 16px;
+        line-height: 16px;
+        color: black;
+    
+        padding: 0px 20px 0px 20px;
+    }
+    .Login{height: 45px;}
+    .Password{height: 45px;}
+    .ConfirmPassword{height: 45px;}
+    .Email{height: 45px;}
+    .InputInterface input {
+    
+        width: 200px;
+        height: 40px;
+    
+        background: #f2f2f2;
+        box-sizing: border-box;
+        border-radius: 15px;
+        font-size: 16px;
+        outline: none;
+        border: 0px;
+        transition: 0.5s;
+    }
+    .Button input{
+
+        width: 200px;
+        height: 40px;
+    
+        background: #476DF3;
+        border: 3px solid #FFFFFF;
+        box-sizing: border-box;
+        border-radius: 20px;
+        
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 23px;
+        line-height: 42px;
+    
+        border: none;
+        transition: 0.5s;
+    }
+}
