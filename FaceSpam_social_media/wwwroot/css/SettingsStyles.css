@@ -1,0 +1,140 @@
+﻿*{
+    box-sizing: border-box;
+}
+body {
+}
+/* Left block */
+.Wrapper {
+    display: flex;
+    margin-top: 110px;
+}
+.ControlPanel {
+    max-height: 500px;
+
+    background-color: #3485FF;
+    border-radius: 5px;
+    padding: 20px;
+    margin-right: 70px;
+    width: 175px;
+}
+.ButtonsOnControlPanel a{
+    display: flex;
+    flex-direction: column;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-decoration: none;
+    margin-left: 17px;
+
+    color: #FFFFFF;
+    
+    margin-bottom: 12px;
+    margin-left: 17px;
+}
+.ButtonsOnControlPanel {
+    max-height: 35%;
+}
+.AdvertisementText{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #FFFFFF;
+    border: 1px solid black;
+}
+.AdvertisementImage{
+    width: 150px;
+    height: 150px;
+    /* background-image: radial-gradient(blue, yellow); */
+}
+/* Main page */
+.SettingsMainPage{
+    width: 830px;
+
+    background: #98BFFA;
+    border-radius: 10px;
+    padding: 60px;
+}
+.SettingsName{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 56px;
+    margin-top: -30px;
+    color: #0066FF;
+}
+.ChangeUserInfo{
+    display: flex;
+    justify-content: space-between;
+}
+.ChangeUserInfoInputs input{
+    width: 300px;
+
+    background-color: #98BFFA;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #8D8C8C;
+}
+/* Change photo */
+.ChangePhotoImage{
+    border: 1px solid black;
+    max-width: 165px;
+    max-height: 200px;
+}
+.ChangePhotoImage img{
+    width: 164px;
+    height: 200px;
+}
+.ChangePhotoButton input{
+    width: 165px;
+    height: 30px;
+
+    background: #3485FF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: none;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #FFFFFF;
+}
+/* ---------- */
+.SettingPageButtons input{
+    background: #3485FF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    border: none;
+    padding: 7px 33px 7px 33px;
+    margin-bottom: 40px;
+    margin-right: 10px;
+}
+.SettingPageButtons input:focus{
+    background: #2662bd;
+}
+.ButtonAndText{
+    display: flex;
+}
+.InviteFriends{
+    display: flex;
+    align-items: center;
+    
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 42px;
+
+    color: #3485FF;
+}
+.InviteFriendsText{
+    margin-top: 5px;
+}
