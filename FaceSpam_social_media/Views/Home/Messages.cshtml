@@ -4,58 +4,46 @@
     string a = "";
 }
 
-<link rel="stylesheet" href="~/css/MessagesStyleSheet.css" />
+<link rel="stylesheet" href="~/css/MessagesStyleSheet.css" asp-append-version="true"/>
 
-
-<div class="Navigation">
-    @foreach (string controller in controllers)
-    {
-        @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+<body style="background-image: url('../images/background.jpg'); background-size: cover;">
+    <div class="Navigation">
+        @foreach (string controller in controllers)
         {
-            <input type="submit" class="Button" value=@controller />
-        }
-    }
-</div>
-
-<!--HEHE BOI (~w~)-->
-<!--JS scripts with using jQuery and ajax-->
-<!--Kakaya shlyapa-->
-<!--8 realtime hours wasted for adding this functionality-->
-<script src="/lib/jquery/dist/jquery.js"></script>
-<script type="text/javascript" src="~/scripts/MessagesScripts.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".SearchTextBox").keyup(function () {
-            var search = this.value;
-            $(".GroupPanel").hide().filter(':contains(' + search + ')').show();
-        })
-    });
-</script>
-
-<div class="Groups">
-    <input type="text" class="SearchTextBox" />
-    <div class="GroupsList" id="groups">
-        @foreach (Chat chat in Model.chats)
-        {
-            <div class="GroupPanel" id="@chat.Name">
-                <svg class="Circle" viewBox="0 0 50 50">
-                    <ellipse cx="25" cy="25" rx="25" ry="25" />
-                </svg>
-                <label class="GroupName" id="@chat.Id">@chat.Name</label>
-            </div>
+            @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+            {
+                <input type="submit" class="Button" value=@controller />
+            }
         }
     </div>
-</div>
 
-<div class="Chat">
-    <div class="ChatMessages" id="Chat">
+    <!--HEHE BOI (~w~)-->
+    <!--JS scripts with using jQuery and ajax-->
+    <!--Kakaya shlyapa-->
+    <!--8 realtime hours wasted for adding this functionality-->
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
+    <div class="Groups">
+        <input type="text" class="SearchTextBox" />
+        <div class="GroupsList" id="groups">
+            @foreach (Chat chat in Model.chats)
+            {
+                <div class="GroupPanel" id="@chat.Name">
+                    <img src="@chat.ImageReference" class="Ellipse"/>
+                    <label class="GroupName" id="@chat.Id">@chat.Name</label>
+                </div>
+            }
+        </div>
     </div>
-    <hr class="Line" />
-    <div class="MessageArea">
-        <svg class="Circle" style="position: absolute; top: 521px; " viewBox="0 0 50 50">
-            <ellipse cx="25" cy="25" rx="25" ry="25" />
-        </svg>
-        @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "MessageTextBox" })
-        <input type="submit" class="ButtonSend" formaction="/Home/SendMessage" value="Send" />
+
+    <div class="Chat">
+        <div class="ChatMessages" id="Chat">
+        </div>
+        <hr class="Line" />
+        <div class="MessageArea">
+            <img src="~/images/W1ld 3lf.jpg" style="border-radius: 50%; width: 60px; height: 60px; margin-top: -35px; margin-left: 3px;" />
+            @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "MessageTextBox" })
+            <input type="submit" class="ButtonSend" formaction="/Home/SendMessage" value="Send" />
+        </div>
     </div>
-</div>
+</body>
