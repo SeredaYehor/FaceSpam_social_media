@@ -29,7 +29,7 @@
 .UserImage {
     position: absolute;
     height: 202px;
-    background-image: url('~/wwwroot/css/W1ld3lf.png');
+    background-image: url('../images/W1ld 3lf.jpg');
     width: 166px;
     background-color: grey;
     left: 300px;
@@ -118,4 +118,11 @@
     background: url("../images/heart.svg");
     height: 20px;
     width: 20px;
+}
+
+.Ellipse {
+    background-image: url('../images/W1ld 3lf.jpg');
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
 }
