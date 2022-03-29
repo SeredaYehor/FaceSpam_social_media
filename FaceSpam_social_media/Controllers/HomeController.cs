@@ -66,14 +66,14 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Messages()
         {
-            group.chats.Add(new Chat(1, "Dorenskiy O. P.", "Some chat", 2, DateTime.Now, "ooo"));
+            group.chats.Add(new Chat(1, "Dorenskiy O. P.", "Some chat", 2, DateTime.Now, "../images/Cyberdemon.png"));
             //Bug!!!  when adding messages chats also appends>(
             group.chats[0].chatMessages.Add(new Message(4, "Prikol",
                 DateTime.Now, 1, 0, 1));
-            group.chats.Add(new Chat(2, "FaceSpam Community", "Some chat", 2, DateTime.Now, "ooo"));
+            group.chats.Add(new Chat(2, "FaceSpam Community", "Some chat", 2, DateTime.Now, "../images/facespam.png"));
             group.chats[1].chatMessages.Add(new Message(4, "Woobshe",
                 DateTime.Now, 2, 0, 1));
-            group.chats.Add(new Chat(3, "Elon Musk", "Some chat", 2, DateTime.Now, "ooo"));
+            group.chats.Add(new Chat(3, "Elon Musk", "Some chat", 2, DateTime.Now, "../images/Mask.jpg"));
             group.chats[2].chatMessages.Add(new Message(4, "Ulyot",
                DateTime.Now, 3, 0, 1));
             return View(group);
