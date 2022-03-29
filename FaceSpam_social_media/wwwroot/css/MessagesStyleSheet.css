@@ -6,6 +6,7 @@
     top: 104px;
     background: #3485FF;
     border-radius: 5px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
 .Button {
@@ -29,6 +30,7 @@
     top: 104px;
     background: #3485FF;
     border-radius: 5px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
 .SearchTextBox {
@@ -59,6 +61,7 @@
 
 .GroupName {
     margin-top: 25px;
+    margin-left: 5px;
     display: flex;
     flex-direction: row;
     font-style: normal;
@@ -76,9 +79,9 @@
     height: 600px;
     left: 653px;
     top: 103px;
-    background: transparent;
+    background: white;
+    backdrop-filter: drop-shadow(4px 4px 10px black);
     border-radius: 3px;
-    border: 3px solid #000000;
 }
 
 .Line {
@@ -106,7 +109,6 @@
     resize: none;
     padding: 15px 0px;
     margin-top: -5px;
-    margin-left: 80px;
     border: none;
 }
 
@@ -148,3 +150,12 @@
     background: #98BFFA;
 }
 
+.Ellipse {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-left: 3px;
+    margin-top: 3px;
+    border: 1px solid #000000;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
