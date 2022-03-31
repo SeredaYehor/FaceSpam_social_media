@@ -11,5 +11,19 @@ namespace FaceSpam_social_media.Models
         // in some sprints it will be improved and supplemented
 
         public List<UserModel> userName = new List<UserModel>();
+
+        public UserModel GetUser(string name)
+        {
+            UserModel result = null;
+            foreach(UserModel user in userName)
+            {
+                if(user.getName == name)
+                {
+                    result = user;
+                    break;
+                }
+            }
+            return result;
+        }
     }
 }
