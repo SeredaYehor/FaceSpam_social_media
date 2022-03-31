@@ -24,15 +24,16 @@
     function DeleteFriend(obj) {
 
         var user = obj.id;
-
-        alert("Home/DeleteFriend?name=" + user);
-
         $.ajax({
-            type: "POST",
-            url: "Home/DeleteFriend?name=" + user,
-            async: false
+            type: "GET",
+            url: "/Home/DeleteFriend",
+            async: false,
+            data: { name: user, },
+            success: function () {
+                var parentDiv = $(obj).parent().parent();
+                $(parentDiv).remove();
+            }
         });
-
     }
 </script>
 
