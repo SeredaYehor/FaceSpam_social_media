@@ -24,7 +24,10 @@
     <script src="/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
     <div class="Groups">
-        <input type="text" class="SearchTextBox" />
+        <div class="SearchField">
+            <input type="text" class="SearchTextBox" />
+            <img src="~/images/searchImg.png" class="SearchImage" />
+        </div>
         <div class="GroupsList" id="groups">
             @foreach (Chat chat in Model.chats)
             {
