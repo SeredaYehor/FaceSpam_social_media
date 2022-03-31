@@ -1,10 +1,10 @@
 ﻿<html>
     <head>
         <title>Settings page</title>
-        <link rel="stylesheet" href="~/css/SettingsStyles.css">
+        <link rel="stylesheet" href="~/css/SettingsStyles.css" asp-append-version="true">
     </head>
 
-    <body style="background-image: @Url.Action("~/Images/background.jpg")">
+    <body style="background-image: url(../images/background.jpg); background-size: cover;">
         <div class="Wrapper">
             <div class="ControlPanel">
                 <div class="ButtonsOnControlPanel">
@@ -19,7 +19,7 @@
                     </div>
 
                     <div class="AdvertisementImage">
-                        <img src="~/Images/AdvertisementTest.png" />
+                        <img src="~/images/AdvertisementTest.png" />
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
 
                     <div class="ChangePhoto">
                         <div class="ChangePhotoImage">
-                            <img src="~/Images/ChangeUserPhotoTest.png" />
+                            <img src="~/images/ChangeUserPhotoTest.png" />
                         </div>
 
                         <div class="ChangePhotoButton">
@@ -79,17 +79,11 @@
                         <div>
                             <input type="submit" value="Change password"/>
                         </div>
-                        <div class="ButtonChangePasswordText">
-                            test
-                        </div>
                     </div>
 
                     <div class="ButtonAndText">
                         <div>
                             <input type="submit" value="Background"/>
-                        </div>
-                        <div class="ButtonBackgroundText">
-                            test
                         </div>
                     </div>
                 </div>
@@ -101,7 +95,9 @@
                             Invite friend
                         </a>
                     </div>
-                    <div class="InviteFriendsCode"></div>
+                    <div class="InviteFriendsCode">
+                        <input type="text" />
+                    </div>
                 </div>
             </div>
         </div>
