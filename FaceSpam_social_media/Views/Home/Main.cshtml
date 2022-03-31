@@ -1,4 +1,6 @@
 ﻿<link href="~/css/MainFormStyleSheet.css" rel="stylesheet" asp-append-version="true" />
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
 
 @model Main
 @{
@@ -24,7 +26,13 @@
 
     <div class="Friends">
         <label style="font-size: 18px; margin: 4px 16px; color: white;">Friends</label>
-        <input type="submit" class="Button" style="margin: 160px 76px; padding: 5px 20px; " value="more..." />
+        <div class="FriendList" style="width: 166px; height: 170px;">
+            @for (int i = 0; i < 10; i++)
+            {
+                <div class="Ellipse"></div>
+            }
+        </div>
+        <input type="submit" class="Button" style=" padding: 5px 20px; " value="more..." />
     </div>
 
     <div class="Info">
@@ -44,23 +52,27 @@
             <div class="DashboardList">
                 @foreach (Post post in Model.posts)
                 {
-                <div class="PostMessage">
+                    <div class="PostMessage">
 
-                    <img src="~/images/W1ld 3lf.jpg" style="border-radius: 50%; width: 60px; height: 60px; margin-top: 5px; margin-left: 3px;"/>
-                    <!--<svg style="width: 50px; height: 50px; margin: 10px 10px;" viewBox="0 0 50 50">
-                        <ellipse cx="25" cy="25" rx="25" ry="25" />
-                    </svg>-->
-                    <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
-                    <br />
-                    <label style="position: relative; left: 20px; color: #3485FF; max-width: 500px; overflow: hidden; word-wrap: break-word; ">@post.Text</label>
-                    <div style="background-color:transparent; height:50px;">
-                        <img src="~/images/heart.svg" style=" display: inline-block; margin-left: 10px;" />
-                        <label style="position: relative; font-size: 12px; display: inline-block; color: #3485FF; ">likes 10</label>
-                        <img src="~/images/pencil.svg" style=" display: inline-block; margin-left: 10px;" />
-                        <label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF; ">comments 10</label>
-                        <label style="display: inline-block; margin-left: 250px; font-size: 14px; color: #3485FF;">@post.TimePosting</label>
+                        <img src="~/images/W1ld 3lf.jpg" style="border-radius: 50%; width: 60px; height: 60px; margin-top: 5px; margin-left: 3px;" />
+                        <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
+                        <br />
+                        <label style="position: relative; left: 20px; color: #3485FF; max-width: 500px; overflow: hidden; word-wrap: break-word; ">@post.Text</label>
+                        <div style="background-color:transparent; height:50px;">
+                            @if (post.CheckLike(Model.user.UserID))
+                            {
+                                <img src="~/images/heartRed.svg" class="HeartImage" id="@Model.GetPostIndex(post.ID)" />
+                            }
+                            else
+                            {
+                                <img src="~/images/heart.svg" class="HeartImage" id="@Model.GetPostIndex(post.ID)" />
+                            }
+                            <label style="position: relative; font-size: 12px; display: inline-block; color: #3485FF; ">likes @post.CountLikes()</label>
+                            <img src="~/images/pencil.svg" style="display: inline-block; margin-left: 10px;" />
+                            <label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF; ">comments 10</label>
+                            <label style="display: inline-block; margin-left: 250px; font-size: 14px; color: #3485FF;">@post.TimePosting</label>
+                        </div>
                     </div>
-                </div>
                 }
             </div>
         </div>
