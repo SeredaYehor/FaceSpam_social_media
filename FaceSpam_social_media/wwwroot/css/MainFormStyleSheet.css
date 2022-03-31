@@ -114,15 +114,15 @@
     margin: 40px 20px;
 }
 
-.Heart {
-    background: url("../images/heart.svg");
-    height: 20px;
-    width: 20px;
-}
-
 .Ellipse {
     background-image: url('../images/W1ld 3lf.jpg');
     height: 50px;
     width: 50px;
     border-radius: 50%;
+    display: inline-table;
+}
+
+.HeartImage {
+    display: inline-block; 
+    margin-left: 10px;
 }
