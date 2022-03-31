@@ -56,26 +56,6 @@ namespace FaceSpam_social_media.Controllers
             return View("Friends", friends);
         }
 
-        public IActionResult SearchFriend(string name)
-        {
-            FriendsModel searchResult = new FriendsModel();
-
-            if(name == null)
-            {
-                return View("Friends", friends);
-            }
-
-            foreach(var friend in friends.userName)
-            {
-                if (friend.getName.Contains(name, StringComparison.OrdinalIgnoreCase))
-                {
-                    searchResult.userName.Add(friend);
-                }
-            }
-
-            return View("Friends", searchResult);
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
