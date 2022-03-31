@@ -39,21 +39,10 @@ namespace FaceSpam_social_media.Controllers
             return View(friends);
         }
 
-        [HttpPost]
-        public IActionResult DeleteFriend(string name)
+        public void DeleteFriend(string name)
         {
-            List<UserModel> temp = new List<UserModel>(friends.userName);
-
-            foreach (var friend in temp)
-            {
-                if (friend.getName.Equals(name))
-                {
-                    friends.userName.Remove(friend);
-                }
-            }
-            temp.Clear();
-
-            return View("Friends", friends);
+            UserModel removeUser = friends.GetUser(name);
+            friends.userName.Remove(removeUser);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
