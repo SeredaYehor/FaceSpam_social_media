@@ -44,7 +44,7 @@
         </div>
         <hr class="Line" />
         <div class="MessageArea">
-            <img src="~/images/W1ld 3lf.jpg" style="border-radius: 50%; width: 60px; height: 60px; margin-top: -35px; margin-left: 3px;" />
+            <img src="~/images/W1ld 3lf.jpg" class="UserImage" />
             @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "MessageTextBox" })
             <input type="submit" class="ButtonSend" formaction="/Home/SendMessage" value="Send" />
         </div>
