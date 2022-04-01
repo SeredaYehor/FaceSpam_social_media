@@ -170,3 +170,144 @@
     top: 15px;
     left: 5px;
 }
+
+.UserImage {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-top: -35px;
+    margin-left: 3px;
+}
+
+@media screen and (max-width: 1280px) {
+    .Chat {
+        width: 428px;
+    }
+
+    .ChatMessages {
+        width: 428px;
+    }
+
+    .MessageArea {
+        width: 428px;
+    }
+
+    .ButtonSend {
+        width: 65px;
+        height: 38px;
+        left: 340px;
+        font-weight: 300;
+        font-size: 16px;
+    }
+
+    .UserImage {
+        width: 55px;
+        height: 55px;
+    }
+
+    .MessageTextBox {
+        width: 268px;
+    }
+
+    .Line {
+        width: 374px;
+        left: 60px;
+    }
+}
+
+
+@media screen and (max-width: 1160px) {
+    .Chat {
+        width: 388px;
+    }
+
+    .ChatMessages {
+        width: 388px;
+    }
+
+    .MessageArea {
+        width: 388px;
+    }
+
+    .ButtonSend {
+        width: 55px;
+        left: 320px;
+        font-weight: 300;
+        font-size: 18px;
+    }
+
+    .UserImage {
+        width: 55px;
+        height: 55px;
+    }
+
+    .MessageTextBox {
+        width: 258px;
+    }
+
+    .Line {
+        width: 364px;
+        left: 70px;
+        border: 2px solid #ABABAB;
+    }
+}
+
+@media screen and (max-height: 590px) {
+    .Chat {
+        height: 580px;
+    }
+
+    .ChatMessages {
+        height: 480px;
+    }
+
+    .MessageArea {
+        height: 418px;
+    }
+
+    .ButtonSend {
+        position: absolute;
+        height: 42px;
+        top: 515px;
+    }
+}
+
+@media screen and (max-height: 569px) {
+    .Chat {
+        height: 560px;
+    }
+
+    .ChatMessages {
+        height: 460px;
+    }
+
+    .MessageArea {
+        height: 398px;
+    }
+
+    .ButtonSend {
+        position: absolute;
+        height: 42px;
+        top: 495px;
+    }
+}
+
+@media screen and (max-height: 545px) {
+    .Chat {
+        height: 540px;
+    }
+
+    .ChatMessages {
+        height: 440px;
+    }
+
+    .MessageArea {
+        height: 378px;
+    }
+
+    .ButtonSend {
+        position: absolute;
+        height: 42px;
+        top: 475px;
+    }
+}
