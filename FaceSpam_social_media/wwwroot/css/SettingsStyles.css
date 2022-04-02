@@ -119,10 +119,6 @@ body {
     margin-right: 10px;
 }
 
-    .SettingPageButtons input:focus {
-        background: #2662bd;
-    }
-
 .ButtonAndText {
     display: flex;
 }
@@ -148,4 +144,67 @@ body {
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
+}
+
+/* Media */
+@media screen and (max-width: 1200px) {
+    .InviteFriends {
+        font-size: 28px;
+    }
+
+    .ChangePhoto {
+        margin-bottom: 15px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .ControlPanel {
+        margin-left: -10%;
+        margin-right: 35px;
+    }
+
+    .ChangePhoto {
+        margin-left: 50px;
+    }
+
+    .InviteFriends {
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width: 880px) {
+    .ControlPanel {
+        margin-left: -50px;
+        margin-right: 15px;
+    }
+
+    .ChangePhoto {
+        margin-right: -35px;
+    }
+}
+
+@media screen and (max-height: 850px) {
+    .Wrapper {
+        margin-top: 50px;
+    }
+}
+
+@media screen and (max-height: 790px) {
+    .Wrapper {
+        margin-top: 40px;
+    }
+
+    .SettingPageButtons input {
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    .Wrapper {
+        margin-top: 20px;
+    }
+
+    .SettingPageButtons input {
+        margin-bottom: 20px;
+    }
 }
