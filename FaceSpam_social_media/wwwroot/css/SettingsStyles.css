@@ -3,6 +3,7 @@
 }
 
 body {
+    overflow-y: hidden;
 }
 /* Left block */
 .Wrapper {
@@ -22,7 +23,6 @@ body {
 .ButtonsOnControlPanel a {
     display: flex;
     flex-direction: column;
-    font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -39,7 +39,6 @@ body {
 }
 
 .AdvertisementText {
-    font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -62,12 +61,12 @@ body {
 }
 
 .SettingsName {
-    font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
     font-size: 48px;
     line-height: 56px;
     margin-top: -30px;
+    margin-bottom: 5px;
     color: #0066FF;
 }
 
@@ -82,10 +81,10 @@ body {
     outline: none;
     border: none;
     border-bottom: 2px solid #8D8C8C;
+    color: #476DF3;
 }
 /* Change photo */
 .ChangePhotoImage {
-    border: 1px solid black;
     max-width: 165px;
     max-height: 200px;
 }
@@ -101,7 +100,6 @@ body {
     background: #3485FF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border: none;
-    font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -123,13 +121,20 @@ body {
     display: flex;
 }
 
+.ButtonShopAccountText {
+    margin: 5px;
+}
+
+.ButtonGameAccountText {
+    margin: 5px;
+}
+
 .InviteFriends {
     display: flex;
     align-items: center;
-    font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
-    font-size: 36px;
+    font-size: 32px;
     line-height: 42px;
     color: #3485FF;
 }
@@ -139,8 +144,10 @@ body {
 }
 
 .InviteFriendsCode input {
+    padding-left: 35px;
+    padding: 5px 0px 5px 35px;
+    border: 0px;
     margin-left: 25px;
-    height: 50px;
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
@@ -150,6 +157,10 @@ body {
 @media screen and (max-width: 1200px) {
     .InviteFriends {
         font-size: 28px;
+    }
+
+    .InviteFriends {
+        font-size: 24px;
     }
 
     .ChangePhoto {
@@ -168,7 +179,7 @@ body {
     }
 
     .InviteFriends {
-        font-size: 25px;
+        font-size: 22px;
     }
 }
 
@@ -180,6 +191,10 @@ body {
 
     .ChangePhoto {
         margin-right: -35px;
+    }
+
+    .InviteFriends {
+        font-size: 20px;
     }
 }
 
