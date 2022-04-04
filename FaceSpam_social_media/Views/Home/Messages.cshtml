@@ -4,49 +4,60 @@
     string a = "";
 }
 
-<link rel="stylesheet" href="~/css/MessagesStyleSheet.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/MessagesStyleSheet.css" asp-append-version="true" />
+
+<!--HEHE BOI (~w~)-->
+<!--JS scripts with using jQuery and ajax-->
+<!--Kakaya shlyapa-->
+<!--8 realtime hours wasted for adding this functionality-->
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
 
 <body style="background-image: url('../images/background.jpg'); background-size: cover;">
-    <div class="Navigation">
-        @foreach (string controller in controllers)
-        {
-            @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+    <div class="Wrapper">
+        <div class="Navigation">
+            @foreach (string controller in controllers)
             {
-                <input type="submit" class="Button" value=@controller />
+                @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value=@controller />
+                }
             }
-        }
-    </div>
 
-    <!--HEHE BOI (~w~)-->
-    <!--JS scripts with using jQuery and ajax-->
-    <!--Kakaya shlyapa-->
-    <!--8 realtime hours wasted for adding this functionality-->
-    <script src="/lib/jquery/dist/jquery.js"></script>
-    <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
-    <div class="Groups">
-        <div class="SearchField">
-            <input type="text" class="SearchTextBox" />
-            <img src="~/images/searchImg.png" class="SearchImage" />
-        </div>
-        <div class="GroupsList" id="groups">
-            @foreach (Chat chat in Model.chats)
-            {
-                <div class="GroupPanel" id="@chat.Name">
-                    <img src="@chat.ImageReference" class="Ellipse"/>
-                    <label class="GroupName" id="@chat.Id">@chat.Name</label>
+            <div class="NeAdvertisement">
+                Advertisement
+                <div class="NeAdvertisementImage">
+                    <img src="~/images/AdvertisementTest.png" />
                 </div>
-            }
+            </div>
         </div>
-    </div>
 
-    <div class="Chat">
-        <div class="ChatMessages" id="Chat">
+        <div class="Chat">
+            <div class="ChatMessages" id="Chat"></div>
+            <hr class="Line" />
+            <div class="MessageArea">
+                <div class="UserImageDiv">
+                    <img src="~/images/W1ld 3lf.jpg" class="UserImage" />
+                </div>
+                @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "MessageTextBox" })
+                <input type="submit" class="ButtonSend" formaction="/Home/SendMessage" value="Send" />
+            </div>
         </div>
-        <hr class="Line" />
-        <div class="MessageArea">
-            <img src="~/images/W1ld 3lf.jpg" class="UserImage" />
-            @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "MessageTextBox" })
-            <input type="submit" class="ButtonSend" formaction="/Home/SendMessage" value="Send" />
+
+        <div class="Groups">
+            <div class="SearchField">
+                <input type="text" class="SearchTextBox" />
+                <img src="~/images/searchImg.png" class="SearchImage" />
+            </div>
+            <div class="GroupsList" id="groups">
+                @foreach (Chat chat in Model.chats)
+                {
+                    <div class="GroupPanel" id="@chat.Name">
+                        <img src="@chat.ImageReference" class="Ellipse" />
+                        <label class="GroupName" id="@chat.Id">@chat.Name</label>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
+     </div>
 </body>
