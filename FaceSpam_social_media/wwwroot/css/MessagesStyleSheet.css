@@ -1,12 +1,41 @@
-﻿.Navigation {
-    position: absolute;
-    width: 175px;
-    height: 514px;
-    left: 152px;
-    top: 104px;
+﻿.Wrapper {
+    display: flex;
+    margin-top: 10%;
+    width: 100%;
+    max-width: 700px;
+}
+
+    .Wrapper * {
+        margin-right: 50px;
+    }
+
+.Navigation {
     background: #3485FF;
     border-radius: 5px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    max-height: 650px;
+    background-color: #3485FF;
+    border-radius: 5px;
+    padding: 20px;
+    margin-right: 70px;
+    /* width: 175px; */
+    width: 100%;
+    max-width: 175px;
+}
+
+.NeAdvertisement {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    margin-top: 165px;
+    margin-bottom: 15px;
+}
+
+.NeAdvertisementImage {
+    width: 150px;
+    height: 150px;
 }
 
 .Button {
@@ -23,18 +52,15 @@
 }
 
 .Groups {
-    position: absolute;
-    width: 246px;
-    height: 520px;
-    left: 370px;
-    top: 104px;
+    width: 300px;
+    height: 650px;
     background: #3485FF;
     border-radius: 5px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
 .SearchTextBox {
-    width: 245px;
+    width: 100%;
     height: 46px;
     background: #E1EDFF;
     border: 1px solid #000000;
@@ -44,7 +70,7 @@
 }
 
 .GroupsList {
-    width: 246px;
+    width: 300px;
     height: 474px;
     background: transparent;
     border-radius: 5px;
@@ -55,7 +81,7 @@
 .GroupPanel {
     display: flex;
     flex-direction: row;
-    width: 246px;
+    width: 100%;
     height: 66px;
     background: #3485FF;
 }
@@ -67,7 +93,7 @@
     flex-direction: row;
     font-style: normal;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 16px;
     align-items: center;
     color: white;
@@ -75,27 +101,28 @@
 }
 
 .Chat {
-    position: absolute;
     width: 528px;
-    height: 600px;
-    left: 653px;
-    top: 103px;
+    max-width: 528px;
+    height: 800px;
     background: white;
     backdrop-filter: drop-shadow(4px 4px 10px black);
     border-radius: 3px;
 }
 
 .Line {
-    width: 474px;
-    height: 0px;
-    left: 40px;
-    border: 3px solid #ABABAB;
+    width: 90%;
+    border: 1px solid #ABABAB;
+    margin-left: 20px;
 }
 
 .MessageArea {
-    width: 528px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     height: 71px;
     background: transparent;
+    margin-left: 20px;
 }
 
 .Circle {
@@ -105,42 +132,32 @@
 }
 
 .MessageTextBox {
-    width: 328px;
     height: 50px;
+    width: 400px;
     resize: none;
     padding: 15px 0px;
     margin-top: -5px;
-    border: none;
+    border: 1px solid black;
+    border-radius: 10px;
 }
 
 .ButtonSend {
-    position: absolute;
-    width: 95px;
+    width: 150px;
     height: 42px;
-    left: 420px;
-    top: 535px;
     background: #3485FF;
     border: none;
     border-radius: 15px;
     font-weight: 400;
     font-size: 24px;
-    line-height: 28px;
     color: white;
+    margin-bottom: 5px;
 }
 
 .ChatMessages {
-    width: 520px;
-    height: 500px;
+    width: 528px;
+    height: 790px;
     background: white;
     overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.Message {
-    background-color: white;
-    height: 170px;
-    width: 380px;
-    margin: 40px 20px;
 }
 
 .inactive {
@@ -151,163 +168,175 @@
     background: #98BFFA;
 }
 
-.Ellipse {
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    margin-left: 3px;
-    margin-top: 3px;
-    border: 1px solid #000000;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-}
-
 .SearchField {
     position: relative;
+    width: 100%;
 }
 
-.SearchField img {
-    position: absolute;
-    top: 15px;
-    left: 5px;
-}
+    .SearchField img {
+        position: absolute;
+        top: 15px;
+        left: 5px;
+    }
 
 .UserImage {
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    margin-top: -35px;
-    margin-left: 3px;
+    border: 1px solid black;
+    margin-right: -35px;
+    margin-bottom: 5px;
 }
 
-@media screen and (max-width: 1280px) {
+.Ellipse {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-left: 5px;
+    margin-top: 5px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.Message {
+    background-color: white;
+    margin: 20px 20px;
+}
+
+.MessageNickName {
+    margin-left: -33px;
+    font-size: 14px;
+    color: #3485FF;
+}
+
+.MessageDate {
+    margin-left: 5px;
+    font-size: 12px;
+    color: gray;
+}
+
+.MessageText {
+    margin-top: 15px;
+    margin-left: 10%;
+    font-size: 12px;
+    color: #3485FF;
+    max-width: 200px;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+.MessageBody {
+    display: inline-block;
+    margin-top: 15px;
+    flex-direction: column;
+}
+
+.MessageHeader {
+    border: 1px solid black;
+    max-width: 162%;
+    display: flex;
+    justify-content: space-between;
+}
+
+@media screen and (min-height: 1080px) {
+    /*Paneli*/
     .Chat {
-        width: 428px;
+        height: 800px;
     }
 
     .ChatMessages {
-        width: 428px;
+        height: 85%;
     }
 
-    .MessageArea {
-        width: 428px;
+    .Groups {
+        height: 646px;
     }
 
-    .ButtonSend {
-        width: 65px;
-        height: 38px;
-        left: 340px;
-        font-weight: 300;
-        font-size: 16px;
+    .Navigation {
+        height: 650px;
     }
 
-    .UserImage {
-        width: 55px;
-        height: 55px;
+    .NeAdvertisementImage {
+        width: 150px;
+        height: 150px;
     }
 
-    .MessageTextBox {
-        width: 268px;
+    .NeAdvertisement {
+        margin-top: 165px;
+    }
+    /**/
+}
+
+@media screen and (max-height: 1080px) {
+    /*Paneli*/
+    .Chat {
+        height: 600px;
     }
 
-    .Line {
-        width: 374px;
-        left: 60px;
+    .ChatMessages {
+        height: 80%;
+    }
+
+    .Groups {
+        height: 446px;
+    }
+
+    .NeAdvertisementImage {
+        width: 120px;
+        height: 120px;
+    }
+
+    .NeAdvertisement {
+        margin-top: 125px;
+    }
+    /**/
+}
+
+@media screen and (max-height: 768px) {
+    .Chat {
+        height: 500px;
+    }
+
+    .ChatMessages {
+        height: 77%;
+    }
+
+    .Groups {
+        height: 400px;
+    }
+
+    .Navigation {
+        height: 520px;
+    }
+
+    .NeAdvertisementImage {
+        width: 100px;
+        height: 100px;
+    }
+
+    .NeAdvertisement {
+        margin-top: 85px;
     }
 }
 
 
-@media screen and (max-width: 1160px) {
+@media screen and (max-height: 640px) {
     .Chat {
-        width: 388px;
+        height: 400px;
     }
 
     .ChatMessages {
-        width: 388px;
+        height: 65%;
     }
 
-    .MessageArea {
-        width: 388px;
+    .Groups {
+        height: 300px;
     }
 
-    .ButtonSend {
-        width: 55px;
-        left: 320px;
-        font-weight: 300;
-        font-size: 18px;
+    .NeAdvertisement {
+        margin-top: 5px;
     }
 
-    .UserImage {
-        width: 55px;
-        height: 55px;
-    }
-
-    .MessageTextBox {
-        width: 258px;
-    }
-
-    .Line {
-        width: 364px;
-        left: 70px;
-        border: 2px solid #ABABAB;
-    }
-}
-
-@media screen and (max-height: 590px) {
-    .Chat {
-        height: 580px;
-    }
-
-    .ChatMessages {
-        height: 480px;
-    }
-
-    .MessageArea {
-        height: 418px;
-    }
-
-    .ButtonSend {
-        position: absolute;
-        height: 42px;
-        top: 515px;
-    }
-}
-
-@media screen and (max-height: 569px) {
-    .Chat {
-        height: 560px;
-    }
-
-    .ChatMessages {
-        height: 460px;
-    }
-
-    .MessageArea {
-        height: 398px;
-    }
-
-    .ButtonSend {
-        position: absolute;
-        height: 42px;
-        top: 495px;
-    }
-}
-
-@media screen and (max-height: 545px) {
-    .Chat {
-        height: 540px;
-    }
-
-    .ChatMessages {
-        height: 440px;
-    }
-
-    .MessageArea {
-        height: 378px;
-    }
-
-    .ButtonSend {
-        position: absolute;
-        height: 42px;
-        top: 475px;
+    .Navigation {
+        height: 450px;
     }
 }
