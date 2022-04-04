@@ -27,11 +27,11 @@
         });
 
         function GetMessageObj(time, text) {
-            messageObject = '<div class="Message"><div class="MessageBody">' +
+            messageObject = '<div class="MessageBody">' +
                 '<img src="../images/W1ld 3lf.jpg" class="Ellipse" style="width: 50px; height: 50px;"/>' +
                 '<label class="MessageNickName" >W1ld 3lf<label class="MessageDate">' + time + '</label ></label>' +
                 '<br /><label class="MessageText">' + text + '</label ></div>' +
-                '</div></div>';
+                '</div>';
             $(".ChatMessages").append(messageObject);
         }
 
