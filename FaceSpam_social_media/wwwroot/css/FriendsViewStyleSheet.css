@@ -1,16 +1,17 @@
 ﻿.Navigation {
-    position: absolute;
+    margin-right: 41px;
     width: 175px;
     height: 714px;
-    left: 176px;
-    top: 112px;
     background: #3485FF;
     border-radius: 5px;
 }
 
 .Wrapper {
+    margin-top: 112px;
     display: flex;
     justify-content: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 .Button {
@@ -42,13 +43,16 @@
     font-style: normal;
 }
 
+.FriendButton input {
+    outline: none;
+    border: none;
+}
+
 .FriendButton {
-    left: 0%;
-    right: 0%;
-    top: 0%;
-    bottom: 0%;
+    outline: none;
+    border: none;
     background: #FFFFFF;
-    box-shadow: inset 0px 3px 3px rgba(0, 0, 0, 0.10);
+    transition: 0.5s;
     border-radius: 15px;
     height: 24px;
     width: 72px;
@@ -58,12 +62,14 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;
+    box-shadow: inset 5px 3px 3px rgba(0, 0, 0, 0.15);
 }
 
+    .FriendButton:hover {
+        box-shadow: inset 0px 3px 3px rgba(0, 0, 0, 0.35);
+    }
+
 .Board {
-    position: absolute;
-    left: 392px;
-    top: 112px;
     height: 71px;
     width: 675px;
     background-color: #3485FF;
@@ -144,33 +150,6 @@
     .FriendZone {
         height: 515px
     }
-
-    .UserImage {
-        height: 70px;
-        width: 70px
-    }
-
-    .Names {
-        font-size: 16px
-    }
-
-    .FriendButton {
-        height: 20px;
-        width: 70px
-    }
-
-    .Search {
-        height: 35px;
-        margin-top: 10px
-    }
-
-    .SearchImage {
-        top: 15px
-    }
-
-    .FriendsLabel {
-        font-size: 40px
-    }
 }
 
 @media screen and (min-height: 800px) {
@@ -181,55 +160,13 @@
     .Navigation {
         height: 715px
     }
-
-    .UserImage {
-        height: 100px;
-        width: 100px
-    }
 }
 
 @media screen and (min-width: 1360px) {
-    .Board {
-        width: 650px
-    }
-
-    .FriendZone {
-        width: 650px
-    }
-
-    .Search {
-        width: 220px
-    }
-
-    .Names {
-        margin-right: 130px
-    }
-
-    .Navigation {
-        left: 210px
-    }
-
-    .Board {
-        left: 426px
-    }
 }
 
 @media screen and (min-width: 1280px) {
-    .Names {
-        margin-right: 110px
-    }
 }
 
 @media screen and (min-width: 1920px) {
-    .Names {
-        margin-right: 110px
-    }
-
-    .Navigation {
-        left: 450px
-    }
-
-    .Board {
-        left: 671px
-    }
 }
