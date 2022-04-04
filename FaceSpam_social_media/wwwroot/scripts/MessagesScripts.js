@@ -1,5 +1,8 @@
-﻿    $(document).ready(function () {
+﻿$(document).ready(function () {
+        $(".MessageArea").hide();
+
         $(".GroupPanel").click(function () {
+            $(".MessageArea").show();
             var value = $(this).children(".GroupName").attr("id"); //get value of attribute 'id'
             ChangeActiveGroup(value); //set value as current selected group
             $(".GroupPanel").attr("class", "GroupPanel inactive"); //make unselected GroupPanel not active
@@ -23,20 +26,24 @@
             $(".MessageTextBox").val("");
         });
 
+        function GetMessageObj(time, text) {
+            messageObject = '<div class="Message"><div class="MessageBody">' +
+                '<img src="../images/W1ld 3lf.jpg" class="Ellipse" style="width: 50px; height: 50px;"/>' +
+                '<label class="MessageNickName" >W1ld 3lf<label class="MessageDate">' + time + '</label ></label>' +
+                '<br /><label class="MessageText">' + text + '</label ></div>' +
+                '</div></div>';
+            $(".ChatMessages").append(messageObject);
+        }
+
         function GetChatMessages() {
             $.ajax({
                 type: "GET",
                 url: '/Home/GetChatMessages',
                 success: function (messages) { //get array object of Message models
                     for (var index = 0; index < messages.length; index++) { //adding all messages for this chat
-                        messageObject = '<div class="Message">' +
-                            '<img src="../images/W1ld 3lf.jpg" class="Ellipse" style="width: 50px; height: 50px;"/>' +
-                            '<label style="margin-left: 3px; position: relative; font-size: 14px; color: #3485FF;">W1ld 3lf</label>' +
-                            '<label style="display: inline-block; margin-left: 200px; font-size: 12px; width: 40px; color: #3485FF; text-align: right;">' + messages[index]["time"].toString() + '</label > ' +
-                            '<br />' +
-                            '<label style="margin-top: 5px; font-size: 12px; position: relative; left: 10px; color: #3485FF; max-width: 500px; overflow: hidden; word-wrap: break-word;">' + messages[index]["text"].toString() + '</label > ' +
-                            '</div>';
-                        $(".ChatMessages").append(messageObject);
+                        var time = messages[index]["time"].toString();
+                        var text = messages[index]["text"].toString()
+                        GetMessageObj(time, text);
                     }
 
                 }
@@ -50,20 +57,18 @@
                 data: { textboxMessage: message, } //controller argument
             }).done(function () {
             });
-
-            messageObject = '<div class="Message">' +
-                '<img src="../images/W1ld 3lf.jpg" class="Ellipse" style="width: 50px; height: 50px;"/>' +
-                '<label style="margin-left: 3px; position: relative; font-size: 14px; color: #3485FF;">W1ld 3lf</label>' +
-                '<label style="display: inline-block; margin-left: 200px; font-size: 12px; width: 40px; color: #3485FF; text-align: right;">12.04</label>' +
-                '<br />' +
-                '<label style="margin-top: 5px; font-size: 12px; position: relative; left: 10px; color: #3485FF; max-width: 500px; overflow: hidden; word-wrap: break-word;">' + message + '</label > ' +
-                '</div>'; //class of message
-
-            $(".ChatMessages").append(messageObject); //add class to chat form
+            var dt = new Date();
+            var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+            GetMessageObj(time, message); //class of message
         }
 
         $(".SearchTextBox").keyup(function () {
             var search = this.value;
-            $(".GroupPanel").hide().filter(':contains(' + search + ')').show();
-        })
+            if (search.trim() == '') {
+                $(".GroupPanel").show();
+            }
+            else {
+                $(".GroupPanel").hide().filter('[id^=' + search + ']').show();
+            }
+        });
     });
