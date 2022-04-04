@@ -22,13 +22,7 @@ namespace FaceSpam_social_media.Controllers
         {
             return View();
         }
-
-        public IActionResult ControllerTest()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
+        public IActionResult Settings()
         {
             return View();
         }
