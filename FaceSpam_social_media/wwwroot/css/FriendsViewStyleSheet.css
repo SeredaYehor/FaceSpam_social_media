@@ -1,4 +1,5 @@
-﻿.Navigation {
+﻿
+.Navigation {
     max-height: 650px;
     background-color: #3485FF;
     border-radius: 5px;
@@ -8,7 +9,7 @@
     width: 175px;
 }
 
-.AdvertisementImage{
+.AdvertisementImage {
     width: 150px;
     height: 150px;
 }
@@ -83,20 +84,23 @@
     }
 
 .Board {
+    background-color: #3485FF;
+    border-radius: 5px;
+    height: 912px;
+    width: 675px;
+}
+
+.SearchZone {
     height: 71px;
     width: 675px;
     background-color: #3485FF;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
     padding-bottom: 30px;
 }
 
 .FriendZone {
     height: 691px;
     width: 675px;
-    background-color: #3485FF;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    background-color: transparent;
     overflow-x: auto;
 }
 
@@ -154,6 +158,10 @@
 }
 
 @media screen and (min-height: 520px) {
+    .Board {
+        height: 600px;
+    }
+
     .Navigation {
         height: 500px
     }
@@ -168,6 +176,10 @@
 }
 
 @media screen and (min-height: 800px) {
+    .Board {
+        height: 912px;
+    }
+
     .FriendZone {
         height: 700px
     }
@@ -179,13 +191,4 @@
     .AdvertisementText {
         margin-top: 165px;
     }
-}
-
-@media screen and (min-width: 1360px) {
-}
-
-@media screen and (min-width: 1280px) {
-}
-
-@media screen and (min-width: 1920px) {
 }
