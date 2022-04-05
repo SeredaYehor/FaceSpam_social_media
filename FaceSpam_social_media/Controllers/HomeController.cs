@@ -13,6 +13,7 @@ namespace FaceSpam_social_media.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        protected static FriendsModel friends = new FriendsModel();
 
         public static Main mainFormModels = new Main();
         public static UserChats group = new UserChats();
@@ -25,6 +26,15 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public void SetId(int id)
         {
+            friends.userName.Add(new UserModel("Dorenskyi Aleksandr", "Cyberdemon.png"));
+            friends.userName.Add(new UserModel("Mitropolit Vadim", "Vadim.png"));
+            friends.userName.Add(new UserModel("Elon Mask", "Mask.jpg"));
+            friends.userName.Add(new UserModel("Kenoby", "Kenoby.jpg"));
+
+            return View();
+        }
+
+        public IActionResult Comments()
             group.chatId = id;
         }
         public int GetId()
@@ -44,16 +54,21 @@ namespace FaceSpam_social_media.Controllers
                DateTime.Now, 3, 0, 1));
             return View();
         }
+
+        public IActionResult Friends()
+        {
+            return View(friends);
+        }
+
         public IActionResult Settings()
         {
             return View();
         }
 
-        public IActionResult ShowData(string data)
+        public void DeleteFriend(string name)
         {
-            ViewData["string"] = data; 
-
-            return View();
+            UserModel removeUser = friends.GetUser(name);
+            friends.userName.Remove(removeUser);
         }
 
         public IActionResult Messages()
