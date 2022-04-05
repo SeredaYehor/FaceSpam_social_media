@@ -86,7 +86,7 @@
 .Board {
     background-color: #3485FF;
     border-radius: 5px;
-    height: 912px;
+    height: 712px;
     width: 675px;
 }
 
@@ -98,7 +98,7 @@
 }
 
 .FriendZone {
-    height: 691px;
+    height: 690px;
     width: 675px;
     background-color: transparent;
     overflow-x: auto;
@@ -123,6 +123,7 @@
 .Line {
     min-width: 95%;
     border: 1.5px solid #ABABAB;
+    background-color: #ABABAB;
     border-radius: 5%;
     width: 595px;
     margin-left: 24px;
@@ -177,11 +178,11 @@
 
 @media screen and (min-height: 800px) {
     .Board {
-        height: 912px;
+        height: 712px;
     }
 
     .FriendZone {
-        height: 700px
+        height: 640px
     }
 
     .Navigation {
