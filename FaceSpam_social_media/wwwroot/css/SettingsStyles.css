@@ -1,0 +1,225 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+body {
+    overflow-y: hidden;
+}
+/* Left block */
+.Wrapper {
+    display: flex;
+    margin-top: 110px;
+}
+
+.ControlPanel {
+    max-height: 650px;
+    background-color: #3485FF;
+    border-radius: 5px;
+    padding: 20px;
+    margin-right: 70px;
+    width: 175px;
+}
+
+.ButtonsOnControlPanel a {
+    display: flex;
+    flex-direction: column;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-decoration: none;
+    margin-left: 17px;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+    margin-left: 17px;
+}
+
+.ButtonsOnControlPanel {
+    max-height: 35%;
+}
+
+.AdvertisementText {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    margin-top: 165px;
+    margin-bottom: 15px;
+}
+
+.AdvertisementImage {
+    width: 150px;
+    height: 150px;
+}
+/* Main page */
+.SettingsMainPage {
+    width: 830px;
+    background: #98BFFA;
+    border-radius: 10px;
+    padding: 60px;
+}
+
+.SettingsName {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 56px;
+    margin-top: -30px;
+    margin-bottom: 5px;
+    color: #0066FF;
+}
+
+.ChangeUserInfo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ChangeUserInfoInputs input {
+    width: 300px;
+    background-color: #98BFFA;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #8D8C8C;
+    color: #476DF3;
+}
+/* Change photo */
+.ChangePhotoImage {
+    max-width: 165px;
+    max-height: 200px;
+}
+
+    .ChangePhotoImage img {
+        width: 164px;
+        height: 200px;
+    }
+
+.ChangePhotoButton input {
+    width: 165px;
+    height: 30px;
+    background: #3485FF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: none;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+}
+/* ---------- */
+.SettingPageButtons input {
+    background: #3485FF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    border: none;
+    padding: 7px 33px 7px 33px;
+    margin-bottom: 40px;
+    margin-right: 10px;
+}
+
+.ButtonAndText {
+    display: flex;
+}
+
+.ButtonShopAccountText {
+    margin: 5px;
+}
+
+.ButtonGameAccountText {
+    margin: 5px;
+}
+
+.InviteFriends {
+    display: flex;
+    align-items: center;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 42px;
+    color: #3485FF;
+}
+
+.InviteFriendsText {
+    margin-top: 5px;
+}
+
+.InviteFriendsCode input {
+    padding-left: 35px;
+    padding: 5px 0px 5px 35px;
+    border: 0px;
+    margin-left: 25px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+
+/* Media */
+@media screen and (max-width: 1200px) {
+    .InviteFriends {
+        font-size: 28px;
+    }
+
+    .InviteFriends {
+        font-size: 24px;
+    }
+
+    .ChangePhoto {
+        margin-bottom: 15px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .ControlPanel {
+        margin-left: -10%;
+        margin-right: 35px;
+    }
+
+    .ChangePhoto {
+        margin-left: 50px;
+    }
+
+    .InviteFriends {
+        font-size: 22px;
+    }
+}
+
+@media screen and (max-width: 880px) {
+    .ControlPanel {
+        margin-left: -50px;
+        margin-right: 15px;
+    }
+
+    .ChangePhoto {
+        margin-right: -35px;
+    }
+
+    .InviteFriends {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-height: 850px) {
+    .Wrapper {
+        margin-top: 50px;
+    }
+}
+
+@media screen and (max-height: 790px) {
+    .Wrapper {
+        margin-top: 40px;
+    }
+
+    .SettingPageButtons input {
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    .Wrapper {
+        margin-top: 20px;
+    }
+
+    .SettingPageButtons input {
+        margin-bottom: 20px;
+    }
+}

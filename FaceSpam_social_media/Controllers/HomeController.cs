@@ -44,13 +44,7 @@ namespace FaceSpam_social_media.Controllers
                DateTime.Now, 3, 0, 1));
             return View();
         }
-
-        public IActionResult ControllerTest()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
+        public IActionResult Settings()
         {
             return View();
         }
@@ -60,17 +54,6 @@ namespace FaceSpam_social_media.Controllers
             ViewData["string"] = data; 
 
             return View();
-        }
-
-        public IActionResult Main()
-        {
-            mainFormModels.user = new User(1, "W1ld 3lf", "12345", "ogo@mail.com",
-            "Кодер на миллион", null);
-            mainFormModels.posts.Add(new Post(1, "Hi everyone!"));
-            mainFormModels.posts.Add(new Post(2, "Wats up?"));
-            mainFormModels.posts.Add(new Post(3, "This is an example post and bla bla bla" +
-                "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"));
-            return View(mainFormModels);
         }
 
         public IActionResult Messages()
@@ -90,18 +73,20 @@ namespace FaceSpam_social_media.Controllers
             return result;
         }
 
-        [HttpPost]
-        public IActionResult AddPost(Main model)
+        public IActionResult Login()
         {
-            mainFormModels.posts.Add(new Post(4, model.message));
-            ModelState.Clear();
-            return View("Main", mainFormModels);
+            return View();
         }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        
+        public IActionResult Authentication()
+        {
+            return View();
         }
     }
 }
