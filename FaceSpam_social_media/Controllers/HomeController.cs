@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace FaceSpam_social_media.Controllers
 {
@@ -14,12 +15,16 @@ namespace FaceSpam_social_media.Controllers
         private readonly ILogger<HomeController> _logger;
         protected static FriendsModel friends = new FriendsModel();
 
+        public static Main mainFormModels = new Main();
+        public static UserChats group = new UserChats();
         public HomeController(ILogger<HomeController> logger)
         {
+            
             _logger = logger;
         }
 
-        public IActionResult Index()
+        [HttpPost]
+        public void SetId(int id)
         {
             friends.userName.Add(new UserModel("Dorenskyi Aleksandr", "Cyberdemon.png"));
             friends.userName.Add(new UserModel("Mitropolit Vadim", "Vadim.png"));
@@ -30,7 +35,23 @@ namespace FaceSpam_social_media.Controllers
         }
 
         public IActionResult Comments()
+            group.chatId = id;
+        }
+        public int GetId()
         {
+            return group.chatId;
+        }
+        public IActionResult Index()
+        {
+            group.chats.Add(new Chat(1, "Dorenskiy O. P.", "Some chat", 2, DateTime.Now, "../images/Cyberdemon.png"));
+            group.chats[0].chatMessages.Add(new Message(4, "Prikol",
+                DateTime.Now, 1, 0, 1));
+            group.chats.Add(new Chat(2, "FaceSpam Community", "Some chat", 2, DateTime.Now, "../images/facespam.png"));
+            group.chats[1].chatMessages.Add(new Message(4, "Woobshe",
+                DateTime.Now, 2, 0, 1));
+            group.chats.Add(new Chat(3, "Elon Musk", "Some chat", 2, DateTime.Now, "../images/Mask.jpg"));
+            group.chats[2].chatMessages.Add(new Message(4, "Ulyot",
+               DateTime.Now, 3, 0, 1));
             return View();
         }
 
@@ -39,16 +60,48 @@ namespace FaceSpam_social_media.Controllers
             return View(friends);
         }
 
+        public IActionResult Settings()
+        {
+            return View();
+        }
+
         public void DeleteFriend(string name)
         {
             UserModel removeUser = friends.GetUser(name);
             friends.userName.Remove(removeUser);
         }
 
+        public IActionResult Messages()
+        {
+            return View(group);
+        }
+
+        public void SendMessage(string textboxMessage)
+        {
+            group.chats[group.GetChatId(group.chatId)].chatMessages.Add(new Message(4, textboxMessage, 
+                DateTime.Now, 1, 0, group.GetChatId(group.chatId)));
+        }
+
+        public List<Message> GetChatMessages()
+        {
+            List<Message> result = group.chats[group.GetChatId(group.chatId)].chatMessages;
+            return result;
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        
+        public IActionResult Authentication()
+        {
+            return View();
         }
     }
 }

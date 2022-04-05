@@ -1,0 +1,339 @@
+﻿.Wrapper {
+    display: flex;
+    margin-top: 10%;
+    width: 100%;
+    max-width: 700px;
+}
+
+    .Wrapper * {
+        margin-right: 50px;
+    }
+
+.Navigation {
+    background: #3485FF;
+    border-radius: 5px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    max-height: 650px;
+    background-color: #3485FF;
+    border-radius: 5px;
+    padding: 20px;
+    margin-right: 70px;
+    /* width: 175px; */
+    width: 100%;
+    max-width: 175px;
+}
+
+.NeAdvertisement {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    margin-top: 165px;
+    margin-bottom: 15px;
+}
+
+.NeAdvertisementImage {
+    width: 150px;
+    height: 150px;
+}
+
+.Button {
+    background-color: #3485FF;
+    border: none;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.Groups {
+    width: 300px;
+    height: 650px;
+    background: #3485FF;
+    border-radius: 5px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.SearchTextBox {
+    width: 100%;
+    height: 46px;
+    background: #E1EDFF;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding-left: 40px;
+}
+
+.GroupsList {
+    width: 300px;
+    height: 474px;
+    background: transparent;
+    border-radius: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.GroupPanel {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 66px;
+    background: #3485FF;
+}
+
+.GroupName {
+    margin-top: 25px;
+    margin-left: 5px;
+    display: flex;
+    flex-direction: row;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 16px;
+    align-items: center;
+    color: white;
+    height: 16px;
+}
+
+.Chat {
+    width: 528px;
+    max-width: 528px;
+    height: 800px;
+    background: white;
+    backdrop-filter: drop-shadow(4px 4px 10px black);
+    border-radius: 3px;
+}
+
+.Line {
+    width: 90%;
+    border: 1px solid #ABABAB;
+    margin-left: 20px;
+}
+
+.MessageArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 71px;
+    background: transparent;
+    margin-left: 20px;
+}
+
+.Circle {
+    width: 50px;
+    height: 50px;
+    margin: 10px 10px;
+}
+
+.MessageTextBox {
+    height: 50px;
+    width: 400px;
+    resize: none;
+    padding: 15px 0px;
+    margin-top: -5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.ButtonSend {
+    width: 150px;
+    height: 42px;
+    background: #3485FF;
+    border: none;
+    border-radius: 15px;
+    font-weight: 400;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.ChatMessages {
+    width: 528px;
+    height: 790px;
+    background: white;
+    overflow-y: auto;
+}
+
+.inactive {
+    background: #3485FF;
+}
+
+.active {
+    background: #98BFFA;
+}
+
+.SearchField {
+    position: relative;
+    width: 100%;
+}
+
+    .SearchField img {
+        position: absolute;
+        top: 15px;
+        left: 5px;
+    }
+
+.UserImage {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    border: 1px solid black;
+    margin-right: -35px;
+    margin-bottom: 5px;
+}
+
+.Ellipse {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-left: 5px;
+    margin-top: 5px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.MessageNickName {
+    margin-left: -33px;
+    font-size: 14px;
+    color: #3485FF;
+}
+
+.MessageDate {
+    margin-left: 5px;
+    font-size: 12px;
+    color: gray;
+}
+
+.MessageText {
+    margin-top: 15px;
+    margin-left: 10%;
+    font-size: 12px;
+    color: #3485FF;
+    max-width: 200px;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+.MessageBody {
+    display: inline-block;
+    margin-top: 15px;
+    margin-left: 10px;
+    flex-direction: column;
+}
+
+.MessageHeader {
+    border: 1px solid black;
+    max-width: 162%;
+    display: flex;
+    justify-content: space-between;
+}
+
+@media screen and (min-height: 1080px) {
+    /*Paneli*/
+    .Chat {
+        height: 800px;
+    }
+
+    .ChatMessages {
+        height: 85%;
+    }
+
+    .Groups {
+        height: 646px;
+    }
+
+    .Navigation {
+        height: 650px;
+    }
+
+    .NeAdvertisementImage {
+        width: 150px;
+        height: 150px;
+    }
+
+    .NeAdvertisement {
+        margin-top: 165px;
+    }
+    /**/
+}
+
+@media screen and (max-height: 1080px) {
+    /*Paneli*/
+    .Chat {
+        height: 600px;
+    }
+
+    .ChatMessages {
+        height: 80%;
+    }
+
+    .Groups {
+        height: 446px;
+    }
+
+    .NeAdvertisementImage {
+        width: 120px;
+        height: 120px;
+    }
+
+    .NeAdvertisement {
+        margin-top: 125px;
+    }
+    /**/
+}
+
+@media screen and (max-height: 768px) {
+    .Chat {
+        height: 500px;
+    }
+
+    .ChatMessages {
+        height: 77%;
+    }
+
+    .Groups {
+        height: 400px;
+    }
+
+    .Navigation {
+        height: 520px;
+    }
+
+    .NeAdvertisementImage {
+        width: 100px;
+        height: 100px;
+    }
+
+    .NeAdvertisement {
+        margin-top: 85px;
+    }
+}
+
+
+@media screen and (max-height: 640px) {
+    .Chat {
+        height: 400px;
+    }
+
+    .ChatMessages {
+        height: 65%;
+    }
+
+    .Groups {
+        height: 300px;
+    }
+
+    .NeAdvertisement {
+        margin-top: 5px;
+    }
+
+    .Navigation {
+        height: 450px;
+    }
+}

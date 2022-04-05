@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="@Url.Content("~/Styles/FriendsFormStyleSheet.css")" rel="stylesheet" type="text/css" />
     @RenderSection("Styles", required: false)
+    <link href="@Url.Content("~/Styles/MainFormStyleSheet.css")" rel="stylesheet" type="text/css" />
+    @RenderSection("Styles", false)
 </head>
 <body>
     <div class="container">
@@ -15,7 +17,6 @@
             @RenderBody()
         </main>
     </div>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
