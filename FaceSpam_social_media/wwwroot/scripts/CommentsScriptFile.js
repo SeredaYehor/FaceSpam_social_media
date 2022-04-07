@@ -24,8 +24,13 @@ function AddMessage() {
         data: { message: text,},
     });
 
-    var date = new Date();
-    //var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    var time = date.toLocaleString().replace(',', ' ');
+    var time = GetDateTime();
     GetMessage(text, time);
+}
+
+function GetDateTime() {
+    var date = new Date().toLocaleDateString().substr(0, 6) + new Date().getFullYear().toString().substr(-2);
+    var time = new Date().toLocaleTimeString().substr(0, 5);
+
+    return date + ' ' + time;
 }
