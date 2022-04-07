@@ -26,16 +26,11 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public void SetId(int id)
         {
-            friends.userName.Add(new UserModel("Dorenskyi Aleksandr", "Cyberdemon.png"));
-            friends.userName.Add(new UserModel("Mitropolit Vadim", "Vadim.png"));
-            friends.userName.Add(new UserModel("Elon Mask", "Mask.jpg"));
-            friends.userName.Add(new UserModel("Kenoby", "Kenoby.jpg"));
-
-            return View();
+            group.chatId = id;
         }
 
-        public IActionResult Comments()
-            group.chatId = id;
+        public IActionResult Comments() {
+            return View();
         }
         public int GetId()
         {
@@ -43,6 +38,11 @@ namespace FaceSpam_social_media.Controllers
         }
         public IActionResult Index()
         {
+            friends.userName.Add(new UserModel("Dorenskyi Aleksandr", "Cyberdemon.png"));
+            friends.userName.Add(new UserModel("Mitropolit Vadim", "Vadim.png"));
+            friends.userName.Add(new UserModel("Elon Mask", "Mask.jpg"));
+            friends.userName.Add(new UserModel("Kenoby", "Kenoby.jpg"));
+
             group.chats.Add(new Chat(1, "Dorenskiy O. P.", "Some chat", 2, DateTime.Now, "../images/Cyberdemon.png"));
             group.chats[0].chatMessages.Add(new Message(4, "Prikol",
                 DateTime.Now, 1, 0, 1));
