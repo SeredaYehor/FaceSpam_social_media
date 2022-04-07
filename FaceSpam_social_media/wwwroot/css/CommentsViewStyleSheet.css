@@ -1,16 +1,34 @@
 ﻿.Navigation {
-    position: absolute;
-    width: 175px;
-    height: 714px;
-    left: 176px;
-    top: 112px;
-    background: #3485FF;
+    max-height: 650px;
+    background-color: #3485FF;
     border-radius: 5px;
+    padding: 20px;
+    padding-bottom: 20px;
+    margin-right: 70px;
+    width: 175px;
+}
+
+.AdvertisementImage {
+    width: 150px;
+    height: 150px;
+}
+
+.AdvertisementText {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    margin-top: 165px;
+    margin-bottom: 15px;
 }
 
 .Wrapper {
+    margin-top: 112px;
     display: flex;
     justify-content: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 .OverflowZone {
@@ -23,21 +41,18 @@
     background-color: #3485FF;
     border: none;
     color: white;
-    padding: 5px 32px;
-    text-align: center;
+    text-align: left;
     text-decoration: none;
     display: inline-block;
     margin: 4px 2px;
     cursor: pointer;
-    font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 16px;
 }
 
 .Board {
-    position: absolute;
     width: 786px;
     height: 811px;
     left: 401px;
@@ -52,8 +67,6 @@
     width: 786px;
     position: absolute;
     background: #FFFFFF;
-    top: 915px;
-    left: 401px;
 }
 
 .Line {
@@ -147,86 +160,4 @@ div.PostImageHeader {
     top: 0;
     margin-top: 23px;
     margin-left: auto;
-}
-
-@media screen and (min-height: 520px) {
-    .Board {
-        top: 60px;
-        height: 570px
-    }
-
-    .OverflowZone {
-        height: 515px
-    }
-
-    .Navigation {
-        top: 70px;
-        height: 520px
-    }
-
-    .WriteZone {
-        top: 630px;
-        height: 80px
-    }
-}
-
-@media screen and (min-height: 800px) {
-    .Board {
-        height: 744px
-    }
-
-    .OverflowZone {
-        height: 744px
-    }
-
-    .Navigation {
-        height: 715px
-    }
-
-    .WriteZone {
-        top: 804px;
-        height: 89px
-    }
-}
-
-@media screen and (min-width: 1360px) {
-    .Navigation {
-        left: 176px;
-    }
-
-    .Board {
-        left: 401px;
-    }
-
-    .WriteZone {
-        left: 401px;
-    }
-}
-
-@media screen and (min-width: 1280px) {
-    .Navigation {
-        left: 176px;
-    }
-
-    .Board {
-        left: 401px;
-    }
-
-    .WriteZone {
-        left: 401px;
-    }
-}
-
-@media screen and (min-width: 1920px) {
-    .Navigation {
-        left: 426px;
-    }
-
-    .Board {
-        left: 651px;
-    }
-
-    .WriteZone {
-        left: 651px;
-    }
 }
