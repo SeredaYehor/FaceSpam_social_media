@@ -1,13 +1,27 @@
 ﻿$(document).ready(function () {
-    $(".HeartImage").click(function () {
-        var postId = $(this).attr("id");
-        var newImg = '';
+    $(".HeartImage").click(function ChangeColor() {
         if ($(this).attr("src") == "/images/heartRed.svg") {
-            newImg = '<img src="/images/heart.svg" class="HeartImage" id=' + postId + '/>';
+            $(this).attr("src", "/images/heart.svg");
         }
         else {
-            newImg = '<img src="/images/heartRed.svg" class="HeartImage" id=' + postId + '/>';
+            $(this).attr("src", "/images/heartRed.svg");
         }
-        $(this).replaceWith(newImg);
+        var id = $(this).attr("id");
+        var likes = UpdateLikes(id);
+        $(this).parent().children(".LikeLabel").html(likes);
     })
+
+    function UpdateLikes(id) {
+        var result = 0;
+        $.ajax({
+            type: "GET",
+            url: '/Home/ChangeLike',
+            data: { postId: id, },
+            async: false,
+            success: function (likes) {
+                result = likes;
+            }
+        });
+        return result;
+    }
 });
