@@ -22,6 +22,21 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Index()
         {
+            mainFormModels.user = new User(777, "W1ld 3lf", "12345", "ogo@mail.com",
+            "Кодер на миллион", null);
+            mainFormModels.posts.Add(new Post(1, "Hi everyone!"));
+            mainFormModels.posts.Add(new Post(2, "Wats up?"));
+            mainFormModels.posts.Add(new Post(3, "This is an example post and bla bla bla" +
+                "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"));
+            for (int i = 1; i < 4; i++)
+            {
+                int postId = mainFormModels.GetPostIndex(i);
+                for (int j = 0; j < 5; j++)
+                {
+                    mainFormModels.posts[postId].UpdateLike(j);
+                }
+            }
+            mainFormModels.posts[0].UpdateLike(777);
             return View();
         }
 
@@ -44,22 +59,13 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Main()
         {
-            mainFormModels.user = new User(777, "W1ld 3lf", "12345", "ogo@mail.com",
-            "Кодер на миллион", null);
-            mainFormModels.posts.Add(new Post(1, "Hi everyone!"));
-            mainFormModels.posts.Add(new Post(2, "Wats up?"));
-            mainFormModels.posts.Add(new Post(3, "This is an example post and bla bla bla" +
-                "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"));
-            for(int i = 1; i < 4; i++)
-            {
-                int postId = mainFormModels.GetPostIndex(i);
-                for (int j = 0; j < 5; j++)
-                {
-                    mainFormModels.posts[postId].UpdateLike(j);
-                }
-            }
-            mainFormModels.posts[0].UpdateLike(777);
             return View(mainFormModels);
+        }
+
+        public int ChangeLike(int postId)
+        {
+            mainFormModels.posts[postId].UpdateLike(777);
+            return mainFormModels.posts[postId].CountLikes();
         }
 
         [HttpPost]
