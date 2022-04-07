@@ -24,6 +24,8 @@ function AddMessage() {
         data: { message: text,},
     });
 
+    document.getElementById("message").value = null;
+
     var time = GetDateTime();
     GetMessage(text, time);
 }
