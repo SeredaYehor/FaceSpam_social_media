@@ -1,8 +1,19 @@
-﻿.Navigation {
-    position: absolute;
-    height: 714px;
-    width: 175px;
+﻿.Wrapper {
+    margin-top: 112px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.Navigation {
+    max-height: 650px;
     background-color: #3485FF;
+    border-radius: 5px;
+    padding: 20px;
+    padding-bottom: 20px;
+    margin-right: 70px;
+    width: 175px;
 }
 
 .Button {
@@ -19,24 +30,20 @@
 }
 
 .Info {
-    position: absolute;
-    height: 220px;
-    width: 660px;
+    height: 202px;
+    width: 600px;
     background-color: #3485FF;
-    left: 500px;
+    display: inline-block;
 }
 
 .UserImage {
-    position: absolute;
     height: 202px;
     background-image: url('../images/W1ld 3lf.jpg');
     width: 166px;
     background-color: grey;
-    left: 300px;
 }
 
 .EditProfile {
-    position: absolute;
     background-color: #3485FF;
     border: none;
     color: white;
@@ -46,42 +53,36 @@
     display: inline-block;
     font-size: 14px;
     cursor: pointer;
-    top: 200px;
+    margin-top: 200px;
 }
 
 .Friends {
     background-color: #3485FF;
-    position: absolute;
     height: 243px;
     width: 166px;
-    top: 350px;
-    left: 300px;
+    margin-top: 50px;
 }
 
 .Dashboard {
     background-color: #3485FF;
-    position: absolute;
+    margin-top: 90px;
     height: 100px;
-    width: 660px;
-    top: 350px;
-    left: 500px;
+    width: 600px;
 }
 
 .HorizontalLine {
-    position: absolute;
-    width: 660px;
+    width: 600px;
     height: 2px;
     color: gray;
     background-color: #ABABAB;
-    top: 80px;
+    margin-top: -2px;
+    margin-bottom: 0px;
 }
 
 .DashboardList {
     background-color: #3485FF;
-    position: absolute;
     height: 570px;
-    width: 660px;
-    top: 100px;
+    width: 600px;
     overflow-y: auto;
 }
 
@@ -92,7 +93,7 @@
     font-size: 18px;
     color: #B9B9B9;
     height: 50px;
-    width: 500px;
+    width: 450px;
 }
 
 .PostButtons {
@@ -106,16 +107,16 @@
 .PostInfo {
     background-color: #3485FF;
     height: 100px;
-} 
+}
 
 .PostMessage {
     background-color: white;
-    width: 560px;
+    width: 520px;
     margin: 40px 20px;
 }
 
 .Ellipse {
-    background-image: url('../images/W1ld 3lf.jpg');
+    background-image: url('../Images/Mask.jpg');
     height: 50px;
     width: 50px;
     border-radius: 50%;
@@ -123,6 +124,30 @@
 }
 
 .HeartImage {
-    display: inline-block; 
+    display: inline-block;
     margin-left: 10px;
+}
+
+.LikeLabel {
+    position: relative;
+    font-size: 12px;
+    display: inline-block;
+    color: #3485FF;
+}
+
+.PostEllipse {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-top: 5px;
+    margin-left: 3px;
+}
+
+.PostText {
+    position: relative;
+    left: 20px;
+    color: #3485FF;
+    max-width: 500px;
+    overflow: hidden;
+    word-wrap: break-word;
 }
