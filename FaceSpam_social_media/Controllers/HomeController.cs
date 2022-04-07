@@ -12,7 +12,7 @@ namespace FaceSpam_social_media.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private static Post postModel = new Post("Vadim", "Best palce to cheel is 715", new DateTime(2020, 3, 11, 13, 0, 0));
+        private static Post postModel = new Post("W1ld3lf", "Check out this view!!!", new DateTime(20, 3, 11, 13, 0, 0), "W1ld3lf.png", "post.jpg");
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -21,25 +21,22 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Index()
         {
+            postModel.postComments.Add(new PostComment("Elon Mask", "Great post-nuclear avantgarde view)", DateTime.Now, "Mask.jpg"));
+            postModel.postComments.Add(new PostComment("Митрополит Вадим", "Господь, господь", DateTime.Now, "Vadim.png"));
+
             return View();
         }
 
-        [HttpGet]
         public IActionResult Comments(string message = null)   
         {
-            postModel.postComments.Add(new PostComment("CyberDemon", "2 years passed, where is lab 12", DateTime.Now));
-            postModel.postComments.Add(new PostComment("CyberDemon", "Also u forgot about Prat book buing", DateTime.Now));
-
             return View(postModel);
         }
 
-        [HttpPost]
         public IActionResult AddComment(string message)
         {
-            string name = "Vadim";
             if (message != null)
             {
-                postModel.postComments.Add(new PostComment(name, message, DateTime.Now));
+                postModel.postComments.Add(new PostComment("W1ld3lf", message, DateTime.Now, "W1ld3lf.png"));
             }
 
             return View("Comments", postModel);
