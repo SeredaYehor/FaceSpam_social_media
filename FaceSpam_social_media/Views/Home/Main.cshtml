@@ -7,74 +7,89 @@
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
     string username = Model.user.Name;
     string description = Model.user.Description;
+    string[] friends = { "~/images/Cyberdemon.png", "~/images/Mask.jpg", "~/images/Vadim.png" };
 }
 
 <body style="background-image: url('../images/background.jpg'); background-size: cover;">
-    <div class="Navigation">
-        @foreach (string controller in controllers)
-        {
-            @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+    <div class="Wrapper">
+        <div class="Navigation">
+            @foreach (string controller in controllers)
             {
-                <input type="submit" class="Button" value=@controller />
-            }
-        }
-    </div>
-
-    <div class="UserImage">
-        <input type="submit" class="EditProfile" value="Edit profile" />
-    </div>
-
-    <div class="Friends">
-        <label style="font-size: 18px; margin: 4px 16px; color: white;">Friends</label>
-        <div class="FriendList" style="width: 166px; height: 170px;">
-            @for (int i = 0; i < 10; i++)
-            {
-                <div class="Ellipse"></div>
-            }
-        </div>
-        <input type="submit" class="Button" style=" padding: 5px 20px; " value="more..." />
-    </div>
-
-    <div class="Info">
-        <label style="font-size: 32px; margin: 4px 16px; color: white;">@username</label>
-        <br />
-        <label style="font-size: 18px; margin: 4px 16px; color: #B9B9B9;">@description</label>
-    </div>
-
-    @using (Html.BeginForm(FormMethod.Post))
-    {
-        <div class="Dashboard">
-            @*Now textbox can send input data to controller and then clear it on widget*@
-            @Html.TextBoxFor(model => model.message, new { autocomplete = "off", Class = "Post" })
-            <input type="submit" class="PostButtons" formaction="/Home/SelectFile" value="File" />
-            <input type="submit" class="PostButtons" formaction="/Home/AddPost" value="Write" />
-            <hr class="HorizontalLine" />
-            <div class="DashboardList">
-                @foreach (Post post in Model.posts)
+                @using (Html.BeginForm(controller, "Home", FormMethod.Post))
                 {
-                    <div class="PostMessage">
-
-                        <img src="~/images/W1ld 3lf.jpg" style="border-radius: 50%; width: 60px; height: 60px; margin-top: 5px; margin-left: 3px;" />
-                        <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
-                        <br />
-                        <label style="position: relative; left: 20px; color: #3485FF; max-width: 500px; overflow: hidden; word-wrap: break-word; ">@post.Text</label>
-                        <div style="background-color:transparent; height:50px;">
-                            @if (post.CheckLike(Model.user.UserID))
-                            {
-                                <img src="~/images/heartRed.svg" class="HeartImage" id="@Model.GetPostIndex(post.ID)" />
-                            }
-                            else
-                            {
-                                <img src="~/images/heart.svg" class="HeartImage" id="@Model.GetPostIndex(post.ID)" />
-                            }
-                            <label style="position: relative; font-size: 12px; display: inline-block; color: #3485FF; ">likes @post.CountLikes()</label>
-                            <img src="~/images/pencil.svg" style="display: inline-block; margin-left: 10px;" />
-                            <label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF; ">comments 10</label>
-                            <label style="display: inline-block; margin-left: 250px; font-size: 14px; color: #3485FF;">@post.TimePosting</label>
-                        </div>
-                    </div>
+                    <input type="submit" class="Button" value=@controller />
                 }
+            }
+
+            <div class="AdvertisementText">
+                Advertisement
+            </div>
+
+            <div>
+                <div class="AdvertisementImage">
+                    <img src="~/Images/AdvertisementTest.png" />
+                </div>
             </div>
         </div>
-    }
+
+        <div class="UserImage">
+            <input type="submit" class="EditProfile" value="Edit profile" />
+
+            <div class="Friends">
+                <label style="font-size: 18px; margin: 4px 16px; color: white;">Friends</label>
+                <div class="FriendList" style="width: 166px; height: 167px; overflow-y: hidden;">
+                    @for (int i = 0; i < friends.Length; i++)
+                    {
+                        <img src=@friends[i] class="PostEllipse" style="width: 49px; height: 49px;"/>
+                    }
+                </div>
+                <input type="submit" class="Button" style=" padding: 5px 20px; " value="more..." />
+            </div>
+        </div>
+        <div class="MainPanel" style="margin-left: 30px;">
+            <div class="Info">
+                <label style="font-size: 32px; margin: 4px 16px; color: white;">@username</label>
+                <br />
+                <label style="font-size: 18px; margin: 4px 16px; color: #B9B9B9;">@description</label>
+            </div>
+
+                @using (Html.BeginForm(FormMethod.Post))
+                {
+                    <div class="Dashboard">
+                        @*Now textbox can send input data to controller and then clear it on widget*@
+                        @Html.TextBoxFor(model => model.message, new { autocomplete = "off", Class = "Post" })
+                        <input type="submit" class="PostButtons" formaction="/Home/SelectFile" value="File" />
+                        <input type="submit" class="PostButtons" formaction="/Home/AddPost" value="Write" />
+                        <hr class="HorizontalLine" />
+                        <div class="DashboardList">
+                            @foreach (Post post in Model.posts)
+                            {
+                                <div class="PostMessage">
+                                    <img src="~/images/W1ld 3lf.jpg" class="PostEllipse" />
+                                    <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
+                                    <br />
+                                    <label class="PostText">@post.Text</label>
+                                    <div style="background-color:transparent; height:50px;">
+                                        <div class="Likes" style="display: inline-block;">
+                                            @if (post.CheckLike(Model.user.UserID))
+                                            {
+                                                <img src="~/images/heartRed.svg" class="HeartImage" id="@Model.GetPostIndex(post.ID)" />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/heart.svg" class="HeartImage" id="@Model.GetPostIndex(post.ID)" />
+                                            }
+                                            <label class="LikeLabel">@post.CountLikes()</label>
+                                        </div>
+                                        <img src="~/images/pencil.svg" style="display: inline-block; margin-left: 10px;" />
+                                        <label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF;">comments 10</label>
+                                        <label style="display: inline-block; margin-left: 250px; font-size: 14px; color: #3485FF;">@post.TimePosting</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                 }
+        </div>      
+    </div>
 </body>
