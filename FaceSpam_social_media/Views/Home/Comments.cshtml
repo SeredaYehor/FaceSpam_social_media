@@ -1,10 +1,13 @@
-﻿@{
+﻿@model Post
+
+@{
     ViewData["Title"] = "Comments";
 
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
 }
 
-@model Post
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="~/scripts/CommentsScriptFile.js" asp-append-version="true"></script>
 
 <link rel="stylesheet" href="~/css/CommentsViewStyleSheet.css">
 
@@ -21,12 +24,12 @@
         </div>
 
         <div class="Board">
-            <div style="overflow: auto; width: 786px; height: 800px">
+            <div class="OverflowZone">
                 <div>
-                    <div class="PostImageHeader"><img src="~/Images/post.jpg" class="PostImage" /></div>
+                    <div class="PostImageHeader"><img src="~/Images/@Model.getPostImage" class="PostImage" /></div>
                     <br>
                     <div style="display: flex; align-items: center; flex-direction: row">
-                        <img src="~/Images/Vadim.png" class="UserImage" />
+                        <img src="~/Images/@Model.getUserImage" class="UserImage" />
                         <label class="UserName"> @Model.getUser </label>
                         <label class="Time"> @Model.getTime.ToString() </label>
                     </div>
@@ -36,11 +39,11 @@
                     </div>
                 </div>
 
-                <div>
+                <div id="comments">
                     @foreach (PostComment comment in Model.postComments)
                     {
                         <div style="display: flex; align-items: center; flex-direction: row">
-                            <img src="~/Images/Cyberdemon.png" class="UserImage" />
+                            <img src="~/Images/@comment.getUserImage" class="UserImage" />
                             <label class="UserName"> @comment.getUser </label>
                             <label class="Time"> @comment.getTime.ToString() </label>
                         </div>
@@ -54,19 +57,16 @@
             </div>
         </div>
 
-        @using (Html.BeginForm(FormMethod.Post))
-        {
-            <div class="WriteZone">
-                <div class="Line"></div>
+        <div class="WriteZone">
+            <div class="Line"></div>
 
-                <div style="display: flex; align-items: center; flex-direction: row">
+            <div style="display: flex; align-items: center; flex-direction: row">
 
-                    <img src="~/Images/Vadim.png" class="UserImage" />
+                <img src="~/Images/W1ld3lf.png" class="UserImage" />
 
-                    <input type="text" name="message" placeholder="Write message ..." class="MessageInput" />
-                    <input type="submit" value="Comment" class="MessageButton" formaction="AddComment">
-                </div>
+                <input type="text" id="message" placeholder="Write message ..." class="MessageInput" />
+                <input type="submit" value="Comment" class="MessageButton" onClick="AddMessage()">
             </div>
-        }
+        </div>
     </div>
 </body>
