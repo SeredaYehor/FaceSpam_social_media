@@ -1,4 +1,8 @@
-﻿.Navigation {
+﻿body {
+    overflow-y: hidden;
+}
+
+.Navigation {
     max-height: 650px;
     background-color: #3485FF;
     border-radius: 5px;
@@ -32,9 +36,10 @@
 }
 
 .OverflowZone {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     width: 786px;
-    height: 800px;
+    height: 780px;
 }
 
 .Button {
@@ -54,7 +59,7 @@
 
 .Board {
     width: 786px;
-    height: 811px;
+    height: 780px;
     left: 401px;
     top: 104px;
     background: #FFFFFF;
@@ -63,9 +68,10 @@
 }
 
 .WriteZone {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
     height: 108px;
     width: 786px;
-    position: absolute;
     background: #FFFFFF;
 }
 
@@ -127,7 +133,7 @@
     display: flex;
     align-items: center;
     color: #3485FF;
-    margin-right: 353px;
+    margin-right: 350px;
     width: 200px;
 }
 
@@ -151,4 +157,40 @@ div.PostImageHeader {
     max-width: 100%;
     max-height: 100%;
     margin-top: 23px;
+}
+
+@media screen and (min-height: 520px) {
+    .Board {
+        height: 480px
+    }
+
+    .OverflowZone {
+        height: 480px
+    }
+
+    .Navigation {
+        height: 515px
+    }
+
+    .AdvertisementText {
+        margin-top: 100px;
+    }
+}
+
+@media screen and (min-height: 800px) {
+    .Board {
+        height: 780px;
+    }
+
+    .OverflowZone {
+        height: 780px;
+    }
+
+    .Navigation {
+        height: 715px
+    }
+
+    .AdvertisementText {
+        margin-top: 165px;
+    }
 }
