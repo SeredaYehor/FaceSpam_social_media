@@ -1,4 +1,11 @@
-﻿.Wrapper {
+﻿.Background {
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.Wrapper {
     margin-top: 112px;
     display: flex;
     justify-content: center;
@@ -7,13 +14,22 @@
 }
 
 .Navigation {
-    max-height: 650px;
+    height: 650px;
     background-color: #3485FF;
     border-radius: 5px;
     padding: 20px;
     padding-bottom: 20px;
     margin-right: 70px;
     width: 175px;
+}
+
+.AdvertisementText {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    margin-top: 165px;
+    margin-bottom: 15px;
 }
 
 .Button {
@@ -41,6 +57,7 @@
     background-image: url('../images/W1ld 3lf.jpg');
     width: 166px;
     background-color: grey;
+    margin-left: -20px;
 }
 
 .EditProfile {
@@ -71,7 +88,7 @@
 }
 
 .HorizontalLine {
-    width: 600px;
+    width: 100%;
     height: 2px;
     color: gray;
     background-color: #ABABAB;
@@ -82,7 +99,7 @@
 .DashboardList {
     background-color: #3485FF;
     height: 570px;
-    width: 600px;
+    width: 100%;
     overflow-y: auto;
 }
 
@@ -93,7 +110,7 @@
     font-size: 18px;
     color: #B9B9B9;
     height: 50px;
-    width: 450px;
+    width: 70%;
 }
 
 .PostButtons {
@@ -111,7 +128,7 @@
 
 .PostMessage {
     background-color: white;
-    width: 520px;
+    width: 90%;
     margin: 40px 20px;
 }
 
@@ -147,7 +164,51 @@
     position: relative;
     left: 20px;
     color: #3485FF;
-    max-width: 500px;
+    width: 95%;
     overflow: hidden;
     word-wrap: break-word;
+}
+
+.Date {
+    display: inline-block;
+    margin-left: 250px;
+    font-size: 14px;
+    color: #3485FF;
+}
+
+@media screen and (max-width: 1082px) {
+    /*Paneli*/
+    .Navigation {
+        width: 165px;
+        margin-right: 15px;
+    }
+
+    .UserImage {
+        margin-left: 0px;
+        margin-right: -15px;
+    }
+    /**/
+
+    .Info {
+        width: 550px;
+    }
+
+    .Dashboard {
+        width: 550px;
+    }
+}
+
+@media screen and (max-width: 916px) {
+
+    .Info {
+        width: 500px;
+    }
+
+    .Dashboard {
+        width: 500px;
+    }
+
+    .Date {
+        margin-left: 200px;
+    }
 }
