@@ -71,7 +71,7 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public IActionResult AddPost(Main model)
         {
-            mainFormModels.posts.Add(new Post(4, model.message));
+            mainFormModels.posts.Insert(0, new Post(4, model.message));
             ModelState.Clear();
             return View("Main", mainFormModels);
         }
