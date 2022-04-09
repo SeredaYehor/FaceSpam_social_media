@@ -1,7 +1,4 @@
-﻿body {
-    overflow-y: hidden;
-}
-
+﻿
 .Navigation {
     max-height: 650px;
     background-color: #3485FF;
@@ -28,7 +25,7 @@
 }
 
 .Wrapper {
-    margin-top: 112px;
+    margin-top: 70px;
     display: flex;
     justify-content: center;
     flex-direction: row;
@@ -160,6 +157,10 @@ div.PostImageHeader {
 }
 
 @media screen and (min-height: 520px) {
+    .Wrapper {
+        margin-top: 50px;
+    }
+
     .Board {
         height: 480px
     }
@@ -178,6 +179,10 @@ div.PostImageHeader {
 }
 
 @media screen and (min-height: 800px) {
+    .Wrapper {
+        margin-top: 80px;
+    }
+
     .Board {
         height: 780px;
     }
