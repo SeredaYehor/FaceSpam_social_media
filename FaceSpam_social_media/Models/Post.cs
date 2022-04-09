@@ -8,7 +8,7 @@ namespace FaceSpam_social_media.Models
 {
     public class Post
     {
-        public Post(string name, string text, string time, string image, string post)
+        public Post(string name, string text, DateTime time, string image, string post)
         {
             userName = name;
             postText = text;
@@ -22,7 +22,7 @@ namespace FaceSpam_social_media.Models
         private string userImage;
         private string postImage;
 
-        private string postCreating;
+        private DateTime postCreating;
 
         public List<PostComment> postComments = new List<PostComment>();
         public string getUser
@@ -42,7 +42,7 @@ namespace FaceSpam_social_media.Models
 
         public string getTime
         {
-            get => postCreating;
+            get => postCreating.ToString("d.M.y H:m");
         }
 
         public string getUserImage
