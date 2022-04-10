@@ -42,7 +42,7 @@ namespace FaceSpam_social_media.Models
 
         public string getTime
         {
-            get => postCreating.ToString("d.M.y H:m");
+            get => postCreating.ToString("dd.MM.y H:m");
         }
 
         public string getUserImage

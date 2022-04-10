@@ -24,7 +24,7 @@ namespace FaceSpam_social_media.Models
 
         public string getTime
         {
-            get => commentCreated.ToString("d.M.y H:m");
+            get => commentCreated.ToString("dd.MM.y H:m");
         }
 
         public string getUserImage
