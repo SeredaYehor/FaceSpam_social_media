@@ -6,6 +6,10 @@
     <title>@ViewData["Title"] - FaceSpam_social_media</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="@Url.Content("~/Styles/FriendsFormStyleSheet.css")" rel="stylesheet" type="text/css" />
+    @RenderSection("Styles", required: false)
+    <link href="@Url.Content("~/Styles/MainFormStyleSheet.css")" rel="stylesheet" type="text/css" />
+    @RenderSection("Styles", false)
 </head>
 <body>
     <div class="container">

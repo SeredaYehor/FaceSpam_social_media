@@ -50,6 +50,7 @@ namespace FaceSpam_social_media.Models
             }
         }
 
+
         public string Text
         {
             get => text;
@@ -63,7 +64,6 @@ namespace FaceSpam_social_media.Models
         public string TimePosting
         {
             get => timePosting.ToString("dd.MM.yy");
-        }
 
         public string Image
         {

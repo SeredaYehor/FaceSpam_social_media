@@ -9,7 +9,6 @@ namespace FaceSpam_social_media.Models
     {
         public User user;
         public List<Post> posts = new List<Post>();
-
         public int GetPostIndex(int postId)
         {
             int result = -1;
@@ -24,7 +23,5 @@ namespace FaceSpam_social_media.Models
             }
             return result;
         }
-
-        public string message { get; set; }
     }
 }

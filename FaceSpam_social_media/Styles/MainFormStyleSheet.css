@@ -1,0 +1,111 @@
+﻿.Navigation {
+    position: absolute;
+    height: 714px;
+    width: 175px;
+    background-color: #3485FF;
+}
+
+.Button {
+    background-color: #3485FF;
+    border: none;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.Info {
+    position: absolute;
+    height: 220px;
+    width: 660px;
+    background-color: #3485FF;
+    left: 500px;
+}
+
+.UserImage {
+    position: absolute;
+    height: 202px;
+    background-image: url('@Url.Content(@"file:///D:\Programming\mvc\FaceSpam_social_media\FaceSpam_social_media\FaceSpam_social_media\Images\W1ld3lf.png")');
+    width: 166px;
+    background-color: grey;
+    left: 300px;
+}
+
+.EditProfile {
+    position: absolute;
+    background-color: #3485FF;
+    border: none;
+    color: white;
+    padding: 10px 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    top: 200px;
+}
+
+.Friends {
+    background-color: #3485FF;
+    position: absolute;
+    height: 243px;
+    width: 166px;
+    top: 350px;
+    left: 300px;
+}
+
+.Dashboard {
+    background-color: #3485FF;
+    position: absolute;
+    height: 100px;
+    width: 660px;
+    top: 350px;
+    left: 500px;
+}
+
+.HorizontalLine {
+    position: absolute;
+    width: 660px;
+    height: 2px;
+    color: gray;
+    background-color: #ABABAB;
+    top: 80px;
+}
+
+.DashboardList {
+    background-color: #3485FF;
+    position: absolute;
+    height: 570px;
+    width: 660px;
+    top: 100px;
+    overflow-y: auto;
+}
+
+.Post {
+    margin: 24px 10px;
+    border-radius: 0.6rem;
+    border: none;
+    font-size: 18px;
+    color: #B9B9B9;
+    height: 50px;
+    width: 500px;
+}
+
+.PostButtons {
+    background-color: white;
+    border-radius: 0.6rem;
+    color: #0066FF;
+    border: none;
+    font-size: 18px;
+}
+
+.PostMessage {
+    background-color: white;
+    height: 270px;
+    width: 560px;
+    margin: 40px 20px;
+}
