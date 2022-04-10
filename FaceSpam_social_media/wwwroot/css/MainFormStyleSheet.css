@@ -50,6 +50,7 @@
     width: 600px;
     background-color: #3485FF;
     display: inline-block;
+    border-radius: 5px;
 }
 
 .UserImage {
@@ -78,6 +79,7 @@
     height: 243px;
     width: 166px;
     margin-top: 50px;
+    border-radius: 5px;
 }
 
 .Dashboard {
@@ -101,24 +103,31 @@
     height: 570px;
     width: 100%;
     overflow-y: auto;
+    border-radius: 5px;
 }
 
 .Post {
-    margin: 24px 10px;
+    margin-top: 15px;
+    margin-left: 10px;
     border-radius: 0.6rem;
     border: none;
     font-size: 18px;
     color: #B9B9B9;
     height: 50px;
-    width: 70%;
+    width: 80%;
+    display: inline-block;
+    margin-bottom: 10px;
 }
 
 .PostButtons {
     background-color: white;
+    margin-top: 2px;
     border-radius: 0.6rem;
     color: #0066FF;
     border: none;
+    width: 80%;
     font-size: 18px;
+    display: inline-block;
 }
 
 .PostInfo {
@@ -157,7 +166,8 @@
     width: 60px;
     height: 60px;
     margin-top: 5px;
-    margin-left: 3px;
+    margin-right: 1px;
+    margin-left: 1px;
 }
 
 .PostText {
@@ -196,6 +206,10 @@
     .Dashboard {
         width: 550px;
     }
+
+    .Post {
+        width: 78%;
+    }
 }
 
 @media screen and (max-width: 916px) {
@@ -210,5 +224,9 @@
 
     .Date {
         margin-left: 200px;
+    }
+
+    .Post {
+        width: 77%;
     }
 }
