@@ -1,0 +1,82 @@
+﻿@model Post
+
+@{
+    ViewData["Title"] = "Comments";
+
+    string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
+}
+
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="~/scripts/CommentsScriptFile.js" asp-append-version="true"></script>
+
+<link rel="stylesheet" href="~/css/CommentsViewStyleSheet.css" asp-append-version="true" />
+
+<body style="background-image: url(../Images/image.jpg); background-size: cover">
+    <div class="Wrapper">
+        <div class="Navigation">
+            @foreach (string controller in controllers)
+            {
+                @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value=@controller />
+                }
+            }
+
+            <div class="AdvertisementText">
+                Advertisement
+            </div>
+
+            <div>
+                <div class="AdvertisementImage">
+                    <img src="~/Images/AdvertisementTest.png" />
+                </div>
+            </div>
+        </div>
+
+        <div class="Board">
+            <div class="OverflowZone">
+                <div>
+                    <div class="PostImageHeader"><img src="~/Images/@Model.getPostImage" class="PostImage" /></div>
+                    <br>
+                    <div style="display: flex; align-items: center; flex-direction: row">
+                        <img src="~/Images/@Model.getUserImage" class="UserImage" />
+                        <label class="UserName"> @Model.getUser </label>
+                        <label class="Time"> @Model.getTime.ToString() </label>
+                    </div>
+
+                    <div>
+                        <label class="PostedMessage"> @Model.getMessage </label>
+                    </div>
+                </div>
+
+                <div id="comments">
+                    @foreach (PostComment comment in Model.postComments)
+                    {
+                        <div style="display: flex; align-items: center; flex-direction: row">
+                            <img src="~/Images/@comment.getUserImage" class="UserImage" />
+                            <label class="UserName"> @comment.getUser </label>
+                            <label class="Time"> @comment.getTime.ToString() </label>
+                        </div>
+
+                        <div>
+                            <label class="PostedMessage"> @comment.getMessage </label>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+            <div class="WriteZone">
+                <div class="Line"></div>
+
+                <div style="display: flex; align-items: center; flex-direction: row">
+
+                    <img src="~/Images/W1ld3lf.png" class="UserImage" />
+
+                    <input type="text" id="message" placeholder="Write message ..." class="MessageInput" />
+                    <input type="submit" value="Comment" class="MessageButton" onClick="AddMessage()">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

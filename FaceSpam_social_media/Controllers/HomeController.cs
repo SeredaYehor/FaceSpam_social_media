@@ -13,6 +13,7 @@ namespace FaceSpam_social_media.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private static Post postModel = new Post("W1ld3lf", "Check out this view!!!", DateTime.Now, "W1ld3lf.png", "post.jpg");
         protected static FriendsModel friends = new FriendsModel();
 
         public static Main mainFormModels = new Main();
@@ -29,16 +30,16 @@ namespace FaceSpam_social_media.Controllers
         {
             group.chatId = id;
         }
-
-        public IActionResult Comments() {
-            return View();
-        }
+        
         public int GetId()
         {
             return group.chatId;
         }
+        
         public IActionResult Index()
         {
+            postModel.postComments.Add(new PostComment("Elon Mask", "Great post-nuclear avantgarde view)", DateTime.Now, "Mask.jpg"));
+            postModel.postComments.Add(new PostComment("Митрополит Вадим", "Господь, господь", DateTime.Now, "Vadim.png"));
             mainFormModels.user = new User(777, "W1ld 3lf", "12345", "ogo@mail.com",
             "Кодер на миллион", null);
             mainFormModels.posts.Add(new Post(1, "Hi everyone!"));
@@ -71,6 +72,11 @@ namespace FaceSpam_social_media.Controllers
             return View();
         }
 
+        public IActionResult Comments(string message = null)   
+        {
+            return View(postModel);
+        }
+
         public IActionResult Friends()
         {
             return View(friends);
@@ -78,9 +84,19 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Settings()
         {
-            return View();
+            return View(postModel);
         }
 
+        public IActionResult AddComment(string message)
+        {
+            if (message != null)
+            {
+                postModel.postComments.Add(new PostComment("W1ld3lf", message, DateTime.Now, "W1ld3lf.png"));
+            }
+
+            return View("Comments", postModel);
+        }
+  
         public void DeleteFriend(string name)
         {
             UserModel removeUser = friends.GetUser(name);
