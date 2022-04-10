@@ -1,0 +1,195 @@
+﻿
+.Navigation {
+    max-height: 650px;
+    background-color: #3485FF;
+    border-radius: 5px;
+    padding: 20px;
+    padding-bottom: 20px;
+    margin-right: 70px;
+    width: 175px;
+}
+
+.AdvertisementImage {
+    width: 150px;
+    height: 150px;
+}
+
+.Wrapper {
+    margin-top: 112px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.Button {
+    background-color: #3485FF;
+    border: none;
+    color: white;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.AdvertisementText {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    margin-top: 165px;
+    margin-bottom: 15px;
+}
+
+.Names {
+    width: 221px;
+    height: 28px;
+    font-weight: 400;
+    font-size: 24px;
+    color: #FFFFFF;
+    margin-left: 25px;
+    margin-right: 100px;
+    font-style: normal;
+}
+
+.FriendButton input {
+    outline: none;
+    border: none;
+}
+
+.FriendButton {
+    outline: none;
+    border: none;
+    background: #FFFFFF;
+    transition: 0.5s;
+    border-radius: 15px;
+    height: 24px;
+    width: 72px;
+    color: #0066FF;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    box-shadow: inset 5px 3px 3px rgba(0, 0, 0, 0.15);
+}
+
+    .FriendButton:hover {
+        box-shadow: inset 0px 3px 3px rgba(0, 0, 0, 0.35);
+    }
+
+.Board {
+    background-color: #3485FF;
+    border-radius: 5px;
+    height: 712px;
+    width: 675px;
+}
+
+.SearchZone {
+    height: 71px;
+    width: 675px;
+    background-color: #3485FF;
+    padding-bottom: 30px;
+}
+
+.FriendZone {
+    height: 690px;
+    width: 675px;
+    background-color: transparent;
+    overflow-x: auto;
+}
+
+.Search {
+    width: 245px;
+    height: 46px;
+    background: #E1EDFF;
+    border: 1.5px solid #000000;
+    box-sizing: border-box;
+    border-radius: 5px;
+    color: #000000;
+    position: absolute;
+    padding-left: 30px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.Line {
+    min-width: 95%;
+    border: 1.5px solid #ABABAB;
+    background-color: #ABABAB;
+    border-radius: 5%;
+    width: 595px;
+    margin-left: 24px;
+    position: center;
+    margin-top: 5px;
+}
+
+.SearchImage {
+    height: 25px;
+    width: 25px;
+    top: 10px;
+    left: 5px;
+    position: absolute;
+}
+
+.FriendsLabel {
+    width: 234px;
+    height: 15px;
+    color: #FFFFFF;
+    font-weight: 400;
+    margin-left: 22px;
+    font-style: normal;
+    font-size: 48px;
+    line-height: 56px;
+}
+
+.UserImage {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    width: 100px;
+    height: 100px;
+    margin: 10px 10px;
+    border-radius: 50px;
+}
+
+@media screen and (min-height: 520px) {
+    .Board {
+        height: 600px;
+    }
+
+    .Navigation {
+        height: 500px
+    }
+
+    .FriendZone {
+        height: 515px
+    }
+
+    .AdvertisementText {
+        margin-top: 100px;
+    }
+}
+
+@media screen and (min-height: 800px) {
+    .Board {
+        height: 712px;
+    }
+
+    .FriendZone {
+        height: 640px
+    }
+
+    .Navigation {
+        height: 715px
+    }
+
+    .AdvertisementText {
+        margin-top: 165px;
+    }
+}
