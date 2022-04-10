@@ -1,0 +1,232 @@
+﻿.Background {
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.Wrapper {
+    margin-top: 112px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.Navigation {
+    height: 650px;
+    background-color: #3485FF;
+    border-radius: 5px;
+    padding: 20px;
+    padding-bottom: 20px;
+    margin-right: 70px;
+    width: 175px;
+}
+
+.AdvertisementText {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    margin-top: 165px;
+    margin-bottom: 15px;
+}
+
+.Button {
+    background-color: #3485FF;
+    border: none;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.Info {
+    height: 202px;
+    width: 600px;
+    background-color: #3485FF;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.UserImage {
+    height: 202px;
+    background-image: url('../images/W1ld 3lf.jpg');
+    width: 166px;
+    background-color: grey;
+    margin-left: -20px;
+}
+
+.EditProfile {
+    background-color: #3485FF;
+    border: none;
+    color: white;
+    padding: 10px 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 200px;
+}
+
+.Friends {
+    background-color: #3485FF;
+    height: 243px;
+    width: 166px;
+    margin-top: 50px;
+    border-radius: 5px;
+}
+
+.Dashboard {
+    background-color: #3485FF;
+    margin-top: 90px;
+    height: 100px;
+    width: 600px;
+}
+
+.HorizontalLine {
+    width: 100%;
+    height: 2px;
+    color: gray;
+    background-color: #ABABAB;
+    margin-top: -2px;
+    margin-bottom: 0px;
+}
+
+.DashboardList {
+    background-color: #3485FF;
+    height: 570px;
+    width: 100%;
+    overflow-y: auto;
+    border-radius: 5px;
+}
+
+.Post {
+    margin-top: 15px;
+    margin-left: 10px;
+    border-radius: 0.6rem;
+    border: none;
+    font-size: 18px;
+    color: #B9B9B9;
+    height: 50px;
+    width: 80%;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.PostButtons {
+    background-color: white;
+    margin-top: 2px;
+    border-radius: 0.6rem;
+    color: #0066FF;
+    border: none;
+    width: 80%;
+    font-size: 18px;
+    display: inline-block;
+}
+
+.PostInfo {
+    background-color: #3485FF;
+    height: 100px;
+}
+
+.PostMessage {
+    background-color: white;
+    width: 90%;
+    margin: 40px 20px;
+}
+
+.Ellipse {
+    background-image: url('../Images/Mask.jpg');
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    display: inline-table;
+}
+
+.HeartImage {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.LikeLabel {
+    position: relative;
+    font-size: 12px;
+    display: inline-block;
+    color: #3485FF;
+}
+
+.PostEllipse {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-top: 5px;
+    margin-right: 1px;
+    margin-left: 1px;
+}
+
+.PostText {
+    position: relative;
+    left: 20px;
+    color: #3485FF;
+    width: 95%;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+.Date {
+    display: inline-block;
+    margin-left: 250px;
+    font-size: 14px;
+    color: #3485FF;
+}
+
+@media screen and (max-width: 1082px) {
+    /*Paneli*/
+    .Navigation {
+        width: 165px;
+        margin-right: 15px;
+    }
+
+    .UserImage {
+        margin-left: 0px;
+        margin-right: -15px;
+    }
+    /**/
+
+    .Info {
+        width: 550px;
+    }
+
+    .Dashboard {
+        width: 550px;
+    }
+
+    .Post {
+        width: 78%;
+    }
+}
+
+@media screen and (max-width: 916px) {
+
+    .Info {
+        width: 500px;
+    }
+
+    .Dashboard {
+        width: 500px;
+    }
+
+    .Date {
+        margin-left: 200px;
+    }
+
+    .Post {
+        width: 77%;
+    }
+}

@@ -1,178 +1,97 @@
-﻿<style>
-        .Navigation {
-            position: absolute;
-            height: 714px;
-            width: 175px;
-            background-color: #3485FF;
-        }
-
-        .Button {
-            background-color: #3485FF;
-            border: none;
-            color: white;
-            padding: 5px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
-
-        .Info {
-            position: absolute;
-            height: 220px;
-            width: 660px;
-            background-color: #3485FF;
-            left: 500px;
-        }
-
-        .UserImage {
-            position: absolute;
-            height: 202px;
-            background-image: url('@Url.Content(@"file:///D:\Programming\mvc\FaceSpam_social_media\FaceSpam_social_media\FaceSpam_social_media\Images\W1ld3lf.png")');
-            width: 166px;
-            background-color: grey;
-            left: 300px;
-        }
-
-        .EditProfile {
-            position: absolute;
-            background-color: #3485FF;
-            border: none;
-            color: white;
-            padding: 10px 50px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            cursor: pointer;
-            top: 200px;
-        }
-
-        .Friends {
-            background-color: #3485FF;
-            position: absolute;
-            height: 243px;
-            width: 166px;
-            top: 350px;
-            left: 300px;
-        }
-
-        .Dashboard {
-            background-color: #3485FF;
-            position: absolute;
-            height: 100px;
-            width: 660px;
-            top: 350px;
-            left: 500px;
-        }
-
-        .HorizontalLine {
-            position: absolute;
-            width: 660px;
-            height: 2px;
-            color: gray;
-            background-color: #ABABAB;
-            top: 80px;
-        }
-
-        .DashboardList {
-            background-color: #3485FF;
-            position: absolute;
-            height: 570px;
-            width: 660px;
-            top: 100px;
-            overflow-y: auto;
-        }
-
-        .Post {
-            margin: 24px 10px;
-            border-radius: 0.6rem;
-            border: none;
-            font-size: 18px;
-            color: #B9B9B9;
-            height: 50px;
-            width: 500px;
-        }
-
-        .PostButtons {
-            background-color: white;
-            border-radius: 0.6rem;
-            color: #0066FF;
-            border: none;
-            font-size: 18px;
-        }
-
-        .PostMessage {
-            background-color: white;
-            height: 270px;
-            width: 560px;
-            margin: 40px 20px;
-        }
-</style>
+﻿<link href="~/css/MainFormStyleSheet.css" rel="stylesheet" asp-append-version="true" />
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
 
 @model Main
-
-
-@*Tried to create file with styles for this view, but it don`t work:(*@
-@section Styles {
-    <link href="@Url.Content("~/Styles/MainFormStyleSheet.css")" rel="stylesheet" />
-}
-
 @{
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
     string username = Model.user.Name;
     string description = Model.user.Description;
+    string[] friends = { "../images/Cyberdemon.png", "../images/Mask.jpg", "../images/Vadim.png" };
 }
 
-<div class="Navigation">
-    @foreach (string controller in controllers)
-    {
-        @using (Html.BeginForm(controller, "Home", FormMethod.Post))
-        {
-            <input type="submit" class="Button" value=@controller />
-        }
-    }
-</div>
-
-<div class="UserImage">
-    <input type="submit" class="EditProfile" value="Edit profile" />
-</div>
-
-<div class="Friends">
-    <label style="font-size: 18px; margin: 4px 16px; color: white;">Friends</label>
-    <input type="submit" class="Button" style="margin: 160px 76px; padding: 5px 20px; " value="more..." />
-</div>
-
-<div class="Info">
-    <label style="font-size: 32px; margin: 4px 16px; color: white;">@username</label>
-    <br />
-    <label style="font-size: 18px; margin: 4px 16px; color: #B9B9B9;">@description</label>
-</div>
-
-@using (Html.BeginForm(FormMethod.Post))
-{
-    <div class="Dashboard">
-        @*Now textbox can send input data to controller and then clear it on widget*@
-        @Html.TextBoxFor(model => model.message, new { autocomplete = "off", Class = "Post" })
-        <input type="submit" class="PostButtons" formaction="/Home/SelectFile" value="File" />
-        <input type="submit" class="PostButtons" formaction="/Home/AddPost" value="Write" />
-        <hr class="HorizontalLine" />
-        <div class="DashboardList">
-            @foreach (Post post in Model.posts)
+<body class="Background">
+    <div class="Wrapper">
+        <div class="Navigation">
+            @foreach (string controller in controllers)
             {
-                <div class="PostMessage">
-                    <svg style="width: 50px; height: 50px; margin: 10px 10px;" viewBox="0 0 50 50">
-                        <ellipse cx="25" cy="25" rx="25" ry="25" />
-                    </svg>
-                    <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
-                    <label style="margin: 0px 130px; font-size: 14px; color: #3485FF;">@post.TimePosting.ToString()</label>
-                    <br />
-                    <label style="position: relative; left: 20px; color: #3485FF; max-width: 500px; overflow: hidden; word-wrap: break-word; ">@post.Text</label>
-                    <button class="btn"><i class="fa fa-heart"></i></button>
-                </div>
+                @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value=@controller />
+                }
             }
+
+            <div class="AdvertisementText">
+                Advertisement
+            </div>
+
+            <div>
+                <div class="AdvertisementImage">
+                    <img src="~/Images/AdvertisementTest.png" />
+                </div>
+            </div>
         </div>
+
+        <div class="UserImage">
+            <input type="submit" class="EditProfile" value="Edit profile" />
+
+            <div class="Friends">
+                <label style="font-size: 18px; margin: 4px 16px; color: white;">Friends</label>
+                <div class="FriendList" style="margin-left: 2px; width: 166px; height: 167px; overflow-y: hidden;">
+                    @for (int i = 0; i < friends.Length; i++)
+                    {
+                        <img src=@friends[i] class="PostEllipse" style="width: 49px; height: 49px;"/>
+                    }
+                </div>
+                <input type="submit" class="Button" style=" padding: 5px 20px; " value="more..." />
+            </div>
+        </div>
+        <div class="MainPanel" style="margin-left: 30px;">
+            <div class="Info">
+                <label style="font-size: 32px; margin: 4px 16px; color: white;">@username</label>
+                <br />
+                <label style="font-size: 18px; margin: 4px 16px; color: #B9B9B9;">@description</label>
+            </div>
+
+                @using (Html.BeginForm(FormMethod.Post))
+                {
+                    <div class="Dashboard">
+                        @*Now textbox can send input data to controller and then clear it on widget*@
+                        @Html.TextBoxFor(model => model.message, new { autocomplete = "off", Class = "Post" })
+                        <div style="margin-bottom: 5px; display: inline-block; vertical-align: middle;">
+                            <input type="submit" class="PostButtons" formaction="/Home/SelectFile" value="File" />
+                            <input type="submit" class="PostButtons" formaction="/Home/AddPost" value="Write" />
+                        </div>
+                        <hr class="HorizontalLine" />
+                        <div class="DashboardList">
+                            @foreach (Post post in Model.posts)
+                            {
+                                <div class="PostMessage">
+                                    <img src="~/images/W1ld 3lf.jpg" class="PostEllipse" />
+                                    <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
+                                    <br />
+                                    <label class="PostText">@post.Text</label>
+                                    <div style="background-color:transparent; height:50px;">
+                                        <div class="Likes" style="display: inline-block;">
+                                            @if (post.CheckLike(Model.user.UserID))
+                                            {
+                                                <img src="~/images/heartRed.svg" class="HeartImage" id="@Model.GetPostIndex(post.ID)" />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/heart.svg" class="HeartImage" id="@Model.GetPostIndex(post.ID)" />
+                                            }
+                                            <label class="LikeLabel">@post.CountLikes()</label>
+                                        </div>
+                                        <img src="~/images/pencil.svg" style="display: inline-block; margin-left: 10px;" />
+                                        <label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF;">comments 0</label>
+                                        <label class="Date">@post.TimePosting</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                 }
+        </div>      
     </div>
-}
+</body>

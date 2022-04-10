@@ -9,6 +9,19 @@ namespace FaceSpam_social_media.Models
     {
         public User user;
         public List<Post> posts = new List<Post>();
-        public string message { get; set; }
+        public int GetPostIndex(int postId)
+        {
+            int result = -1;
+            for(int index = 0; index < posts.Count; index++)
+            {
+                if(posts[index].ID == postId)
+                {
+                    result = index;
+                    break;
+                }
+
+            }
+            return result;
+        }
     }
 }
