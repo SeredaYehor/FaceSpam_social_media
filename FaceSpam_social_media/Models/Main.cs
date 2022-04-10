@@ -23,5 +23,7 @@ namespace FaceSpam_social_media.Models
             }
             return result;
         }
+
+        public string message { get; set; }
     }
 }
