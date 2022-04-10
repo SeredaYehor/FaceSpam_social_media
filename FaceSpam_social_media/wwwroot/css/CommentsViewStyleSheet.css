@@ -25,7 +25,7 @@
 }
 
 .Wrapper {
-    margin-top: 70px;
+    margin-top: 25px;
     display: flex;
     justify-content: center;
     flex-direction: row;
@@ -56,9 +56,8 @@
 
 .Board {
     width: 786px;
-    height: 780px;
+    height: 790px;
     left: 401px;
-    top: 104px;
     background: #FFFFFF;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
@@ -67,7 +66,7 @@
 .WriteZone {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
-    height: 108px;
+    height: 80px;
     width: 786px;
     background: #FFFFFF;
 }
@@ -75,7 +74,8 @@
 .Line {
     width: 691px;
     height: 0px;
-    border: 2px solid #ABABAB;
+    background-color: #ABABAB;
+    border: 1px solid #ABABAB;
     transform: rotate(0.17deg);
     margin-left: 29px;
 }
@@ -87,6 +87,7 @@
     font-weight: 400;
     font-size: 12px;
     margin-bottom: 5px;
+    margin-top: 15px;
 }
 
 .MessageButton {
@@ -99,6 +100,7 @@
     font-size: 24px;
     border: none;
     margin-left: 25px;
+    margin-top: 15px;
 }
 
 .PostedMessage {
@@ -157,9 +159,6 @@ div.PostImageHeader {
 }
 
 @media screen and (min-height: 520px) {
-    .Wrapper {
-        margin-top: 50px;
-    }
 
     .Board {
         height: 480px
@@ -178,10 +177,7 @@ div.PostImageHeader {
     }
 }
 
-@media screen and (min-height: 800px) {
-    .Wrapper {
-        margin-top: 80px;
-    }
+@media screen and (min-height: 860px) {
 
     .Board {
         height: 780px;
