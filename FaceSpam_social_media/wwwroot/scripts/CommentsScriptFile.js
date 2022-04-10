@@ -31,9 +31,8 @@ function AddMessage() {
 }
 
 function GetDateTime() {
-    var date = new Date();
-    var result = date.getDay() + '.' + date.getMonth() + '.' +
-        date.getFullYear().toString().substr(2, 3) + ' ' +
-        date.getHours() + ':' + date.getMinutes();
-    return result;
+    var date = new Date().toLocaleDateString().substr(0, 6) + new Date().getFullYear().toString().substr(-2);
+    var time = new Date().toLocaleTimeString().substr(0, 5);
+
+    return date + ' ' + time;
 }
