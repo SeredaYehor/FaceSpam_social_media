@@ -11,14 +11,19 @@ namespace FaceSpam_social_media.Models
         private string text;
         private DateTime timePosting;
         private string imageReference;
+        private string userImage;
+        private string userName;
         private List<int> userLikes = new List<int>();
+        public List<PostComment> postComments = new List<PostComment>();
 
-        public Post(int inputId, string inputText,string inputReference = null)
+        public Post(int inputId, string inputText, string inputUserImage, string inputUserName, string inputReference = null)
         {
             id = inputId;
             text = inputText;
             timePosting = DateTime.Now;
             imageReference = inputReference;
+            userImage = inputUserImage;
+            userName = inputUserName;
         }
 
         public void UpdateLike(int userId)
@@ -69,6 +74,16 @@ namespace FaceSpam_social_media.Models
         public string Image
         {
             get => imageReference;
+        }
+
+        public string UserName
+        {
+            get => userName;
+        }
+
+        public string UserImage
+        {
+            get => userImage;
         }
     }
 }

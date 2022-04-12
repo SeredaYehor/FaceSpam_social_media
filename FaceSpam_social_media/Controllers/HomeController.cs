@@ -14,6 +14,7 @@ namespace FaceSpam_social_media.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         protected static FriendsModel friends = new FriendsModel();
+        private static Post postModel = new Post(8, "Check out this view!!!", "../Images/W1ld 3lf.jpg", "W1ld 3lf", "../Images/post.jpg");
 
         public static Main mainFormModels = new Main();
         public static UserChats group = new UserChats();
@@ -30,8 +31,9 @@ namespace FaceSpam_social_media.Controllers
             group.chatId = id;
         }
 
-        public IActionResult Comments() {
-            return View();
+        public IActionResult Comments() 
+        {
+            return View(postModel);
         }
         public int GetId()
         {
@@ -39,12 +41,14 @@ namespace FaceSpam_social_media.Controllers
         }
         public IActionResult Index()
         {
+            postModel.postComments.Add(new PostComment("Elon Mask", "Great post-nuclear avantgarde view)", DateTime.Now, "Mask.jpg"));
+            postModel.postComments.Add(new PostComment("Митрополит Вадим", "Господь, господь", DateTime.Now, "Vadim.png"));
             mainFormModels.user = new User(777, "W1ld 3lf", "12345", "ogo@mail.com",
             "Кодер на миллион", null);
-            mainFormModels.posts.Add(new Post(1, "Hi everyone!"));
-            mainFormModels.posts.Add(new Post(2, "Wats up?"));
+            mainFormModels.posts.Add(new Post(1, "Hi everyone!", "../Images/W1ld 3lf.jpg", mainFormModels.user.Name));
+            mainFormModels.posts.Add(new Post(2, "Wats up?", "../Images/W1ld 3lf.jpg", mainFormModels.user.Name));
             mainFormModels.posts.Add(new Post(3, "This is an example post and bla bla bla" +
-                "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"));
+                "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla", "../Images/W1ld 3lf.jpg", mainFormModels.user.Name));
             for (int i = 1; i < 4; i++)
             {
                 int postId = mainFormModels.GetPostIndex(i);
@@ -81,6 +85,16 @@ namespace FaceSpam_social_media.Controllers
             return View();
         }
 
+        public IActionResult AddComment(string message)
+        {
+            if (message != null)
+            {
+                postModel.postComments.Add(new PostComment("W1ld3lf", message, DateTime.Now, "W1ld3lf.png"));
+            }
+
+            return View("Comments", postModel);
+        }
+
         public void DeleteFriend(string name)
         {
             UserModel removeUser = friends.GetUser(name);
@@ -106,7 +120,7 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public IActionResult AddPost(Main model)
         {
-            mainFormModels.posts.Insert(0, new Post(4, model.message));
+            mainFormModels.posts.Insert(0, new Post(4, model.message, "../Images/W1ld 3lf.jpg", mainFormModels.user.Name));
             ModelState.Clear();
             return View("Main", mainFormModels);
         }

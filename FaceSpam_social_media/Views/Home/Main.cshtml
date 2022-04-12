@@ -67,7 +67,7 @@
                             @foreach (Post post in Model.posts)
                             {
                                 <div class="PostMessage">
-                                    <img src="~/images/W1ld 3lf.jpg" class="PostEllipse" />
+                                    <img src="@post.UserImage" class="PostEllipse" />
                                     <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
                                     <br />
                                     <label class="PostText">@post.Text</label>
