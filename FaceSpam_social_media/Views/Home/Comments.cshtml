@@ -36,6 +36,7 @@
         <div class="Board">
             <div class="OverflowZone">
                 <div>
+<<<<<<< HEAD
                     <div class="PostImageHeader"><img src="@Model.Image" class="PostImage" /></div>
                     <br>
                     <div style="display: flex; align-items: center; flex-direction: row">
@@ -46,6 +47,18 @@
 
                     <div>
                         <label class="PostedMessage"> @Model.Text </label>
+=======
+                    <div class="PostImageHeader"><img src="~/Images/@Model.getPostImage" class="PostImage" /></div>
+                    <br>
+                    <div style="display: flex; align-items: center; flex-direction: row">
+                        <img src="~/Images/@Model.getUserImage" class="UserImage" />
+                        <label class="UserName"> @Model.getUser </label>
+                        <label class="Time"> @Model.getTime.ToString() </label>
+                    </div>
+
+                    <div>
+                        <label class="PostedMessage"> @Model.getMessage </label>
+>>>>>>> a0613f2ba4ac44925bec9e3efc1caacfcaa2ab7f
                     </div>
                 </div>
 
@@ -71,7 +84,11 @@
 
                 <div style="display: flex; align-items: center; flex-direction: row">
 
+<<<<<<< HEAD
                     <img src="~/Images/W1ld 3lf.jpg" class="UserImage" />
+=======
+                    <img src="~/Images/W1ld3lf.png" class="UserImage" />
+>>>>>>> a0613f2ba4ac44925bec9e3efc1caacfcaa2ab7f
 
                     <input type="text" id="message" placeholder="Write message ..." class="MessageInput" />
                     <input type="submit" value="Comment" class="MessageButton" onClick="AddMessage()">

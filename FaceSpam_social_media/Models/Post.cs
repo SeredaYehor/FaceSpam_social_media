@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,9 +14,9 @@ namespace FaceSpam_social_media.Models
         private string imageReference;
         private string userImage;
         private string userName;
-        private List<int> userLikes = new List<int>();
+      
         public List<PostComment> postComments = new List<PostComment>();
-
+        private List<int> userLikes = new List<int>();
         public Post(int inputId, string inputText, string inputUserImage, string inputUserName, string inputReference = null)
         {
             id = inputId;
@@ -55,7 +56,6 @@ namespace FaceSpam_social_media.Models
             }
         }
 
-
         public string Text
         {
             get => text;
@@ -68,9 +68,14 @@ namespace FaceSpam_social_media.Models
 
         public string TimePosting
         {
-            get => timePosting.ToString("dd.MM.yy");
+            get => postCreating.ToString("dd.MM.y H:m");
         }
-
+        
+        public string getUser
+        {
+            get => userName;
+        }
+      
         public string Image
         {
             get => imageReference;
