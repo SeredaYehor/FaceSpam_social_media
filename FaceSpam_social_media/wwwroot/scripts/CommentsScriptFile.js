@@ -1,17 +1,9 @@
 ﻿$(document).ready(function () {
-<<<<<<< HEAD
 });
-=======
->>>>>>> a0613f2ba4ac44925bec9e3efc1caacfcaa2ab7f
-
     function GetMessage(message, time) {
         messageObject =
             '<div style="display: flex; align-items: center; flex-direction: row">' +
-<<<<<<< HEAD
             '<img src="../Images/W1ld 3lf.jpg" class="UserImage" />' +
-=======
-            '<img src="../Images/W1ld3lf.png" class="UserImage" />' +
->>>>>>> a0613f2ba4ac44925bec9e3efc1caacfcaa2ab7f
             '<label class="UserName"> W1ld3lf </label>' +
             '<label class="Time">' + time + '</label>' +
             '</div>' +
@@ -28,11 +20,7 @@
             type: "GET",
             url: "/Home/AddComment",
             async: false,
-<<<<<<< HEAD
             data: { message: text, },
-=======
-            data: { message: text,},
->>>>>>> a0613f2ba4ac44925bec9e3efc1caacfcaa2ab7f
         });
 
         document.getElementById("message").value = null;
@@ -46,9 +34,4 @@
         var time = new Date().toLocaleTimeString().substr(0, 5);
 
         return date + ' ' + time;
-<<<<<<< HEAD
     }
-=======
-    }
-});
->>>>>>> a0613f2ba4ac44925bec9e3efc1caacfcaa2ab7f

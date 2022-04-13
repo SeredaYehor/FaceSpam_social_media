@@ -11,7 +11,6 @@ namespace FaceSpam_social_media.Models
         private string postText;
         private DateTime commentCreated;
         private string userImage;
-<<<<<<< HEAD
         public PostComment(string name, string text, DateTime time, string image)
         {
             userName = name;
@@ -19,9 +18,6 @@ namespace FaceSpam_social_media.Models
             commentCreated = time;
             userImage = image;
         }
-=======
-
->>>>>>> a0613f2ba4ac44925bec9e3efc1caacfcaa2ab7f
         public string getUser
         {
             get => userName;
@@ -41,16 +37,5 @@ namespace FaceSpam_social_media.Models
         {
             get => userImage;
         }
-<<<<<<< HEAD
-=======
-
-        public PostComment(string name, string text, DateTime time, string image)
-        {
-            userName = name;
-            postText = text;
-            commentCreated = time;
-            userImage = image;
-        }
->>>>>>> a0613f2ba4ac44925bec9e3efc1caacfcaa2ab7f
     }
 }

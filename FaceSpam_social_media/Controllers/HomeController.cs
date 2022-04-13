@@ -13,7 +13,6 @@ namespace FaceSpam_social_media.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private static Post postModel = new Post("W1ld3lf", "Check out this view!!!", DateTime.Now, "W1ld3lf.png", "post.jpg");
         protected static FriendsModel friends = new FriendsModel();
         private static Post postModel = new Post(8, "Check out this view!!!", "../Images/W1ld 3lf.jpg", "W1ld 3lf", "../Images/post.jpg");
 
@@ -77,11 +76,6 @@ namespace FaceSpam_social_media.Controllers
             group.chats[2].chatMessages.Add(new Message(4, "Ulyot",
                DateTime.Now, 3, 0, 1));
             return View();
-        }
-
-        public IActionResult Comments(string message = null)   
-        {
-            return View(postModel);
         }
 
         public IActionResult Friends()

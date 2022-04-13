@@ -68,7 +68,7 @@ namespace FaceSpam_social_media.Models
 
         public string TimePosting
         {
-            get => postCreating.ToString("dd.MM.y H:m");
+            get => timePosting.ToString("dd.MM.y H:m");
         }
         
         public string getUser
