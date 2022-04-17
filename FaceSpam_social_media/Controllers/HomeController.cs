@@ -40,7 +40,7 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Main()
         {
-            mainFormModels.GetUser(context, "W1ld3lf", "1235");
+            mainFormModels.GetUser(context, "*", "*");
             mainFormModels.GetPosts(context);
             mainFormModels.GetFriends(context);
             mainFormModels.GetLikes(context);
