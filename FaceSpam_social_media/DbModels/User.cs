@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FaceSpam_social_media.Models.DbModels
+namespace FaceSpam_social_media.DbModels
 {
     public partial class User
     {

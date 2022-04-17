@@ -7,7 +7,6 @@
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
     string username = Model.user.Name;
     string description = Model.user.Description;
-    string[] friends = { "../images/Cyberdemon.png", "../images/Mask.jpg", "../images/Vadim.png" };
 }
 
 <body class="Background">
@@ -32,18 +31,21 @@
             </div>
         </div>
 
-        <div class="UserImage">
+        <div class="UserImage" style="background-image: url('@Model.user.ImageReference');">
             <input type="submit" class="EditProfile" value="Edit profile" />
 
             <div class="Friends">
                 <label style="font-size: 18px; margin: 4px 16px; color: white;">Friends</label>
                 <div class="FriendList" style="margin-left: 2px; width: 166px; height: 167px; overflow-y: hidden;">
-                    @for (int i = 0; i < friends.Length; i++)
+                    @foreach (FaceSpam_social_media.DbModels.User friend in Model.friends)
                     {
-                        <img src=@friends[i] class="PostEllipse" style="width: 49px; height: 49px;"/>
+                        <img src=@friend.ImageReference class="PostEllipse" style="width: 49px; height: 49px;" />
                     }
                 </div>
-                <input type="submit" class="Button" style=" padding: 5px 20px; " value="more..." />
+                @using (Html.BeginForm("Friends", "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" style="padding: 5px 20px;" value="more..." />
+                }
             </div>
         </div>
         <div class="MainPanel" style="margin-left: 30px;">
@@ -64,28 +66,28 @@
                         </div>
                         <hr class="HorizontalLine" />
                         <div class="DashboardList">
-                            @foreach (Post post in Model.posts)
+                            @foreach (FaceSpam_social_media.DbModels.Post post in Model.user.Posts)
                             {
                                 <div class="PostMessage">
-                                    <img src="@post.UserImage" class="PostEllipse" />
+                                    <img src="@Model.user.ImageReference" class="PostEllipse" />
                                     <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
                                     <br />
                                     <label class="PostText">@post.Text</label>
                                     <div style="background-color:transparent; height:50px;">
                                         <div class="Likes" style="display: inline-block;">
-                                            @if (post.CheckLike(Model.user.UserID))
+                                            @if (Model.CheckLike(Model.user.UserId, post.PostId))
                                             {
-                                                <img src="~/images/heartRed.svg" class="HeartImage" id="@Model.GetPostIndex(post.ID)" />
+                                                <img src="~/images/heartRed.svg" class="HeartImage" id="@post.PostId" />
                                             }
                                             else
                                             {
-                                                <img src="~/images/heart.svg" class="HeartImage" id="@Model.GetPostIndex(post.ID)" />
+                                                <img src="~/images/heart.svg" class="HeartImage" id="@post.PostId" />
                                             }
-                                            <label class="LikeLabel">@post.CountLikes()</label>
+                                            <label class="LikeLabel">@Model.CountLikes(post.PostId)</label>
                                         </div>
                                         <img src="~/images/pencil.svg" style="display: inline-block; margin-left: 10px;" />
                                         <label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF;">comments 0</label>
-                                        <label class="Date">@post.TimePosting</label>
+                                        <label class="Date">@post.DatePosting.ToString("dd.MM.yy")</label>
                                     </div>
                                 </div>
                             }

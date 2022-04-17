@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace FaceSpam_social_media.Models.DbModels
+namespace FaceSpam_social_media.DbModels
 {
     public partial class mydbContext : DbContext
     {
@@ -29,7 +29,7 @@ namespace FaceSpam_social_media.Models.DbModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("server=127.0.0.1;user=root;password=H3ll0W@rld;database=mydb", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.25-mysql"));
+                optionsBuilder.UseMySql("server=127.0.0.1;user=root;password=H3ll0W@rld;database=mydb", ServerVersion.Parse("8.0.25-mysql"));
             }
         }
 
@@ -117,10 +117,6 @@ namespace FaceSpam_social_media.Models.DbModels
 
             modelBuilder.Entity<Like>(entity =>
             {
-                entity.HasKey(e => new { e.LikeId, e.UserUserId, e.PostPostId, e.MessageMessageId })
-                    .HasName("PRIMARY")
-                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0 });
-
                 entity.ToTable("likes");
 
                 entity.HasIndex(e => e.MessageMessageId, "fk_Likes_Message1_idx");
@@ -131,18 +127,22 @@ namespace FaceSpam_social_media.Models.DbModels
 
                 entity.Property(e => e.LikeId).HasColumnName("like_id");
 
-                entity.Property(e => e.UserUserId).HasColumnName("User_user_id");
+                entity.Property(e => e.MessageMessageId).HasColumnName("Message_message_id");
 
                 entity.Property(e => e.PostPostId).HasColumnName("Post_post_id");
 
-                entity.Property(e => e.MessageMessageId).HasColumnName("Message_message_id");
+                entity.Property(e => e.UserUserId).HasColumnName("User_user_id");
 
                 entity.HasOne(d => d.MessageMessage)
                     .WithMany(p => p.Likes)
-                    .HasPrincipalKey(p => p.MessageId)
                     .HasForeignKey(d => d.MessageMessageId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Likes_Message1");
+
+                entity.HasOne(d => d.PostPost)
+                    .WithMany(p => p.Likes)
+                    .HasPrincipalKey(p => p.PostId)
+                    .HasForeignKey(d => d.PostPostId)
+                    .HasConstraintName("fk_Likes_Post1");
 
                 entity.HasOne(d => d.UserUser)
                     .WithMany(p => p.Likes)
@@ -153,10 +153,6 @@ namespace FaceSpam_social_media.Models.DbModels
 
             modelBuilder.Entity<Message>(entity =>
             {
-                entity.HasKey(e => new { e.MessageId, e.UserUserId, e.PostPostId, e.ChatChatId })
-                    .HasName("PRIMARY")
-                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0 });
-
                 entity.ToTable("message");
 
                 entity.HasIndex(e => e.ChatChatId, "fk_Message_Chat1_idx");
@@ -170,23 +166,28 @@ namespace FaceSpam_social_media.Models.DbModels
 
                 entity.Property(e => e.MessageId).HasColumnName("message_id");
 
-                entity.Property(e => e.UserUserId).HasColumnName("User_user_id");
-
-                entity.Property(e => e.PostPostId).HasColumnName("Post_post_id");
-
                 entity.Property(e => e.ChatChatId).HasColumnName("Chat_chat_id");
 
                 entity.Property(e => e.DateSending)
                     .HasColumnType("datetime")
                     .HasColumnName("Date_sending");
 
+                entity.Property(e => e.PostPostId).HasColumnName("Post_post_id");
+
                 entity.Property(e => e.Text).HasMaxLength(255);
+
+                entity.Property(e => e.UserUserId).HasColumnName("User_user_id");
 
                 entity.HasOne(d => d.ChatChat)
                     .WithMany(p => p.Messages)
                     .HasForeignKey(d => d.ChatChatId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Message_Chat1");
+
+                entity.HasOne(d => d.PostPost)
+                    .WithMany(p => p.Messages)
+                    .HasPrincipalKey(p => p.PostId)
+                    .HasForeignKey(d => d.PostPostId)
+                    .HasConstraintName("fk_Message_Post1");
 
                 entity.HasOne(d => d.UserUser)
                     .WithMany(p => p.Messages)
@@ -205,7 +206,12 @@ namespace FaceSpam_social_media.Models.DbModels
 
                 entity.HasIndex(e => e.UserUserId, "fk_Post_User1_idx");
 
-                entity.Property(e => e.PostId).HasColumnName("post_id");
+                entity.HasIndex(e => e.PostId, "post_id_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.PostId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("post_id");
 
                 entity.Property(e => e.UserUserId).HasColumnName("User_user_id");
 
