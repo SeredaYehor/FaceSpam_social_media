@@ -71,6 +71,14 @@ namespace FaceSpam_social_media
                 .Select(x => x.FriendNavigation).ToList();
         }
 
+        public void GetMainUserInfo(DbModels.mydbContext context, string name, string password)
+        {
+            GetUser(context, name, password);
+            GetPosts(context);
+            GetFriends(context);
+            GetLikes(context);
+        }
+
         public string message { get; set; }
     }
 }
