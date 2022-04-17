@@ -17,6 +17,7 @@ namespace FaceSpam_social_media.Controllers
         public static Main mainFormModels = new Main();
         public DbModels.mydbContext context = new DbModels.mydbContext();
         public static MessagesForm messages = new MessagesForm();
+        public static FriendsViewModel friendsModel = new FriendsViewModel();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -39,7 +40,7 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Main()
         {
-            mainFormModels.GetUser(context, "Wild 3lf", "ne_pass");
+            mainFormModels.GetUser(context, "*", "*");
             mainFormModels.GetPosts(context);
             mainFormModels.GetFriends(context);
             mainFormModels.GetLikes(context);
@@ -70,7 +71,20 @@ namespace FaceSpam_social_media.Controllers
             messages.GetChatMessages(context, chatId);
             return messages.chatMessages;
         }
-        
+
+        public IActionResult Friends()
+        {
+            friendsModel.user = mainFormModels.user;
+            friendsModel.friends = mainFormModels.friends;
+
+            return View(friendsModel);
+        }
+
+        public void DeleteFriend(int id)
+        {
+            friendsModel.DeleteFriend(context, id);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -1,0 +1,78 @@
+﻿@model FriendsViewModel
+
+@{
+    ViewData["Title"] = "Friends page";
+
+    string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
+}
+
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript"></script>
+<script type="text/javascript" src="~/scripts/FriendsFormScripts.js" asp-append-version="true"></script>
+
+<body style="background-image: url(../Images/image.jpg); background-size: cover;">
+    <link rel="stylesheet" href="~/css/FriendsViewStyleSheet.css" asp-append-version="true" />
+    <div class="Wrapper">
+        <div class="Navigation">
+            @foreach (string controller in controllers)
+            {
+                @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value=@controller />
+                }
+            }
+
+            <div class="AdvertisementText">
+                Advertisement
+            </div>
+
+            <div>
+                <div class="AdvertisementImage">
+                    <img src="~/Images/AdvertisementTest.png" />
+                </div>
+            </div>
+        </div>
+
+        <div class="Board">
+            <div class="SearchZone">
+                <div style="display: flex; flex-direction: row; margin-top: 10px; background-color: #3485FF;">
+                    <b> <label class="FriendsLabel">Friends: &nbsp; </label> </b>
+
+                    <form action="SearchFriend">
+                        <div style="position: relative; margin-left: 160px">
+                            <input type="text" name="name" class="Search" placeholder="Search" />
+                            <img src="~/Images/glass-icon.png" class="SearchImage" />
+                        </div>
+                    </form>
+
+                </div>
+
+                <div class="Line"></div>
+
+                <div class="FriendZone">
+                    <div>
+                        @foreach (var friend in Model.friends)
+                        {
+                            <div id="@friend.Name" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
+                                <img src="@friend.ImageReference" class="UserImage" />
+
+                                <div>
+                                    <label class="Names"> @friend.Name </label>
+                                </div>
+
+                                <div>
+                                    <input id="@friend.UserId" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this)" />
+                                    &nbsp;
+                                    @*Write button does not work. When all formls will be ready it will get the link*@
+                                    <input type="submit" class="FriendButton" value="Write" />
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
