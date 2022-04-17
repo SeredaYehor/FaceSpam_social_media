@@ -23,6 +23,9 @@ namespace FaceSpam_social_media
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
