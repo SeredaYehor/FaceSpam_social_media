@@ -1,4 +1,4 @@
-﻿@model UserChats
+﻿@model MessagesForm
 @{
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
     string a = "";
@@ -52,11 +52,11 @@
                 <img src="~/images/searchImg.png" class="SearchImage" />
             </div>
             <div class="GroupsList" id="groups">
-                @foreach (Chat chat in Model.chats)
+                @foreach (FaceSpam_social_media.DbModels.Chat chat in Model.chats)
                 {
-                    <div class="GroupPanel" id="@chat.Name">
+                    <div class="GroupPanel" id="@chat.ChatName">
                         <img src="@chat.ImageReference" class="Ellipse" />
-                        <label class="GroupName" id="@chat.Id">@chat.Name</label>
+                        <label class="GroupName" id="@chat.ChatId">@chat.ChatName</label>
                     </div>
                 }
             </div>
