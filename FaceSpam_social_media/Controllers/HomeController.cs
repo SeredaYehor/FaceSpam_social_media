@@ -18,6 +18,7 @@ namespace FaceSpam_social_media.Controllers
         public DbModels.mydbContext context = new DbModels.mydbContext();
         public static MessagesForm messages = new MessagesForm();
         public static FriendsViewModel friendsModel = new FriendsViewModel();
+        public static PostCommentsModel commentsModel = new PostCommentsModel();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -30,6 +31,23 @@ namespace FaceSpam_social_media.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Comments(int id)
+        {
+
+            commentsModel.user = mainFormModels.user;
+            commentsModel.post = mainFormModels.user.Posts.Where(x => x.PostId == id).FirstOrDefault();
+            commentsModel.GetComments(context);
+
+            return View("Comments", commentsModel);
+        }
+
+        public IActionResult AddComment(string message)
+        {
+            commentsModel.AddComment(context, message);
+
+            return View("Comments", commentsModel);
+        }
 
         public IActionResult Messages()
         {
@@ -40,7 +58,7 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Main()
         {
-            mainFormModels.GetUser(context, "*", "*");
+            mainFormModels.GetUser(context, "W1ld3lf", "1235");
             mainFormModels.GetPosts(context);
             mainFormModels.GetFriends(context);
             mainFormModels.GetLikes(context);
