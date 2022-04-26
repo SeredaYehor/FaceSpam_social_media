@@ -1,0 +1,83 @@
+﻿@model PostCommentsModel
+
+@{
+    ViewData["Title"] = "Comments";
+
+    string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
+}
+
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="~/scripts/CommentsScriptFile.js" asp-append-version="true"></script>
+
+<link rel="stylesheet" href="/css/CommentsViewStyleSheet.css" asp-append-version="true" />
+
+<body style="background-image: url(../Images/image.jpg); background-size: cover">
+    <div class="Wrapper">
+        <div class="Navigation">
+            @foreach (string controller in controllers)
+            {
+                @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value=@controller />
+                }
+            }
+
+            <div class="AdvertisementText">
+                Advertisement
+            </div>
+
+            <div>
+                <div class="AdvertisementImage">
+                    <img src="~/Images/AdvertisementTest.png" />
+                </div>
+            </div>
+        </div>
+
+        <div class="Board">
+            <div class="OverflowZone">
+                <div>
+                    @if (Model.post.ImageReference != null)
+                    {
+                        <div class="PostImageHeader"><img src="@Model.post.ImageReference" class="PostImage" /></div>
+                    }
+                    <br>
+                    <div style="display: flex; align-items: center; flex-direction: row">
+                        <img src="@Model.post.UserUser.ImageReference" class="UserImage" />
+                        <label class="UserName"> @Model.post.UserUser.Name </label>
+                        <label class="Time"> @Model.post.DatePosting.ToString("dd.MM.y H: m") </label>
+                    </div>
+
+                    <div>
+                        <label class="PostedMessage"> @Model.post.Text </label>
+                    </div>
+                </div>
+
+                <div id="comments">
+                    @foreach (var comment in Model.post.Messages)
+                    {
+                        <div style="display: flex; align-items: center; flex-direction: row">
+                            <img src="@Model.users.First(x=>x.UserId == comment.UserUserId).ImageReference" class="UserImage" />
+                            <label class="UserName"> @Model.users.First(x => x.UserId == comment.UserUserId).Name </label>
+                            <label class="Time"> @comment.DateSending.ToString("dd.MM.y H: m") </label>
+                        </div>
+
+                        <div>
+                            <label class="PostedMessage"> @comment.Text </label>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+            <div class="WriteZone">
+                <div class="Line"></div>
+
+                <div style="display: flex; align-items: center; flex-direction: row">
+                    <img src="~/Images/W1ld 3lf.jpg" class="UserImage" />
+                    <input type="text" id="message" placeholder="Write message ..." class="MessageInput" />
+                    <input type="submit" value="Comment" class="MessageButton" onClick="AddMessage()">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
