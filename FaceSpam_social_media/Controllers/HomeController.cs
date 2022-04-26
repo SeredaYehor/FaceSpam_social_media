@@ -40,7 +40,6 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public IActionResult Main()
         {
-            //mainFormModels.GetMainUserInfo(context, loginModel.Login, loginModel.Password);
             return View(mainFormModels);
         }
 
