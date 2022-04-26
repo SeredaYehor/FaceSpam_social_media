@@ -11,6 +11,16 @@
         $(this).parent().children(".LikeLabel").html(likes);
     })
 
+    $("#Browse").click(function () {
+        document.getElementById('myFile').click();
+    })
+
+    $("#myFile").change(function () {
+        var path = document.getElementById("myFile").files[0];
+        var tb_text = $(".Post").val();
+        $(".Post").val("file::" + URL.createObjectURL(path) + ";\n" + tb_text);
+    })
+
     function UpdateLikes(id) {
         var result = 0;
         $.ajax({
