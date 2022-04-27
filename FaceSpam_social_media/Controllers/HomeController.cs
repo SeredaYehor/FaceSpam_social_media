@@ -7,13 +7,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 namespace FaceSpam_social_media.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        
+
         public static Main mainFormModels = new Main();
         public DbModels.mydbContext context = new DbModels.mydbContext();
         public static MessagesForm messages = new MessagesForm();
@@ -40,7 +43,7 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Main()
         {
-            mainFormModels.GetUser(context, "*", "*");
+            mainFormModels.GetUser(context, "Wild 3lf", "ne_pass");
             mainFormModels.GetPosts(context);
             mainFormModels.GetFriends(context);
             mainFormModels.GetLikes(context);
@@ -54,11 +57,27 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
+        public async void AddPost(IFormFile file, string text)
+        {
+            string image_ref = null;
+            if (file != null)
+            {
+                string path = "./wwwroot/Images/" + file.FileName;
+                image_ref = "../Images/" + file.FileName;
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                   await file.CopyToAsync(fileStream);
+                   fileStream.Close();
+                }
+            }
+            mainFormModels.AddPost(context, text, image_ref);
+        }
+        /*[HttpPost]
         public IActionResult AddPost(Main model)
         {
             mainFormModels.AddPost(context, model.message);
             return View("Main", mainFormModels);
-        }
+        }*/
 
         public DbModels.User SendMessage(string textboxMessage)
         {
