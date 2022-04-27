@@ -63,7 +63,7 @@
                         <div style="margin-bottom: 5px; display: inline-block; vertical-align: middle; width: 17%;">
                             <input type="file" id="myFile" style="display: none;"/>
                             <button type="button" class="PostButtons" id="Browse">Browse</button>
-                            <input type="submit" class="PostButtons" formaction="/Home/AddPost" value="Write" />
+                            <input type="button" class="PostButtons" id="Write" value="Write" />
                         </div>
                         <hr class="HorizontalLine" />
                         <div class="DashboardList">
@@ -74,6 +74,12 @@
                                     <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
                                     <br />
                                     <label class="PostText">@post.Text</label>
+                                    @if (post.ImageReference != null)
+                                    {
+                                        <div>
+                                            <img src=@post.ImageReference style="width: 90%; margin-left: 15px;"/>
+                                        </div>
+                                    }
                                     <div style="background-color:transparent; height:50px;">
                                         <div class="Likes" style="display: inline-block;">
                                             @if (Model.CheckLike(Model.user.UserId, post.PostId))
