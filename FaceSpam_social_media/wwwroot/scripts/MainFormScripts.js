@@ -1,4 +1,7 @@
 ﻿$(document).ready(function () {
+
+    var formData = new FormData();
+
     $(".HeartImage").click(function ChangeColor() {
         if ($(this).attr("src") == "/images/heartRed.svg") {
             $(this).attr("src", "/images/heart.svg");
@@ -15,10 +18,25 @@
         document.getElementById('myFile').click();
     })
 
+    $("#Write").click(function () {
+        var text = $(".Post").val();
+        formData.set('text', text);
+        $.ajax({
+            type: "POST",
+            url: '/Home/AddPost',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function () {
+                alert("Ok");
+            }
+        });
+    })
+
     $("#myFile").change(function () {
         var path = document.getElementById("myFile").files[0];
         var tb_text = $(".Post").val();
-        $(".Post").val("file::" + URL.createObjectURL(path) + ";\n" + tb_text);
+        formData.set('file', path);
     })
 
     function UpdateLikes(id) {
