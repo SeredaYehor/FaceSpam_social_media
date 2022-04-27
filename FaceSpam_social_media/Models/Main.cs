@@ -9,12 +9,16 @@ namespace FaceSpam_social_media
     {
         public DbModels.User user;
         public List<DbModels.User> friends;
-        public void AddPost(DbModels.mydbContext context, string message)
+        public void AddPost(DbModels.mydbContext context, string message, string reference)
         {
             DbModels.Post newPost = new DbModels.Post();
             newPost.Text = message;
             newPost.UserUserId = user.UserId;
             newPost.DatePosting = DateTime.Now;
+            if(reference != null)
+            {
+                newPost.ImageReference = reference;
+            }
             context.Posts.Add(newPost);
             context.SaveChanges();
             user.Posts.Add(newPost);
