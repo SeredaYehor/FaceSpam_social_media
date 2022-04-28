@@ -93,5 +93,10 @@ namespace FaceSpam_social_media.Controllers
         {
             return View();
         }
+
+        public IActionResult Settings()
+        {
+            return View();
+        }
     }
 }
