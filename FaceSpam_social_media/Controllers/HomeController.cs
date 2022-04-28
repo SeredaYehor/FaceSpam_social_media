@@ -57,20 +57,26 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
-        public async void AddPost(IFormFile file, string text)
+        public DbModels.User AddPost(IFormFile file, string text)
         {
             string image_ref = null;
             if (file != null)
             {
-                string path = "./wwwroot/Images/" + file.FileName;
                 image_ref = "../Images/" + file.FileName;
-                using (var fileStream = new FileStream(path, FileMode.Create))
-                {
-                   await file.CopyToAsync(fileStream);
-                   fileStream.Close();
-                }
+                AddImageToPost(file);
             }
             mainFormModels.AddPost(context, text, image_ref);
+            return mainFormModels.user;
+        }
+
+        public async void AddImageToPost(IFormFile file)
+        {
+            string path = "./wwwroot/Images/" + file.FileName;
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+                fileStream.Close();
+            }
         }
         /*[HttpPost]
         public IActionResult AddPost(Main model)
