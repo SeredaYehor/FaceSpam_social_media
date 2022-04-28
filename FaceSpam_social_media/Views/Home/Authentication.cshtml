@@ -1,0 +1,62 @@
+﻿@model AuthenticationModel
+<head>
+    <title>Authentication page</title>
+    <link rel="stylesheet" href="~/css/AuthenticationStyles.css">
+
+</head>
+<body>
+   <div class="Wrapper">
+       <div class="FaceSpamLogo">
+            <img src="~/Images/FaceSpamLogo.svg" alt="Error">
+       </div>
+       <div class="Card">
+           <div class="MainInterface">
+                <div class="FaceSpamName" style="text-align: center;">
+                    FaceSpam
+                </div>
+
+                <div class="InputInterface">
+                @using (Html.BeginForm("VerifyUserAuthentication", "Home", FormMethod.Post))    
+                {
+                    <div class="Login">
+                        <div class="LoginText">Login: </div>
+
+                        <div class="LoginInput">
+                            @Html.TextBoxFor(model => model.Login, new { autocomplete = "off", Class = "LoginTextBox" })
+                        </div>
+                    </div>
+                    <div class="Password">
+                        <div class="PasswordText">Password:</div>
+
+                        <div class="PasswordInput">
+                            @Html.TextBoxFor(model => model.Password, new { autocomplete = "off", Class = "PasswordTextBox" })
+                        </div>
+                    </div>
+                    <div class="ConfirmPassword">
+                        <div class="ConfirmPasswordText">Confirm password:</div>
+                        <div class="ConfirmPasswordInput">
+                            @Html.TextBoxFor(model => model.ConfirmPassword, new { autocomplete = "off", Class = "ConfirmPasswordTextBox" })
+                        </div>    
+                    </div>
+                    <div class="Email">
+                        <div class="EmailText">Email:</div>
+                        <div class="EmailInput">
+                            @Html.TextBoxFor(model => model.Email, new { autocomplete = "off", Class = "LoginTextBox" })
+                        </div>
+                    </div>
+
+                    <div class="Button">
+                        <input type="submit" id="button" value="Sign in"/>
+                    </div>
+                }
+                </div>
+
+                    <!--<div class="Copyright">
+                        <a>©copyright information</a>
+                    </div>-->
+            </div>
+        </div>
+    </div>
+</body>
+
+                

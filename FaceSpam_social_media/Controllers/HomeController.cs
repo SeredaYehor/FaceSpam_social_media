@@ -18,6 +18,7 @@ namespace FaceSpam_social_media.Controllers
         public DbModels.mydbContext context = new DbModels.mydbContext();
         public static MessagesForm messages = new MessagesForm();
         public static LoginModel loginModel = new LoginModel();
+        public static AuthenticationModel authModel = new AuthenticationModel();
         public HomeController(ILogger<HomeController> logger)
         {
             
@@ -92,6 +93,30 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        public IActionResult Authentication()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult VerifyUserAuthentication(string login, string password, string email)
+        {
+            authModel.Login = login;
+            authModel.Password = password;
+            authModel.Email = email;
+            bool repeatCheck = authModel.Verify(context);
+
+            if (repeatCheck)
+            {
+                return Content("This user is already registered.");
+            }
+            else {
+                authModel.CreateUser(login, password, email, context);
+                mainFormModels.GetMainUserInfo(context, login, password);
+                return View("Main", mainFormModels);
+            }
         }
     }
 }
