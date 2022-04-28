@@ -27,11 +27,31 @@
             data: formData,
             contentType: false,
             processData: false,
-            success: function () {
-                alert("Ok");
+            success: function (user) {
+                AddNewPost(user, text, formData.get('file'));
             }
         });
     })
+
+    function AddNewPost(user, text, postImage = null) {
+        var postObject = '<div class="PostMessage">' +
+            '<img src="' + user["imageReference"] + '"class="PostEllipse" />' +
+            '<label style="position: relative; font-size: 18px; color: #3485FF;">' + user["name"] + '</label>' +
+            '<br />' +
+            '<label class="PostText">' + text + '</label>';
+            if(postImage != null)
+            {
+                postObject += '<div><img src="../Images/' + postImage.name + '"style = "width: 90%; margin-left: 15px;" /></div >';
+            }
+        postObject += '<div style="background-color:transparent; height:50px;">' +
+            '<div class="Likes" style="display: inline-block;">' +
+            '<img src="../images/heart.svg" class="HeartImage" id="@post.PostId" />' +
+            '<label class="LikeLabel">0</label>' +
+            '</div><img src="../images/pencil.svg" style="display: inline-block; margin-left: 10px;" />' +
+            '<label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF;">comments 0</label>' +
+            '<label class="Date">' + 'choto' + '</label></div></div>';
+        $(".DashboardList").prepend(postObject);
+    }
 
     $("#myFile").change(function () {
         var path = document.getElementById("myFile").files[0];
