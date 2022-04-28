@@ -18,6 +18,7 @@ namespace FaceSpam_social_media.Controllers
         public DbModels.mydbContext context = new DbModels.mydbContext();
         public static MessagesForm messages = new MessagesForm();
         public static LoginModel loginModel = new LoginModel();
+        public static SettingsModel settingsModel = new SettingsModel();
         public HomeController(ILogger<HomeController> logger)
         {
             
@@ -97,6 +98,12 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Settings()
         {
             return View();
+        }
+        public IActionResult ChangeUserInfo(string email, string name, string description)
+        {
+            settingsModel.user = mainFormModels.user;
+            settingsModel.ChangeUserInfo(context, email, name, description);
+            return View("Main", mainFormModels);
         }
     }
 }

@@ -12,31 +12,30 @@ body {
 }
 
 .ControlPanel {
-    max-height: 650px;
+    height: 650px;
     background-color: #3485FF;
     border-radius: 5px;
     padding: 20px;
+    padding-bottom: 20px;
     margin-right: 70px;
     width: 175px;
 }
 
-.ButtonsOnControlPanel a {
-    display: flex;
-    flex-direction: column;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    text-decoration: none;
-    margin-left: 17px;
-    color: #FFFFFF;
-    margin-bottom: 12px;
-    margin-left: 17px;
-}
-
-.ButtonsOnControlPanel {
-    max-height: 35%;
-}
+    .ControlPanel input {
+        display: flex;
+        flex-direction: column;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        text-decoration: none;
+        margin-left: 17px;
+        color: #FFFFFF;
+        margin-bottom: 12px;
+        margin-left: 17px;
+        background: none;
+        border: none;
+    }
 
 .AdvertisementText {
     font-style: normal;

@@ -1,4 +1,8 @@
-﻿<html>
+﻿@model SettingsModel
+@{
+    string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
+}
+<html>
     <head>
         <title>Settings page</title>
         <link rel="stylesheet" href="~/css/SettingsStyles.css" asp-append-version="true">
@@ -7,47 +11,50 @@
     <body style="background-image: url(../images/background.jpg); background-size: cover;">
         <div class="Wrapper">
             <div class="ControlPanel">
-                <div class="ButtonsOnControlPanel">
-                    <a href="URL">My page</a>
-                    <a href="URL">Messages</a>
-                    <a href="URL">Games</a>
-                    <a href="URL">Shop</a>
-                    <a href="URL">Settings</a>
- 
+                
+                    @foreach (string controller in controllers)
+                    {
+                        @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                        {
+                            <input type="submit" class="Button" value=@controller />
+                        }
+                    }
+
                     <div class="AdvertisementText">
                         Advertisement
                     </div>
 
-                    <div class="AdvertisementImage">
-                        <img src="~/images/AdvertisementTest.png" />
+                    <div>
+                        <div class="AdvertisementImage">
+                            <img src="~/Images/AdvertisementTest.png" />
+                        </div>
                     </div>
-                </div>
-            </div>
+        </div>
         
             <div class="SettingsMainPage">
                 <div class="SettingsName">Settings</div>
-
+            @using (Html.BeginForm("ChangeUserInfo", "Home", FormMethod.Post))
+            {
                 <div class="ChangeUserInfo">
                     <div class="ChangeUserInfoInputs">
                         <div class="ChangeEmail">
-                            <input type="text">
+                            @Html.TextBoxFor(model => model.email, new { autocomplete = "off", Class = "EmailTextBox" })
                             <div class="ChangeText">Press to change email address</div>
                         </div>
 
                         <div class="ChangeUsername">
-                            <input type="text">
+                            @Html.TextBoxFor(model => model.name, new { autocomplete = "off", Class = "NameTextBox" })
                             <div class="ChangeText">Press to change username</div>
                         </div>
                 
                         <div class="ChangeAccountDescription">
-                            <input type="text">
+                            @Html.TextBoxFor(model => model.email, new { autocomplete = "off", Class = "DescriptionTextBox" })
                             <div class="ChangeText">Press to change your account description</div>
                         </div>
                     </div>
-
                     <div class="ChangePhoto">
                         <div class="ChangePhotoImage">
-                            <img src="~/images/ChangeUserPhotoTest.png" />
+                            <img src="~/images/DefaultUserPhoto.png" />
                         </div>
 
                         <div class="ChangePhotoButton">
@@ -87,9 +94,11 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="ConfirmChanges">
                     <input type="submit" id="button" value="Confirm"/>
                 </div>
+            }
             </div>
         </div>
     </body>
