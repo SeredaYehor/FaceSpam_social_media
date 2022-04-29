@@ -4,6 +4,8 @@
     ViewData["Title"] = "Comments";
 
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
+    string user = Model.user.Name;
+    string image = Model.user.ImageReference;
 }
 
 <script src="/lib/jquery/dist/jquery.js"></script>
@@ -44,7 +46,7 @@
                     <div style="display: flex; align-items: center; flex-direction: row">
                         <img src="@Model.post.UserUser.ImageReference" class="UserImage" />
                         <label class="UserName"> @Model.post.UserUser.Name </label>
-                        <label class="Time"> @Model.post.DatePosting.ToString("dd.MM.y H: m") </label>
+                        <label class="Time"> @Model.post.DatePosting.ToString("dd.MM.y H:m") </label>
                     </div>
 
                     <div>
@@ -58,7 +60,7 @@
                         <div style="display: flex; align-items: center; flex-direction: row">
                             <img src="@Model.users.First(x=>x.UserId == comment.UserUserId).ImageReference" class="UserImage" />
                             <label class="UserName"> @Model.users.First(x => x.UserId == comment.UserUserId).Name </label>
-                            <label class="Time"> @comment.DateSending.ToString("dd.MM.y H: m") </label>
+                            <label class="Time"> @comment.DateSending.ToString("dd.MM.y H:M") </label>
                         </div>
 
                         <div>
@@ -73,9 +75,9 @@
                 <div class="Line"></div>
 
                 <div style="display: flex; align-items: center; flex-direction: row">
-                    <img src="~/Images/W1ld 3lf.jpg" class="UserImage" />
+                    <img src="@Model.user.ImageReference" class="UserImage" id="currentUser" />
                     <input type="text" id="message" placeholder="Write message ..." class="MessageInput" />
-                    <input type="submit" value="Comment" class="MessageButton" onClick="AddMessage()">
+                    <input type="submit" value="Comment" class="MessageButton" onClick="AddMessage()" />
                 </div>
             </div>
         </div>
