@@ -35,7 +35,12 @@ body {
         margin-left: 17px;
         background: none;
         border: none;
+        transition: .3s;
     }
+
+        .ControlPanel input:hover {
+            transform: translateX(10px);
+        }
 
 .AdvertisementText {
     font-style: normal;
@@ -50,7 +55,13 @@ body {
 .AdvertisementImage {
     width: 150px;
     height: 150px;
+    transition: .5s;
 }
+
+    .AdvertisementImage:hover {
+        scale: 5;
+        transform: rotateY(360deg);
+    }
 /* Main page */
 .SettingsMainPage {
     width: 830px;
@@ -72,6 +83,7 @@ body {
 .ChangeUserInfo {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 15px;
 }
 
 .ChangeUserInfoInputs input {
@@ -94,54 +106,103 @@ body {
     }
 
 .ChangePhotoButton input {
+    text-decoration: none;
+    display: inline-block;
     width: 165px;
     height: 30px;
+    border-radius: 0px 0px 15px 15px;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: black;
     background: #3485FF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+    transition: .5s;
     border: none;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    color: #FFFFFF;
 }
+
+    .ChangePhotoButton input:hover {
+        background: #0071c7;
+        box-shadow: 0 15px 20px rgba(106, 121, 247, .4);
+        color: white;
+    }
 /* ---------- */
 .SettingPageButtons input {
+    text-decoration: none;
+    display: inline-block;
+    width: 240px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 45px;
+    margin: 10px 20px 10px 0px;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: black;
     background: #3485FF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+    transition: .5s;
     border: none;
-    padding: 7px 33px 7px 33px;
-    margin-bottom: 40px;
-    margin-right: 10px;
 }
+
+    .SettingPageButtons input:hover {
+        background: #0071c7;
+        box-shadow: 0 15px 20px rgba(106, 121, 247, .4);
+        color: white;
+        transform: translateY(-7px);
+    }
 
 .ButtonAndText {
     display: flex;
 }
 
 .ButtonShopAccountText {
+    display: flex;
+    align-items: center;
     margin: 5px;
 }
 
 .ButtonGameAccountText {
+    display: flex;
+    align-items: center;
     margin: 5px;
 }
 
 .ConfirmChanges {
     display: flex;
-    justify-content: center;
+    justify-content: end;
 }
 
     .ConfirmChanges input {
+        text-decoration: none;
+        display: inline-block;
+        width: 240px;
+        height: 45px;
+        line-height: 45px;
+        border-radius: 45px;
+        margin: 10px 20px;
+        font-size: 11px;
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 3px;
+        font-weight: 600;
+        color: black;
         background: #3485FF;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border-radius: 15px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+        transition: .5s;
         border: none;
-        padding: 7px 33px 7px 33px;
-        margin-top: 15px;
     }
 
+        .ConfirmChanges input:hover {
+            background: #0071c7;
+            box-shadow: 0 15px 20px rgba(106, 121, 247, .4);
+            color: white;
+            transform: translateY(-7px);
+        }
 
 /* Media */
 @media screen and (max-width: 1200px) {

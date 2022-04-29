@@ -97,11 +97,11 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Settings()
         {
-            return View();
+            settingsModel.user = mainFormModels.user;
+            return View(settingsModel);
         }
         public IActionResult ChangeUserInfo(string email, string name, string description)
         {
-            settingsModel.user = mainFormModels.user;
             settingsModel.ChangeUserInfo(context, email, name, description);
             mainFormModels.user = settingsModel.user;
             return View("Main", mainFormModels);

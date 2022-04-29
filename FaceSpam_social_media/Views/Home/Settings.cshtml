@@ -38,23 +38,23 @@
                     <div class="ChangeUserInfo">
                         <div class="ChangeUserInfoInputs">
                             <div class="ChangeEmail">
-                                @Html.TextBoxFor(model => model.email, new { autocomplete = "off", Class = "EmailTextBox" })
+                                @Html.TextBoxFor(model => model.email, new {placeholder = Model.user.Email, autocomplete = "off", Class = "EmailTextBox" })
                                 <div class="ChangeText">Press to change email address</div>
                             </div>
 
                             <div class="ChangeUsername">
-                                @Html.TextBoxFor(model => model.name, new { autocomplete = "off", Class = "NameTextBox" })
+                                @Html.TextBoxFor(model => model.name, new {placeholder = Model.user.Name, autocomplete = "off", Class = "NameTextBox" })
                                 <div class="ChangeText">Press to change username</div>
                             </div>
                 
                             <div class="ChangeAccountDescription">
-                                @Html.TextBoxFor(model => model.description, new { autocomplete = "off", Class = "DescriptionTextBox" })
+                                @Html.TextBoxFor(model => model.description, new {placeholder = Model.user.Description, autocomplete = "off", Class = "DescriptionTextBox" })
                                 <div class="ChangeText">Press to change your account description</div>
                             </div>
                         </div>
                         <div class="ChangePhoto">
                             <div class="ChangePhotoImage">
-                                <img src="~/images/DefaultUserPhoto.png" />
+                                <img src="@Model.user.ImageReference" />
                             </div>
 
                             <div class="ChangePhotoButton">
