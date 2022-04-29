@@ -57,11 +57,11 @@ body {
     height: 150px;
     transition: .5s;
 }
-
+/*
     .AdvertisementImage:hover {
         scale: 5;
         transform: rotateY(360deg);
-    }
+    }*/
 /* Main page */
 .SettingsMainPage {
     width: 830px;

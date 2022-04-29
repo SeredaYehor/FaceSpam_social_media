@@ -60,7 +60,13 @@
     margin-left: -20px;
 }
 
+.UserImage img {
+    height: 202px;
+    width: 166px;
+}
+
 .EditProfile {
+    width: 166px;
     background-color: #3485FF;
     border: none;
     color: white;
@@ -70,7 +76,6 @@
     display: inline-block;
     font-size: 14px;
     cursor: pointer;
-    margin-top: 200px;
 }
 
 .Friends {
@@ -78,6 +83,7 @@
     height: 243px;
     width: 166px;
     margin-top: 50px;
+    margin-left: -20px;
     border-radius: 5px;
 }
 
