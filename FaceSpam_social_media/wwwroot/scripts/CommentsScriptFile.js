@@ -22,10 +22,9 @@
 
         $.ajax({
             url: "/Home/GetUser",
-            success: function (user) {
-                userName = user["name"].toString();
-                image = user["imageReference"].toString();
-            }
+        }).done(function (user) {
+            userName = user["name"].toString();
+            image = user["imageReference"].toString();
         });
 
         $.ajax({
@@ -46,7 +45,10 @@
         var day = date.toLocaleDateString();
 
         if (day.includes('/')) {
-            day.replace('/', '.')
+            day = day.substr(3, 5) + '.' + day.substr(0, 2) + '.' + day.substr(-2);
+        }
+        else {
+            day = day.substr(0, 6) + day.substr(-2);
         }
 
         var result = day + ' ' +
