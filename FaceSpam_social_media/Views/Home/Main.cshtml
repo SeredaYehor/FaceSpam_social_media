@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div class="UserImage">
+        <<div class="UserImage" style="background-image: url('@Model.user.ImageReference');">
             <input type="submit" class="EditProfile" value="Edit profile" />
 
             <div class="Friends">
@@ -69,7 +69,7 @@
                     @foreach (FaceSpam_social_media.DbModels.Post post in Model.user.Posts)
                     {
                         <div class="PostMessage">
-                            <img src="~/images/W1ld 3lf.jpg" class="PostEllipse" />
+                            <img src="@Model.user.ImageReference" class="PostEllipse" />
                             <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
                             <br />
                             <label class="PostText">@post.Text</label>
