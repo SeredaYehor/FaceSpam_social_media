@@ -1,10 +1,10 @@
 ﻿$(document).ready(function () {
 });
-    function GetMessage(message, time) {
+    function GetMessage(message, time, user, image) {
         messageObject =
             '<div style="display: flex; align-items: center; flex-direction: row">' +
-            '<img src="../Images/W1ld 3lf.jpg" class="UserImage" />' +
-            '<label class="UserName"> W1ld3lf </label>' +
+            '<img src="' + image + '" class="UserImage" />' +
+            '<label class="UserName">' + user + '</label>' +
             '<label class="Time">' + time + '</label>' +
             '</div>' +
             '<div>' +
@@ -15,6 +15,18 @@
 
     function AddMessage() {
         var text = document.getElementById("message").value;
+        var time = GetTime();
+
+        var userName = "";
+        var image = "";
+
+        $.ajax({
+            url: "/Home/GetUser",
+            success: function (user) {
+                userName = user["name"].toString();
+                image = user["imageReference"].toString();
+            }
+        });
 
         $.ajax({
             type: "GET",
@@ -25,13 +37,20 @@
 
         document.getElementById("message").value = null;
 
-        var time = GetDateTime();
-        GetMessage(text, time);
+        GetMessage(text, time, userName, image);
     }
 
-    function GetDateTime() {
-        var date = new Date().toLocaleDateString().substr(0, 6) + new Date().getFullYear().toString().substr(-2);
-        var time = new Date().toLocaleTimeString().substr(0, 5);
+    function GetTime() {
+        var date = new Date();
 
-        return date + ' ' + time;
+        var day = date.toLocaleDateString();
+
+        if (day.includes('/')) {
+            day.replace('/', '.')
+        }
+
+        var result = day + ' ' +
+            date.getHours() + ':' + date.getMinutes();
+
+        return result;
     }
