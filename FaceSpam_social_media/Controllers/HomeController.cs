@@ -13,7 +13,7 @@ namespace FaceSpam_social_media.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        
+
         public static Main mainFormModels = new Main();
         public DbModels.mydbContext context = new DbModels.mydbContext();
         public static MessagesForm messages = new MessagesForm();
@@ -22,7 +22,7 @@ namespace FaceSpam_social_media.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
-            
+
             _logger = logger;
         }
 
@@ -49,6 +49,11 @@ namespace FaceSpam_social_media.Controllers
             return View("Comments", commentsModel);
         }
 
+        public DbModels.User GetUser(){
+
+            return mainFormModels.user;
+        }
+
         public IActionResult Messages()
         {
             messages.user = mainFormModels.user;
@@ -58,7 +63,7 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Main()
         {
-            mainFormModels.GetUser(context, "W1ld3lf", "1235");
+            mainFormModels.GetUser(context, "Cyberdemon", "1235");
             mainFormModels.GetPosts(context);
             mainFormModels.GetFriends(context);
             mainFormModels.GetLikes(context);
