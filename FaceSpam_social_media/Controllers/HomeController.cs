@@ -103,6 +103,7 @@ namespace FaceSpam_social_media.Controllers
         {
             settingsModel.user = mainFormModels.user;
             settingsModel.ChangeUserInfo(context, email, name, description);
+            mainFormModels.user = settingsModel.user;
             return View("Main", mainFormModels);
         }
     }

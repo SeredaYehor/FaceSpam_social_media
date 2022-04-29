@@ -13,12 +13,29 @@ namespace FaceSpam_social_media.Models
         {
             int id = user.UserId;
             user = context.Users.Where(x => x.UserId == id ).FirstOrDefault();
-            user.Email = email;
-            user.Name = name;
-            user.Description = description;
 
+            bool repeatEmail = context.Users.Any(x => x.Email == email);
+            bool repeatName = context.Users.Any(x => x.Name == name);
+
+            if (email != null) 
+            {
+                if(repeatEmail != true)
+                {
+                    user.Email = email;
+                }
+            }
+            if(name != null)
+            {
+                if(repeatName != true)
+                {
+                    user.Name = name;
+                }
+            }
+            if(description != null)
+            {
+                user.Description = description;
+            }
             context.SaveChanges();
         }
-
     }
 }

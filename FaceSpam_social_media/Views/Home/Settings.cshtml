@@ -29,76 +29,76 @@
                             <img src="~/Images/AdvertisementTest.png" />
                         </div>
                     </div>
-        </div>
+            </div>
         
             <div class="SettingsMainPage">
                 <div class="SettingsName">Settings</div>
-            @using (Html.BeginForm("ChangeUserInfo", "Home", FormMethod.Post))
-            {
-                <div class="ChangeUserInfo">
-                    <div class="ChangeUserInfoInputs">
-                        <div class="ChangeEmail">
-                            @Html.TextBoxFor(model => model.email, new { autocomplete = "off", Class = "EmailTextBox" })
-                            <div class="ChangeText">Press to change email address</div>
-                        </div>
+                @using (Html.BeginForm("ChangeUserInfo", "Home", FormMethod.Post))
+                {
+                    <div class="ChangeUserInfo">
+                        <div class="ChangeUserInfoInputs">
+                            <div class="ChangeEmail">
+                                @Html.TextBoxFor(model => model.email, new { autocomplete = "off", Class = "EmailTextBox" })
+                                <div class="ChangeText">Press to change email address</div>
+                            </div>
 
-                        <div class="ChangeUsername">
-                            @Html.TextBoxFor(model => model.name, new { autocomplete = "off", Class = "NameTextBox" })
-                            <div class="ChangeText">Press to change username</div>
-                        </div>
+                            <div class="ChangeUsername">
+                                @Html.TextBoxFor(model => model.name, new { autocomplete = "off", Class = "NameTextBox" })
+                                <div class="ChangeText">Press to change username</div>
+                            </div>
                 
-                        <div class="ChangeAccountDescription">
-                            @Html.TextBoxFor(model => model.email, new { autocomplete = "off", Class = "DescriptionTextBox" })
-                            <div class="ChangeText">Press to change your account description</div>
+                            <div class="ChangeAccountDescription">
+                                @Html.TextBoxFor(model => model.description, new { autocomplete = "off", Class = "DescriptionTextBox" })
+                                <div class="ChangeText">Press to change your account description</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="ChangePhoto">
-                        <div class="ChangePhotoImage">
-                            <img src="~/images/DefaultUserPhoto.png" />
-                        </div>
+                        <div class="ChangePhoto">
+                            <div class="ChangePhotoImage">
+                                <img src="~/images/DefaultUserPhoto.png" />
+                            </div>
 
-                        <div class="ChangePhotoButton">
-                            <input type="submit" value="Change photo"/>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="SettingPageButtons">
-                    <div class="ButtonAndText">
-                        <div>
-                            <input type="submit" value="Shop account"/>
-                        </div>
-                        <div class="ButtonShopAccountText">
-                            Press to manage your shop account
+                            <div class="ChangePhotoButton">
+                                <input type="submit" value="Change photo"/>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="ButtonAndText">
-                        <div>
-                            <input type="submit" value="Game account"/>
+                    <div class="SettingPageButtons">
+                        <div class="ButtonAndText">
+                            <div>
+                                <input type="submit" value="Shop account"/>
+                            </div>
+                            <div class="ButtonShopAccountText">
+                                Press to manage your shop account
+                            </div>
                         </div>
-                        <div class="ButtonGameAccountText">
-                            Press to manage your game account
+
+                        <div class="ButtonAndText">
+                            <div>
+                                <input type="submit" value="Game account"/>
+                            </div>
+                            <div class="ButtonGameAccountText">
+                                Press to manage your game account
+                            </div>
+                        </div>
+
+                        <div class="ButtonAndText">
+                            <div>
+                                <input type="submit" value="Change password"/>
+                            </div>
+                        </div>
+
+                        <div class="ButtonAndText">
+                            <div>
+                                <input type="submit" value="Background"/>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="ButtonAndText">
-                        <div>
-                            <input type="submit" value="Change password"/>
-                        </div>
+                    <div class="ConfirmChanges">
+                        <input type="submit" id="button" value="Confirm"/>
                     </div>
-
-                    <div class="ButtonAndText">
-                        <div>
-                            <input type="submit" value="Background"/>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ConfirmChanges">
-                    <input type="submit" id="button" value="Confirm"/>
-                </div>
-            }
+                }
             </div>
         </div>
     </body>
