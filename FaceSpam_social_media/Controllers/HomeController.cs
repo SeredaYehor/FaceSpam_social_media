@@ -19,10 +19,10 @@ namespace FaceSpam_social_media.Controllers
         public static MessagesForm messages = new MessagesForm();
         public static FriendsViewModel friendsModel = new FriendsViewModel();
         public static PostCommentsModel commentsModel = new PostCommentsModel();
-
+        public static LoginModel loginModel = new LoginModel();
+        
         public HomeController(ILogger<HomeController> logger)
         {
-
             _logger = logger;
         }
 
@@ -61,13 +61,31 @@ namespace FaceSpam_social_media.Controllers
             return View(messages);
         }
 
+        [HttpPost]
         public IActionResult Main()
         {
-            mainFormModels.GetUser(context, "Cyberdemon", "1235");
+
+            mainFormModels.GetUser(context, "*", "*");
             mainFormModels.GetPosts(context);
             mainFormModels.GetFriends(context);
             mainFormModels.GetLikes(context);
+            
             return View(mainFormModels);
+        }
+
+        [HttpPost]
+        public IActionResult VerifyUserLogin(string login, string password)
+        {
+            loginModel.Login = login;
+            loginModel.Password = password;
+
+            bool verifyResult = loginModel.Verify(context);
+            if (verifyResult)
+            {
+                mainFormModels.GetMainUserInfo(context, login, password);
+                return View("Main", mainFormModels);
+            }
+            else { return Content("Wrong login or password"); }
         }
 
         public int ChangeLike(int postId)
@@ -94,24 +112,16 @@ namespace FaceSpam_social_media.Controllers
             messages.GetChatMessages(context, chatId);
             return messages.chatMessages;
         }
-
-        public IActionResult Friends()
-        {
-            friendsModel.user = mainFormModels.user;
-            friendsModel.friends = mainFormModels.friends;
-
-            return View(friendsModel);
-        }
-
-        public void DeleteFriend(int id)
-        {
-            friendsModel.DeleteFriend(context, id);
-        }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        
+        public IActionResult Login()
+        {
+            return View();
         }
     }
 }
