@@ -29,7 +29,13 @@
             contentType: false,
             processData: false,
             success: function (user) {
-                AddNewPost(user["item1"], text, user["item2"], formData.get('file'));
+                if (user["item2"] == -1) {
+                    alert("Error of adding post. You can only upload images of .jpg or .png formats");
+                }
+                else {
+                    AddNewPost(user["item1"], text, user["item2"], formData.get('file'));
+                }
+                $("#Browse").text("Browse");
             }
         });
     })
@@ -53,16 +59,20 @@
             }
         postObject += '<div style="background-color:transparent; height:50px;">' +
             '<div class="Likes" style="display: inline-block;">' +
-            '<img src="../images/heart.svg" class="HeartImage" id="' + postId + '" />' +
-            '<label class="LikeLabel">0</label>' +
-            '</div><img src="../images/pencil.svg" style="display: inline-block; margin-left: 10px;" />' +
-            '<label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF;">comments 0</label>' +
+            '<img src="../images/heart.svg" style="margin-right: 5px;" class="HeartImage" id="' + postId + '" />' +
+            '<label class="LikeLabel" style="margin-right:5px;">0</label>' +
+            '</div><img src="../images/pencil.svg" style="display: inline-block; margin-left: 10px; margin-right:8px;" />' +
+            '<label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF; margin-right:5px;">comments 0</label>' +
             '<label class="Date">' + date + '</label></div></div>';
         $(".DashboardList").append(postObject);
     }
 
     $("#myFile").change(function () {
-        var path = document.getElementById("myFile").files[0];
+        var path = null;
+        path = document.getElementById("myFile").files[0];
+        if (path != null) {
+            $("#Browse").text("Browsed");
+        }
         formData.set('file', path);
     })
 
