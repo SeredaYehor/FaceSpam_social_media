@@ -25,34 +25,27 @@
         }).done(function (user) {
             userName = user["name"].toString();
             image = user["imageReference"].toString();
+            $.ajax({
+                type: "GET",
+                url: "/Home/AddComment",
+                async: false,
+                data: { message: text, },
+            });
+
+            document.getElementById("message").value = null;
+
+            GetMessage(text, time, userName, image);
         });
-
-        $.ajax({
-            type: "GET",
-            url: "/Home/AddComment",
-            async: false,
-            data: { message: text, },
-        });
-
-        document.getElementById("message").value = null;
-
-        GetMessage(text, time, userName, image);
     }
 
     function GetTime() {
         var date = new Date();
 
-        var day = date.toLocaleDateString();
+        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes(); 
+        var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate(); 
+        var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        var year = date.getFullYear().toString().substr(-2);
 
-        if (day.includes('/')) {
-            day = day.substr(3, 5) + '.' + day.substr(0, 2) + '.' + day.substr(-2);
-        }
-        else {
-            day = day.substr(0, 6) + day.substr(-2);
-        }
-
-        var result = day + ' ' +
-            date.getHours() + ':' + date.getMinutes();
-
-        return result;
+        return day + '.' + month + '.' + year + ' ' + hours + ':' + minutes;
     }
