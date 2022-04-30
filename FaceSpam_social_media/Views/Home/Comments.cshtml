@@ -46,7 +46,7 @@
                     <div style="display: flex; align-items: center; flex-direction: row">
                         <img src="@Model.post.UserUser.ImageReference" class="UserImage" />
                         <label class="UserName"> @Model.post.UserUser.Name </label>
-                        <label class="Time"> @Model.post.DatePosting.ToString("dd.MM.y H:m") </label>
+                        <label class="Time"> @Model.post.DatePosting.ToString("dd.MM.y HH:mm") </label>
                     </div>
 
                     <div>
@@ -60,7 +60,7 @@
                         <div style="display: flex; align-items: center; flex-direction: row">
                             <img src="@Model.users.First(x=>x.UserId == comment.UserUserId).ImageReference" class="UserImage" />
                             <label class="UserName"> @Model.users.First(x => x.UserId == comment.UserUserId).Name </label>
-                            <label class="Time"> @comment.DateSending.ToString("dd.MM.y H:M") </label>
+                            <label class="Time"> @comment.DateSending.ToString("dd.MM.y HH:mm") </label>
                         </div>
 
                         <div>
