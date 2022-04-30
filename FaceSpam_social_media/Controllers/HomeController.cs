@@ -33,7 +33,6 @@ namespace FaceSpam_social_media.Controllers
             return View();
         }
 
-
         public IActionResult Messages()
         {
             messages.user = mainFormModels.user;
@@ -43,7 +42,7 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Main()
         {
-            mainFormModels.GetUser(context, "Wild 3lf", "ne_pass");
+            mainFormModels.GetUser(context, "*", "*");
             mainFormModels.GetPosts(context);
             mainFormModels.GetFriends(context);
             mainFormModels.GetLikes(context);
@@ -62,6 +61,11 @@ namespace FaceSpam_social_media.Controllers
             string image_ref = null;
             if (file != null)
             {
+                string extension = Path.GetExtension(file.FileName);
+                if(extension != ".jpg" && extension != ".png")
+                {
+                    return (mainFormModels.user, -1);
+                }
                 image_ref = "../Images/" + file.FileName;
                 AddImageToPost(file);
             }
@@ -78,12 +82,6 @@ namespace FaceSpam_social_media.Controllers
                 fileStream.Close();
             }
         }
-        /*[HttpPost]
-        public IActionResult AddPost(Main model)
-        {
-            mainFormModels.AddPost(context, model.message);
-            return View("Main", mainFormModels);
-        }*/
 
         public DbModels.User SendMessage(string textboxMessage)
         {
