@@ -9,7 +9,7 @@ namespace FaceSpam_social_media
     {
         public DbModels.User user;
         public List<DbModels.User> friends;
-        public void AddPost(DbModels.mydbContext context, string message, string reference)
+        public int AddPost(DbModels.mydbContext context, string message, string reference)
         {
             DbModels.Post newPost = new DbModels.Post();
             newPost.Text = message;
@@ -22,6 +22,7 @@ namespace FaceSpam_social_media
             context.Posts.Add(newPost);
             context.SaveChanges();
             user.Posts.Add(newPost);
+            return newPost.PostId;
         }
 
         public void GetLikes(DbModels.mydbContext context)
