@@ -106,6 +106,9 @@
     font-weight: 400;
     font-size: 18px;
     line-height: 21px;
+    height: auto;
+    width: 650px;
+    word-break:break-word;
     color: #000000;
     margin-left: 87px;
 }
@@ -193,8 +196,3 @@ div.PostImageHeader {
         margin-top: 165px;
     }
 }
-<<<<<<< HEAD
-
-© 2022 GitHub, Inc.
-=======
->>>>>>> a0613f2ba4ac44925bec9e3efc1caacfcaa2ab7f
