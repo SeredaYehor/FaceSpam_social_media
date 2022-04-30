@@ -57,7 +57,7 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
-        public DbModels.User AddPost(IFormFile file, string text)
+        public (DbModels.User, int) AddPost(IFormFile file, string text)
         {
             string image_ref = null;
             if (file != null)
@@ -65,8 +65,8 @@ namespace FaceSpam_social_media.Controllers
                 image_ref = "../Images/" + file.FileName;
                 AddImageToPost(file);
             }
-            mainFormModels.AddPost(context, text, image_ref);
-            return mainFormModels.user;
+            int lastPostId = mainFormModels.AddPost(context, text, image_ref);
+            return (mainFormModels.user, lastPostId);
         }
 
         public async void AddImageToPost(IFormFile file)
