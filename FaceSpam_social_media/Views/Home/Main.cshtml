@@ -1,5 +1,7 @@
-﻿
+
+<link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
 <link href="~/css/MainFormStyleSheet.css" rel="stylesheet" asp-append-version="true" />
+
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
 
@@ -33,8 +35,12 @@
             </div>
         </div>
 
-        <<div class="UserImage" style="background-image: url('@Model.user.ImageReference');">
-            <input type="submit" class="EditProfile" value="Edit profile" />
+
+        <div class="AvatarAndFriends">
+            <div class="UserImage">
+                <img src="@Model.user.ImageReference" />
+                <input type="submit" class="EditProfile" value="Edit profile" />
+            </div>
 
             <div class="Friends">
                 <label style="font-size: 18px; margin: 4px 16px; color: white;">Friends</label>
@@ -50,6 +56,7 @@
                 }
             </div>
         </div>
+
         <div class="MainPanel" style="margin-left: 30px;">
             <div class="Info">
                 <label style="font-size: 32px; margin: 4px 16px; color: white;">@username</label>

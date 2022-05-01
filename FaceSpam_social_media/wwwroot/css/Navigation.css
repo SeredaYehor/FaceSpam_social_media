@@ -1,0 +1,59 @@
+﻿*{
+    box-sizing: border-box;
+}
+.Navigation {
+    height: 650px;
+    background-color: #3485FF;
+    border-radius: 5px;
+    padding: 20px;
+    padding-bottom: 20px;
+    margin-right: 70px;
+    width: 175px;
+}
+
+    .Navigation input {
+        display: flex;
+        flex-direction: column;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 16px;
+        text-decoration: none;
+        color: #FFFFFF;
+        background: none;
+        border: none;
+        transition: .3s;
+    }
+
+        .Navigation input:hover {
+            transform: translateX(10px);
+        }
+
+.AdvertisementText {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 16px;
+    color: #FFFFFF;
+    margin-top: 165px;
+    margin-bottom: 15px;
+}
+
+.AdvertisementImage {
+    width: 150px;
+    height: 150px;
+    transition: .5s;
+}
+
+.Button {
+    background-color: #3485FF;
+    border: none;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}

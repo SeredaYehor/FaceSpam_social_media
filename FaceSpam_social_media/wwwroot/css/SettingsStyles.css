@@ -5,52 +5,13 @@
 body {
     overflow-y: hidden;
 }
-/* Left block */
 .Wrapper {
     display: flex;
     margin-top: 110px;
 }
-
-.ControlPanel {
-    max-height: 650px;
-    background-color: #3485FF;
-    border-radius: 5px;
-    padding: 20px;
-    margin-right: 70px;
-    width: 175px;
-}
-
-.ButtonsOnControlPanel a {
-    display: flex;
-    flex-direction: column;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    text-decoration: none;
-    margin-left: 17px;
-    color: #FFFFFF;
-    margin-bottom: 12px;
-    margin-left: 17px;
-}
-
-.ButtonsOnControlPanel {
-    max-height: 35%;
-}
-
-.AdvertisementText {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    color: #FFFFFF;
-    margin-top: 165px;
-    margin-bottom: 15px;
-}
-
-.AdvertisementImage {
-    width: 150px;
-    height: 150px;
+.ValidationError {
+    color: red;
+    font-size: 12px;
 }
 /* Main page */
 .SettingsMainPage {
@@ -73,6 +34,7 @@ body {
 .ChangeUserInfo {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 15px;
 }
 
 .ChangeUserInfoInputs input {
@@ -95,63 +57,103 @@ body {
     }
 
 .ChangePhotoButton input {
+    text-decoration: none;
+    display: inline-block;
     width: 165px;
     height: 30px;
+    border-radius: 0px 0px 15px 15px;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: black;
     background: #3485FF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+    transition: .5s;
     border: none;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    color: #FFFFFF;
 }
+
+    .ChangePhotoButton input:hover {
+        background: #0071c7;
+        box-shadow: 0 15px 20px rgba(106, 121, 247, .4);
+        color: white;
+    }
 /* ---------- */
 .SettingPageButtons input {
+    text-decoration: none;
+    display: inline-block;
+    width: 240px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 45px;
+    margin: 10px 20px 10px 0px;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: black;
     background: #3485FF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+    transition: .5s;
     border: none;
-    padding: 7px 33px 7px 33px;
-    margin-bottom: 40px;
-    margin-right: 10px;
 }
+
+    .SettingPageButtons input:hover {
+        background: #0071c7;
+        box-shadow: 0 15px 20px rgba(106, 121, 247, .4);
+        color: white;
+        transform: translateY(-7px);
+    }
 
 .ButtonAndText {
     display: flex;
 }
 
 .ButtonShopAccountText {
+    display: flex;
+    align-items: center;
     margin: 5px;
 }
 
 .ButtonGameAccountText {
+    display: flex;
+    align-items: center;
     margin: 5px;
 }
 
-.InviteFriends {
+.ConfirmChanges {
     display: flex;
-    align-items: center;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 32px;
-    line-height: 42px;
-    color: #3485FF;
+    justify-content: end;
 }
 
-.InviteFriendsText {
-    margin-top: 5px;
-}
+    .ConfirmChanges input {
+        text-decoration: none;
+        display: inline-block;
+        width: 240px;
+        height: 45px;
+        line-height: 45px;
+        border-radius: 45px;
+        margin: 10px 20px;
+        font-size: 11px;
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 3px;
+        font-weight: 600;
+        color: black;
+        background: #3485FF;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+        transition: .5s;
+        border: none;
+    }
 
-.InviteFriendsCode input {
-    padding-left: 35px;
-    padding: 5px 0px 5px 35px;
-    border: 0px;
-    margin-left: 25px;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
-}
+        .ConfirmChanges input:hover {
+            background: #0071c7;
+            box-shadow: 0 15px 20px rgba(106, 121, 247, .4);
+            color: white;
+            transform: translateY(-7px);
+        }
 
 /* Media */
 @media screen and (max-width: 1200px) {

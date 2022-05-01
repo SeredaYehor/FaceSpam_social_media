@@ -1,4 +1,4 @@
-﻿using FaceSpam_social_media.Models;
+using FaceSpam_social_media.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,8 +23,8 @@ namespace FaceSpam_social_media.Controllers
         public static FriendsViewModel friendsModel = new FriendsViewModel();
         public static PostCommentsModel commentsModel = new PostCommentsModel();
         public static LoginModel loginModel = new LoginModel();
+        public static SettingsModel settingsModel = new SettingsModel();
         public static AuthenticationModel authModel = new AuthenticationModel();
-
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -149,6 +149,20 @@ namespace FaceSpam_social_media.Controllers
             return View();
         }
 
+        public IActionResult Settings()
+        {
+            settingsModel.user = mainFormModels.user;
+            return View(settingsModel);
+        }
+        public IActionResult ChangeUserInfo(string email, string name, string description)
+        {
+            settingsModel.ChangeUserInfo(context, email, name, description);
+            mainFormModels.user.Name = settingsModel.user.Name;
+            mainFormModels.user.Email = settingsModel.user.Email;
+            mainFormModels.user.Description = settingsModel.user.Description;
+            return View("Main", mainFormModels);
+        }
+        
         public IActionResult Authentication()
         {
             return View();
