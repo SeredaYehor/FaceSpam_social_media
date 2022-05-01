@@ -13,25 +13,6 @@
     flex-wrap: nowrap;
 }
 
-.Navigation {
-    height: 650px;
-    background-color: #3485FF;
-    border-radius: 5px;
-    padding: 20px;
-    padding-bottom: 20px;
-    margin-right: 70px;
-    width: 175px;
-}
-
-.AdvertisementText {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    color: #FFFFFF;
-    margin-top: 165px;
-    margin-bottom: 15px;
-}
-
 .Button {
     background-color: #3485FF;
     border: none;
@@ -60,10 +41,10 @@
     margin-left: -20px;
 }
 
-.UserImage img {
-    height: 202px;
-    width: 166px;
-}
+    .UserImage img {
+        height: 202px;
+        width: 166px;
+    }
 
 .EditProfile {
     width: 166px;
@@ -76,13 +57,14 @@
     display: inline-block;
     font-size: 14px;
     cursor: pointer;
+    border-radius: 0px 0px 5px 5px;
 }
 
 .Friends {
     background-color: #3485FF;
     height: 243px;
     width: 166px;
-    margin-top: 50px;
+    margin-top: 90px;
     margin-left: -20px;
     border-radius: 5px;
 }

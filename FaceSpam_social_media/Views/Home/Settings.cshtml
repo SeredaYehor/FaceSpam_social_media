@@ -6,11 +6,12 @@
     <head>
         <title>Settings page</title>
         <link rel="stylesheet" href="~/css/SettingsStyles.css" asp-append-version="true">
+        <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
     </head>
 
     <body style="background-image: url(../images/background.jpg); background-size: cover;">
         <div class="Wrapper">
-            <div class="ControlPanel">
+            <div class="Navigation">
                 
                     @foreach (string controller in controllers)
                     {
@@ -48,7 +49,7 @@
                             </div>
                 
                             <div class="ChangeAccountDescription">
-                                @Html.TextBoxFor(model => model.description, new {placeholder = Model.user.Description, autocomplete = "off", Class = "DescriptionTextBox" })
+                                @Html.TextBoxFor(model => model.description, new {placeholder = Model.user.Description != null ? (Model.user.Description) : ("About you.."), autocomplete = "off", Class = "DescriptionTextBox" })
                                 <div class="ChangeText">Press to change your account description</div>
                             </div>
                         </div>
