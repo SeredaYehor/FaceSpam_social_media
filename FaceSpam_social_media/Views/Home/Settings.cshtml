@@ -33,35 +33,45 @@
         
             <div class="SettingsMainPage">
                 <div class="SettingsName">Settings</div>
-                @using (Html.BeginForm("ChangeUserInfo", "Home", FormMethod.Post))
-                {
-                    <div class="ChangeUserInfo">
-                        <div class="ChangeUserInfoInputs">
-                            <div class="ChangeEmail">
-                                @Html.TextBoxFor(model => model.email, new {placeholder = Model.user.Email, autocomplete = "off", Class = "EmailTextBox" })
-                                <div class="ChangeText">Press to change email address</div>
-                            </div>
+                   <form asp-action="ChangeUserInfo">
+                        <div class="ChangeUserInfo">
+                            <div class="ChangeUserInfoInputs">
+                                <div asp-validation-summary="ModelOnly"></div>
+                                <div class="ChangeEmail">
+                                    <input asp-for="email" class="emailTextBox" autocomplete="off" placeholder = "@(Model.user.Email)"/>
+                                    <div class="ValidationError">
+                                        <span asp-validation-for="email"></span>
+                                    </div>
+                                    <div class="ChangeText">Press to change email address</div>
+                                </div>
 
-                            <div class="ChangeUsername">
-                                @Html.TextBoxFor(model => model.name, new {placeholder = Model.user.Name, autocomplete = "off", Class = "NameTextBox" })
-                                <div class="ChangeText">Press to change username</div>
-                            </div>
+                                <div class="ChangeUsername">
+                                    <input asp-for="name" class="NameTextBox" autocomplete="off" placeholder = "@(Model.user.Name)"/>
+                                    <div class="ValidationError">
+                                        <span asp-validation-for="name"></span>
+                                    </div>
+                                    <div class="ChangeText">Press to change username</div>
+                                </div>
                 
-                            <div class="ChangeAccountDescription">
-                                @Html.TextBoxFor(model => model.description, new {placeholder = Model.user.Description != null ? (Model.user.Description) : ("About you.."), autocomplete = "off", Class = "DescriptionTextBox" })
-                                <div class="ChangeText">Press to change your account description</div>
-                            </div>
-                        </div>
-                        <div class="ChangePhoto">
-                            <div class="ChangePhotoImage">
-                                <img src="@Model.user.ImageReference" />
+                                    <div class="ChangeAccountDescription">
+                                        <input asp-for="description" class="DescriptionTextBox" autocomplete="off" placeholder = "@(Model.user.Description != null ? (@Model.user.Description) : ("About you.."))" />
+                                        <div class="ValidationError">
+                                            <span asp-validation-for="name"></span>
+                                        </div>
+                                        <div class="ChangeText">Press to change your account description</div>
+                                    </div>
                             </div>
 
-                            <div class="ChangePhotoButton">
-                                <input type="submit" value="Change photo"/>
+                            <div class="ChangePhoto">
+                                <div class="ChangePhotoImage">
+                                    <img src="@Model.user.ImageReference" />
+                                </div>
+
+                                <div class="ChangePhotoButton">
+                                    <input type="submit" value="Change photo"/>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
                     <div class="SettingPageButtons">
                         <div class="ButtonAndText">
@@ -98,6 +108,9 @@
                     <div class="ConfirmChanges">
                         <input type="submit" id="button" value="Confirm"/>
                     </div>
+                </form>
+                @section Scripts {
+                    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
                 }
             </div>
         </div>

@@ -9,6 +9,10 @@ body {
     display: flex;
     margin-top: 110px;
 }
+.ValidationError {
+    color: red;
+    font-size: 12px;
+}
 /* Main page */
 .SettingsMainPage {
     width: 830px;
