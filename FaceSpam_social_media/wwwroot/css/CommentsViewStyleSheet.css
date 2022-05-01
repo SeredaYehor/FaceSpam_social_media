@@ -1,29 +1,4 @@
 ﻿
-.Navigation {
-    max-height: 650px;
-    background-color: #3485FF;
-    border-radius: 5px;
-    padding: 20px;
-    padding-bottom: 20px;
-    margin-right: 70px;
-    width: 175px;
-}
-
-.AdvertisementImage {
-    width: 150px;
-    height: 150px;
-}
-
-.AdvertisementText {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    color: #FFFFFF;
-    margin-top: 165px;
-    margin-bottom: 15px;
-}
-
 .Wrapper {
     margin-top: 25px;
     display: flex;
