@@ -101,6 +101,10 @@ body {
     .InputInterface * {
         margin-bottom: 10px;
     }
+.ValidationError {
+    color: red;
+    font-size: 13px;
+}
 /*Login*/
 .Login {
     display: flex;
@@ -117,6 +121,21 @@ body {
 .PasswordText {
     width: 160px;
 }
+.PasswordCheckbox {
+    display: flex;
+    align-items: center;
+    color: gray;
+    height: 20px;
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+    .PasswordCheckbox input {
+        cursor: pointer;
+        height: 20px;
+        width: 20px;
+        margin: 5px;
+    }
 /* Button */
 .Button {
     text-align: center;

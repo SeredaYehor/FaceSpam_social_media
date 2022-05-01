@@ -2,7 +2,17 @@
 <html>
 	<head>
 		<title>Login page</title>
-        <link rel="stylesheet" href="~/css/LoginStyles.css">
+        <link rel="stylesheet" href="~/css/LoginStyles.css" asp-append-version="true">
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+       <script>
+            $('body').on('click', '#password-checkbox', function(){
+	            if ($(this).is(':checked')){
+		            $('#password-input').attr('type', 'text');
+	            } else {
+		            $('#password-input').attr('type', 'password');
+	            }
+            });
+       </script>
     </head>
 	<body>
         <div class="Wrapper">
@@ -15,27 +25,40 @@
                         FaceSpam
                     </div>
                     
-                   <div class="InputInterface">                
-                   
-                   @using (Html.BeginForm("VerifyUserLogin", "Home", FormMethod.Post))
-                   {
+                    <div class="InputInterface">
+                        <form asp-action="VerifyUserLogin">
+                            <div asp-validation-summary="ModelOnly"></div>
                             <div class="Login">
-                                 <div class="LoginText">Login: </div>
-                                 <div class="LoginInput">
-                                     @Html.TextBoxFor(model => model.Login, new { autocomplete = "off", Class = "LoginTextBox" })
-                                 </div>
-                            </div>
-                            <div class="Password">
-                                <div class="PasswordText">Password: </div>
-                                <div class="PasswordInput">
-                                    @Html.TextBoxFor(model => model.Password, new { autocomplete = "off", Class = "PasswordTextBox" })
+                                <div class="LoginText">Login: </div>
+                                <div class="LoginInput">
+                                    <input asp-for="Login" class="LoginTextBox" autocomplete="off" />
+                                    <div class="ValidationError">
+                                        <span asp-validation-for="Login"></span>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="Button">
-                                <input type="submit" id="button" value="Sign in"/>
+                            <div class="Password">
+                                <div class="PasswordText">
+                                    Password:
+                                    
+                                    <div class="PasswordCheckbox">
+                                        Show password <input type="checkbox" id="password-checkbox">
+                                    </div>
+                                </div>
+                                <div class="PasswordInput">
+                                   <input asp-for="Password" id="password-input" class="PasswordTextBox" autocomplete="off" />
+                                   <div class="ValidationError">
+                                        <span asp-validation-for="Password" ></span>
+                                   </div>
+                                </div>
                             </div>
-                   }
+                            <div class="Button">
+                                <input type="submit" value="Sign in"  />
+                            </div>
+                        </form>
+                        @section Scripts {
+                            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                        }
                     </div>
                 </div>
             </div>
