@@ -9,21 +9,23 @@ namespace FaceSpam_social_media.Models
 {
     public class AuthenticationModel
     {
-        [Required]
+        [Required(ErrorMessage ="Enter login.")]
+        [StringLength(45, ErrorMessage = "The field must have between {2} and {1} characters.", MinimumLength = 4)]
         public string Login { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Enter password.")]
+        [StringLength(20, ErrorMessage = "The field must have between {2} and {1} characters.", MinimumLength = 5)]
         [DataType(DataType.Password)]
-        [StringLength(100, ErrorMessage = "Поле {0} должно иметь минимум {2} и максимум {1} символов.", MinimumLength = 5)]
-        [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Required]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
+        [Required(ErrorMessage = "Enter confirm password.")]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
         [DataType(DataType.Password)]
-        [Display(Name = "Подтвердить пароль")]
         public string ConfirmPassword { get; set; }
-        [Required]
+
+        [Required(ErrorMessage ="Enter email.")]
+        [StringLength(40, ErrorMessage = "The field must have between {2} and {1} characters.", MinimumLength = 5)]
+        [DataType(DataType.EmailAddress, ErrorMessage = "E-mail is not valid.")]
         public string Email { get; set; }
 
         public bool Verify(DbModels.mydbContext context)

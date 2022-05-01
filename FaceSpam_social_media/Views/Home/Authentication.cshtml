@@ -1,8 +1,17 @@
 ﻿@model AuthenticationModel
 <head>
     <title>Authentication page</title>
-    <link rel="stylesheet" href="~/css/AuthenticationStyles.css">
-
+    <link rel="stylesheet" href="~/css/AuthenticationStyles.css" asp-append-version="true">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        $('body').on('click', '#password-checkbox', function(){
+	        if ($(this).is(':checked')){
+		        $('#password-input').attr('type', 'text');
+	        } else {
+		        $('#password-input').attr('type', 'password');
+	        }
+        });
+    </script>
 </head>
 <body>
    <div class="Wrapper">
@@ -16,47 +25,67 @@
                 </div>
 
                 <div class="InputInterface">
-                @using (Html.BeginForm("VerifyUserAuthentication", "Home", FormMethod.Post))    
-                {
-                    <div class="Login">
-                        <div class="LoginText">Login: </div>
-
-                        <div class="LoginInput">
-                            @Html.TextBoxFor(model => model.Login, new { autocomplete = "off", Class = "LoginTextBox" })
-                        </div>
-                    </div>
-                    <div class="Password">
-                        <div class="PasswordText">Password:</div>
-
-                        <div class="PasswordInput">
-                            @Html.TextBoxFor(model => model.Password, new { autocomplete = "off", Class = "PasswordTextBox" })
-                        </div>
-                    </div>
-                    <div class="ConfirmPassword">
-                        <div class="ConfirmPasswordText">Confirm password:</div>
-                        <div class="ConfirmPasswordInput">
-                            @Html.TextBoxFor(model => model.ConfirmPassword, new { autocomplete = "off", Class = "ConfirmPasswordTextBox" })
-                        </div>    
-                    </div>
-                    <div class="Email">
-                        <div class="EmailText">Email:</div>
-                        <div class="EmailInput">
-                            @Html.TextBoxFor(model => model.Email, new { autocomplete = "off", Class = "LoginTextBox" })
-                        </div>
-                    </div>
-
-                    <div class="Button">
-                        <input type="submit" id="button" value="Sign in"/>
-                    </div>
-                }
+                    <form asp-action="VerifyUserAuthentication">
+                            <div asp-validation-summary="ModelOnly"></div>
+                            <div class="Login">
+                                <div class="LoginText">Login: </div>
+                                <div class="LoginInput">
+                                    <input asp-for="Login" class="LoginTextBox" autocomplete="off" />
+                                    <div class="ValidationError">
+                                        <span asp-validation-for="Login"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Password">
+                                <div class="PasswordText">
+                                    Password:
+                                    
+                                    <div class="PasswordCheckbox">
+                                        Show password <input type="checkbox" id="password-checkbox">
+                                    </div>
+                                </div>
+                                <div class="PasswordInput">
+                                   <input asp-for="Password" id="password-input" class="PasswordTextBox" autocomplete="off" />
+                                   <div class="ValidationError">
+                                        <span asp-validation-for="Password" ></span>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="ConfirmPassword">
+                                <div class="ConfirmPasswordText">Confirm password: </div>
+                                <div class="PasswordInput">
+                                   <input asp-for="ConfirmPassword" id="password-input" class="ConfirmPasswordTextBox" autocomplete="off" />
+                                   <div class="ValidationError">
+                                       <span asp-validation-for="ConfirmPassword"></span>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="Email">
+                                <div class="EmailText">Email: </div>
+                                <div class="PasswordInput">
+                                    <input asp-for="Email" class="EmailTextBox" autocomplete="off" />
+                                    <div class="ValidationError">
+                                        <span asp-validation-for="Email"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Button">
+                                <input type="submit" value="Sign in"  />
+                            </div>
+                        </form>
                 </div>
+            </div>
+
+            @section Scripts {
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }
+
+       </div>
 
                     <!--<div class="Copyright">
                         <a>©copyright information</a>
                     </div>-->
-            </div>
-        </div>
-    </div>
+   </div>
 </body>
 
                 
