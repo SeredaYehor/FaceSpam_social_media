@@ -68,13 +68,20 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public IActionResult Main()
         {
-
-            mainFormModels.GetUser(context, "*", "*");
-            mainFormModels.GetPosts(context);
-            mainFormModels.GetFriends(context);
-            mainFormModels.GetLikes(context);
-            
             return View(mainFormModels);
+        }
+
+        public IActionResult Friends()
+        {
+            friendsModel.user = mainFormModels.user;
+            friendsModel.friends = mainFormModels.friends;
+
+            return View(friendsModel);
+        }
+
+        public void DeleteFriend(int id)
+        {
+            friendsModel.DeleteFriend(context, id);
         }
 
         [HttpPost]
@@ -160,6 +167,10 @@ namespace FaceSpam_social_media.Controllers
             mainFormModels.user.Name = settingsModel.user.Name;
             mainFormModels.user.Email = settingsModel.user.Email;
             mainFormModels.user.Description = settingsModel.user.Description;
+
+            commentsModel.user = mainFormModels.user;
+            friendsModel.user = mainFormModels.user;
+
             return View("Main", mainFormModels);
         }
         
