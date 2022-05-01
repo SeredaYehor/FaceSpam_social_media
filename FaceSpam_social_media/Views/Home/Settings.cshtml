@@ -12,25 +12,24 @@
     <body style="background-image: url(../images/background.jpg); background-size: cover;">
         <div class="Wrapper">
             <div class="Navigation">
-                
-                    @foreach (string controller in controllers)
-                    {
-                        @using (Html.BeginForm(controller, "Home", FormMethod.Post))
-                        {
-                            <input type="submit" class="Button" value=@controller />
-                        }
-                    }
+            @foreach (string controller in controllers)
+            {
+                @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value=@controller />
+                }
+            }
 
-                    <div class="AdvertisementText">
-                        Advertisement
-                    </div>
-
-                    <div>
-                        <div class="AdvertisementImage">
-                            <img src="~/Images/AdvertisementTest.png" />
-                        </div>
-                    </div>
+            <div class="AdvertisementText">
+                Advertisement
             </div>
+
+            <div>
+                <div class="AdvertisementImage">
+                    <img src="~/Images/AdvertisementTest.png" />
+                </div>
+            </div>
+        </div>
         
             <div class="SettingsMainPage">
                 <div class="SettingsName">Settings</div>
