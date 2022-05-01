@@ -41,9 +41,9 @@ namespace FaceSpam_social_media.Models
             send.Name = login;
             send.Password = password;
             send.Email = email;
+            send.ImageReference = "../Images/DefaultUserPhoto.png";
             context.Users.Add(send);
             context.SaveChanges();
-
 
         }
     }
