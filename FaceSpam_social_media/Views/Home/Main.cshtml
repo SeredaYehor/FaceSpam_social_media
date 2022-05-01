@@ -1,4 +1,5 @@
-﻿<link href="~/css/MainFormStyleSheet.css" rel="stylesheet" asp-append-version="true" />
+﻿
+<link href="~/css/MainFormStyleSheet.css" rel="stylesheet" asp-append-version="true" />
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
 
@@ -8,6 +9,7 @@
     string username = Model.user.Name;
     string description = Model.user.Description;
 }
+
 
 <body class="Background">
     <div class="Wrapper">
@@ -31,7 +33,7 @@
             </div>
         </div>
 
-        <div class="UserImage" style="background-image: url('@Model.user.ImageReference');">
+        <<div class="UserImage" style="background-image: url('@Model.user.ImageReference');">
             <input type="submit" class="EditProfile" value="Edit profile" />
 
             <div class="Friends">
@@ -44,7 +46,7 @@
                 </div>
                 @using (Html.BeginForm("Friends", "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" style="padding: 5px 20px;" value="more..." />
+                    <input type="submit" class="Button" style=" padding: 5px 20px; " value="more..." />
                 }
             </div>
         </div>
@@ -59,10 +61,11 @@
                 {
                     <div class="Dashboard">
                         @*Now textbox can send input data to controller and then clear it on widget*@
-                        @Html.TextBoxFor(model => model.message, new { autocomplete = "off", Class = "Post" })
-                        <div style="margin-bottom: 5px; display: inline-block; vertical-align: middle;">
-                            <input type="submit" class="PostButtons" formaction="/Home/SelectFile" value="File" />
-                            <input type="submit" class="PostButtons" formaction="/Home/AddPost" value="Write" />
+                        @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "Post" })
+                        <div style="vertical-align: 10px; margin-bottom: 15px; display: inline-block; width: 17%;">
+                            <input type="file" accept="image/*" id="myFile" style="display: none;"/>
+                            <button type="button" class="PostButtons" id="Browse">Browse</button>
+                            <input type="button" class="PostButtons" id="Write" value="Write" />
                         </div>
                         <hr class="HorizontalLine" />
                         <div class="DashboardList">
@@ -73,8 +76,16 @@
                                     <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
                                     <br />
                                     <label class="PostText">@post.Text</label>
+                                    @if (post.ImageReference != null)
+                                    {
+                                        <div>
+                                            <img src=@post.ImageReference style="width: 90%; margin-left: 15px;"/>
+                                        </div>
+                                    }
                                     <div style="background-color:transparent; height:50px;">
                                         <div class="Likes" style="display: inline-block;">
+                                          
+                                         <form method="post" action="/Home/Comments">
                                             @if (Model.CheckLike(Model.user.UserId, post.PostId))
                                             {
                                                 <img src="~/images/heartRed.svg" class="HeartImage" id="@post.PostId" />
@@ -84,16 +95,16 @@
                                                 <img src="~/images/heart.svg" class="HeartImage" id="@post.PostId" />
                                             }
                                             <label class="LikeLabel">@Model.CountLikes(post.PostId)</label>
-                                        </div>
-                                        <img src="~/images/pencil.svg" style="display: inline-block; margin-left: 10px;" />
-                                        <label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF;">comments 0</label>
-                                        <label class="Date">@post.DatePosting.ToString("dd.MM.yy")</label>
-                                    </div>
-                                </div>
-                            }
+                                            <img src="~/images/pencil.svg"/>
+                                            <button class="CommentButton" name="id" value="@post.PostId" type="submit">comments</button>
+                                            <label class="Date">@post.DatePosting.ToString("dd.MM.yy")</label>
+                                        </form>    
+                                       </div>      
+                            </div>
                         </div>
-                    </div>
-                 }
-        </div>      
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </body>
