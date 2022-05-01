@@ -126,6 +126,7 @@
     width: 80%;
     display: inline-block;
     margin-bottom: 10px;
+    resize: none;
 }
 
 .PostButtons {

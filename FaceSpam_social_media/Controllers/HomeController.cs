@@ -7,6 +7,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 namespace FaceSpam_social_media.Controllers
 {
@@ -95,10 +98,31 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddPost(Main model)
+        public (DbModels.User, int) AddPost(IFormFile file, string text)
         {
-            mainFormModels.AddPost(context, model.message);
-            return View("Main", mainFormModels);
+            string image_ref = null;
+            if (file != null)
+            {
+                string extension = Path.GetExtension(file.FileName);
+                if(extension != ".jpg" && extension != ".png")
+                {
+                    return (mainFormModels.user, -1);
+                }
+                image_ref = "../Images/" + file.FileName;
+                AddImageToPost(file);
+            }
+            int lastPostId = mainFormModels.AddPost(context, text, image_ref);
+            return (mainFormModels.user, lastPostId);
+        }
+
+        public async void AddImageToPost(IFormFile file)
+        {
+            string path = "./wwwroot/Images/" + file.FileName;
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+                fileStream.Close();
+            }
         }
 
         public DbModels.User SendMessage(string textboxMessage)
