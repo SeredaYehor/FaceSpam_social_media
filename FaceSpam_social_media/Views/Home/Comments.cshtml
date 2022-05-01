@@ -11,9 +11,10 @@
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="~/scripts/CommentsScriptFile.js" asp-append-version="true"></script>
 
-<link rel="stylesheet" href="/css/CommentsViewStyleSheet.css" asp-append-version="true" />
-
 <body style="background-image: url(../Images/image.jpg); background-size: cover">
+    <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="/css/CommentsViewStyleSheet.css" asp-append-version="true" />
+
     <div class="Wrapper">
         <div class="Navigation">
             @foreach (string controller in controllers)

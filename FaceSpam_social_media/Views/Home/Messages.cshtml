@@ -4,8 +4,6 @@
     string a = "";
 }
 
-<link rel="stylesheet" href="~/css/MessagesStyleSheet.css" asp-append-version="true" />
-
 <!--HEHE BOI (~w~)-->
 <!--JS scripts with using jQuery and ajax-->
 <!--Kakaya shlyapa-->
@@ -14,6 +12,9 @@
 <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
 
 <body style="background-image: url('../Images/background.jpg'); background-size: cover;">
+    <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/MessagesStyleSheet.css" asp-append-version="true" />
+
     <div class="Wrapper">
         <div class="Navigation">
             @foreach (string controller in controllers)
@@ -24,10 +25,13 @@
                 }
             }
 
-            <div class="NeAdvertisement">
+            <div class="AdvertisementText">
                 Advertisement
-                <div class="NeAdvertisementImage">
-                    <img src="~/images/AdvertisementTest.png" />
+            </div>
+
+            <div>
+                <div class="AdvertisementImage">
+                    <img src="~/Images/AdvertisementTest.png" />
                 </div>
             </div>
         </div>
@@ -61,5 +65,5 @@
                 }
             </div>
         </div>
-     </div>
+    </div>
 </body>
