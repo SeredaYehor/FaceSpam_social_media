@@ -44,15 +44,19 @@
 
             <div class="Friends">
                 <label style="font-size: 18px; margin: 4px 16px; color: white;">Friends</label>
-                <div class="FriendList" style="margin-left: 2px; width: 166px; height: 167px; overflow-y: hidden;">
+                <div class="FriendList" style="margin-left: 2px; width: 166px; height: 167px; overflow-y: hidden; display: flex">
                     @foreach (FaceSpam_social_media.DbModels.User friend in Model.friends)
                     {
-                        <img src=@friend.ImageReference class="PostEllipse" style="width: 49px; height: 49px;" />
+                        <form method="post" action="/Home/UserProfile">
+                            <button type="submit" name="id" value="@friend.UserId" class="UserProfileButton">
+                                <img src="@friend.ImageReference" class="PostEllipse" style="width: 49px; height: 49px;" />
+                            </button>
+                        </form>
                     }
                 </div>
                 @using (Html.BeginForm("Friends", "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" style=" padding: 5px 20px; " value="more..." />
+                    <button type="submit" class="Button" style="padding: 5px 20px;" name="id" value="@Model.user.UserId">more...</button>
                 }
             </div>
         </div>
