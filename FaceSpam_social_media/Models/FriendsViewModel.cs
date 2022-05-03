@@ -10,6 +10,7 @@ namespace FaceSpam_social_media.Models
 
         public DbModels.User user;
         public List<DbModels.User> friends;
+        public int mainUserId;
 
         public void GetUserById(DbModels.mydbContext context, int id)
         {

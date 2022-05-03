@@ -9,6 +9,10 @@ namespace FaceSpam_social_media
     {
         public DbModels.User user;
         public List<DbModels.User> friends;
+
+        // this field will be used to chech the opened user page
+        // as a result view will be changed, if mainUserId is eqhal to user.UserID 
+        public int mainUserId;
         public int AddPost(DbModels.mydbContext context, string message, string reference)
         {
             DbModels.Post newPost = new DbModels.Post();
@@ -63,6 +67,9 @@ namespace FaceSpam_social_media
         {
             user = context.Users.Where(x => x.Name == name && x.Password == password)
                 .FirstOrDefault();
+
+            mainUserId = user.UserId;
+            user.Password = null;
         }
 
         public void GetPosts(DbModels.mydbContext context)
