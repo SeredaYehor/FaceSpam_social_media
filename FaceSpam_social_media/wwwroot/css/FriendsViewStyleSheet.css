@@ -10,6 +10,7 @@
 }
 
 .Names {
+    text-align: left;
     width: 221px;
     height: 28px;
     font-weight: 400;
@@ -19,6 +20,17 @@
     margin-right: 100px;
     font-style: normal;
 }
+
+.EnterUserProfile {
+    width: 675px;
+    background-color: transparent;
+    border: none;
+    height: auto;
+}
+
+    .EnterUserProfile:hover {
+        box-shadow: 1px 0px 10px 1px rgba(0, 0, 0, 0.20);
+    }
 
 .FriendButton input {
     outline: none;
