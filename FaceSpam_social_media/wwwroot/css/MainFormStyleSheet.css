@@ -169,6 +169,10 @@
     border: none;
 }
 
+.RemovePost {
+    margin-left: 65%;
+}
+
 @media screen and (max-width: 1082px) {
     /*Paneli*/
     .Navigation {
