@@ -60,7 +60,10 @@
                                     <img class="UserImage" src="@friend.ImageReference" />
                                         <label class="Names"> @friend.Name </label>
 
-                                        <input id="@friend.UserId" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this)" />
+                                        @if(Model.mainUserId == Model.user.UserId) 
+                                        {
+                                            <input id="@friend.UserId" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this)" />
+                                        }
                                         &nbsp;
                                         @*Write button does not work. When all formls will be ready it will get the link*@
                                         <input type="submit" class="FriendButton" value="Write" />
