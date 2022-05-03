@@ -25,6 +25,17 @@ namespace FaceSpam_social_media
             return newPost.PostId;
         }
 
+        public int RemovePost(DbModels.mydbContext context, int postId)
+        {
+            int entries = 1;
+            DbModels.Post remove = context.Posts.Where(x => x.PostId == postId && x.UserUserId == user.UserId)
+                .First();
+            context.Posts.Remove(remove);
+            entries = context.SaveChanges();
+            user.Posts.Remove(user.Posts.Where(x => x.PostId == postId && x.UserUserId == user.UserId).First());
+            return entries;
+        }
+
         public void GetLikes(DbModels.mydbContext context)
         {
             user.Likes = context.Likes.Where(x => x.UserUserId == user.UserId).ToList();
