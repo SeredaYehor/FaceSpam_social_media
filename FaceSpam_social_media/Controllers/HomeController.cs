@@ -18,6 +18,7 @@ namespace FaceSpam_social_media.Controllers
         private readonly ILogger<HomeController> _logger;
 
         public static Main mainFormModels = new Main();
+        public static Main userProfileModel = new Main();
         public DbModels.mydbContext context = new DbModels.mydbContext();
         public static MessagesForm messages = new MessagesForm();
         public static FriendsViewModel friendsModel = new FriendsViewModel();
@@ -40,7 +41,7 @@ namespace FaceSpam_social_media.Controllers
         {
 
             commentsModel.user = mainFormModels.user;
-            commentsModel.post = mainFormModels.user.Posts.Where(x => x.PostId == id).FirstOrDefault();
+            commentsModel.post = context.Posts.Where(x => x.PostId == id).FirstOrDefault();
             commentsModel.GetComments(context);
 
             return View("Comments", commentsModel);
@@ -53,7 +54,7 @@ namespace FaceSpam_social_media.Controllers
             return View("Comments", commentsModel);
         }
 
-        public DbModels.User GetUser(){
+        public DbModels.User GetUser() {
 
             return mainFormModels.user;
         }
@@ -71,10 +72,17 @@ namespace FaceSpam_social_media.Controllers
             return View(mainFormModels);
         }
 
-        public IActionResult Friends()
+        [HttpPost]
+        public IActionResult UserProfile(int id) 
         {
-            friendsModel.user = mainFormModels.user;
-            friendsModel.friends = mainFormModels.friends;
+            userProfileModel.GetUserInfo(context, id);
+
+            return View("Main", userProfileModel);
+        }
+
+        public IActionResult Friends(int id)
+        {
+            friendsModel.GetUserById(context, id);
 
             return View(friendsModel);
         }
