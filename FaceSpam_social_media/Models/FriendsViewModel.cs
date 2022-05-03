@@ -11,6 +11,14 @@ namespace FaceSpam_social_media.Models
         public DbModels.User user;
         public List<DbModels.User> friends;
 
+        public void GetUserById(DbModels.mydbContext context, int id)
+        {
+            user = context.Users.Where(x => x.UserId == id).FirstOrDefault();
+
+            friends = context.Friends.Where(x => x.UserUserId == user.UserId)
+                .Select(x => x.FriendNavigation).ToList();
+        }
+
         public void DeleteFriend(DbModels.mydbContext context, int id)
         {
             DbModels.Friend friend = new DbModels.Friend();

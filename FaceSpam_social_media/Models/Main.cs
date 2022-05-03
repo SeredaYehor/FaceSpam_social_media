@@ -84,6 +84,18 @@ namespace FaceSpam_social_media
             GetLikes(context);
         }
 
+        // this function gets user info by id
+        // password is cleaned
+        public void GetUserInfo(DbModels.mydbContext context, int id)
+        {
+            user = context.Users.Where(x => x.UserId == id).FirstOrDefault();
+            GetPosts(context);
+            GetFriends(context);
+            GetLikes(context);
+
+            user.Password = null;
+        }
+
         public string message { get; set; }
     }
 }
