@@ -38,8 +38,7 @@ namespace FaceSpam_social_media.Controllers
 
         [HttpPost]
         public IActionResult Comments(int id)
-        {
-
+        { 
             commentsModel.user = mainFormModels.user;
             commentsModel.post = context.Posts.Where(x => x.PostId == id).FirstOrDefault();
             commentsModel.GetComments(context);
@@ -76,6 +75,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult UserProfile(int id) 
         {
             userProfileModel.GetUserInfo(context, id);
+            userProfileModel.mainUserId = mainFormModels.user.UserId;
 
             return View("Main", userProfileModel);
         }
@@ -83,6 +83,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Friends(int id)
         {
             friendsModel.GetUserById(context, id);
+            friendsModel.mainUserId = mainFormModels.user.UserId;
 
             return View(friendsModel);
         }
