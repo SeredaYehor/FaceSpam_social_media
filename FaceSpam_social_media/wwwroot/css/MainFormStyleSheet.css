@@ -1,10 +1,3 @@
-.Background {
-    background-image: url('../images/background.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
 .Wrapper {
     margin-top: 112px;
     display: flex;
@@ -16,9 +9,13 @@
 .Info {
     height: 202px;
     width: 600px;
-    background-color: #3485FF;
+    background-color: rgba(52, 133, 255, 1);
     display: inline-block;
     border-radius: 5px;
+    /*Shadow*/
+    -webkit-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
 .UserImage {
@@ -26,6 +23,10 @@
     width: 166px;
     background-color: grey;
     margin-left: -20px;
+    /*Shadow*/
+    -webkit-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
     .UserImage img {
@@ -35,7 +36,7 @@
 
 .EditProfile {
     width: 166px;
-    background-color: #3485FF;
+    background-color: rgba(52, 133, 255, 1);
     border: none;
     color: white;
     padding: 10px 50px;
@@ -45,22 +46,47 @@
     font-size: 14px;
     cursor: pointer;
     border-radius: 0px 0px 5px 5px;
+    /*Shadow*/
+    -webkit-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
 .Friends {
-    background-color: #3485FF;
+    background-color: rgba(52, 133, 255, 1);
     height: 243px;
     width: 166px;
     margin-top: 90px;
     margin-left: -20px;
     border-radius: 5px;
+    /*Shadow*/
+    -webkit-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.FriendsButton {
+    background-color: rgba(52, 133, 255, 0);
+    border: none;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
 
 .Dashboard {
-    background-color: #3485FF;
+    background-color: rgba(52, 133, 255, 1);
     margin-top: 90px;
-    height: 100px;
+    height: 85px;
     width: 600px;
+    /*Shadow*/
+    -webkit-box-shadow: 5px 0px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 5px 0px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 5px 0px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
 .HorizontalLine {
@@ -73,11 +99,15 @@
 }
 
 .DashboardList {
-    background-color: #3485FF;
+    background-color: rgba(52, 133, 255, 1);
     height: 570px;
     width: 100%;
     overflow-y: auto;
-    border-radius: 5px;
+    border-radius: 0px 0px 5px 5px;
+    /*Shadow*/
+    -webkit-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
 .Post {
@@ -160,6 +190,7 @@
     font-size: 14px;
     color: #3485FF;
 }
+
 .CommentButton {
     position: relative;
     display: inline-block;
