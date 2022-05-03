@@ -36,6 +36,14 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
+        public int RemoveMessage(int messageId)
+        {
+            int result = 0;
+            result = messages.RemoveMessage(context, messageId);
+            return result;
+        }
+
+        [HttpPost]
         public int RemovePost(int postId)
         {
             int result = 0;
@@ -141,10 +149,10 @@ namespace FaceSpam_social_media.Controllers
             }
         }
 
-        public DbModels.User SendMessage(string textboxMessage)
+        public (DbModels.User, int) SendMessage(string textboxMessage)
         {
-            messages.SendMessage(context, textboxMessage);
-            return messages.user;
+            int id = messages.SendMessage(context, textboxMessage);
+            return (messages.user, id);
         }
 
         public List<DbModels.Message> GetChatMessages(int chatId)
