@@ -36,6 +36,14 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
+        public int RemovePost(int postId)
+        {
+            int result = 0;
+            result = mainFormModels.RemovePost(context, postId);
+            return result;
+        }
+
+        [HttpPost]
         public IActionResult Comments(int id)
         {
 
