@@ -14,6 +14,7 @@ namespace FaceSpam_social_media.Models
         public void GetComments(DbModels.mydbContext context)
         {
             post.Messages = context.Messages.Where(x => x.PostPostId == post.PostId).ToList();
+            post.UserUser = context.Users.Where(x=>x.UserId == post.UserUserId).FirstOrDefault();
 
             foreach (var comment in post.Messages)
             {

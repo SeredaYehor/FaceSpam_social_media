@@ -1,3 +1,14 @@
+* {
+    box-sizing: border-box;
+}
+
+.Background {
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
 .Wrapper {
     margin-top: 112px;
     display: flex;
@@ -16,6 +27,13 @@
     -webkit-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
     -moz-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
     box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.UserProfileButton {
+    border: none;
+    background-color: transparent;
+    width: 50px;
+    height: 50px;
 }
 
 .UserImage {
@@ -77,6 +95,22 @@
     margin: 4px 2px;
     cursor: pointer;
 }
+
+.FriendList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+    .FriendList button {
+        max-width: calc(100% / 3 * 3);
+        margin: 0px 3px 5px 1px;
+        /*margin-bottom: 6px;*/
+    }
+
+    .FriendList img {
+        margin: -1px -15px 0px -15px;
+    }
 
 .Dashboard {
     background-color: rgba(52, 133, 255, 1);
@@ -147,7 +181,6 @@
 }
 
 .Ellipse {
-    background-image: url('../Images/Mask.jpg');
     height: 50px;
     width: 50px;
     border-radius: 50%;

@@ -59,23 +59,23 @@
                     <div>
                         @foreach (var friend in Model.friends)
                         {
-                            <div id="@friend.Name" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
-                                <img src="@friend.ImageReference" class="UserImage" />
+                        <div id="@friend.Name" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
+                            <form method="post" action="/Home/UserProfile">
+                                <button class="EnterUserProfile" type="submit" name="id" value="@friend.UserId">
+                                    <img class="UserImage" src="@friend.ImageReference" />
+                                        <label class="Names"> @friend.Name </label>
 
-                                <div>
-                                    <label class="Names"> @friend.Name </label>
-                                </div>
-
-                                <div>
-                                    <input id="@friend.UserId" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this)" />
-                                    &nbsp;
-                                    @*Write button does not work. When all formls will be ready it will get the link*@
-                                    <input type="submit" class="FriendButton" value="Write" />
-                                </div>
-                            </div>
-
+                                        @if(Model.mainUserId == Model.user.UserId) 
+                                        {
+                                            <input id="@friend.UserId" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this)" />
+                                        }
+                                        &nbsp;
+                                        @*Write button does not work. When all formls will be ready it will get the link*@
+                                        <input type="submit" class="FriendButton" value="Write" />
+                                </button>
+                            </form>                     
+                        </div>
                         }
-
                     </div>
                 </div>
             </div>
