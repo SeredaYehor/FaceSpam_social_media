@@ -3,12 +3,16 @@
 }
 .Navigation {
     height: 650px;
-    background-color: #3485FF;
+    background-color: rgba(52, 133, 255, 1);
     border-radius: 5px;
     padding: 20px;
     padding-bottom: 20px;
     margin-right: 70px;
     width: 175px;
+    /*Shadow*/
+    -webkit-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 5px 5px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
     .Navigation input {
@@ -46,7 +50,7 @@
 }
 
 .Button {
-    background-color: #3485FF;
+    background-color: rgba(52, 133, 255, 1);
     border: none;
     color: white;
     padding: 5px 32px;

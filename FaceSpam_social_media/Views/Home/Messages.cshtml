@@ -11,10 +11,14 @@
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
 
-<body style="background-image: url('../Images/background.jpg'); background-size: cover;">
+<body>
     <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/MessagesStyleSheet.css" asp-append-version="true" />
+    <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
 
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
     <div class="Wrapper">
         <div class="Navigation">
             @foreach (string controller in controllers)
