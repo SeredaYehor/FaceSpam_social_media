@@ -45,10 +45,32 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
-        public int RemovePost(int postId)
+        public int RemovePost(int postId, bool friendRemoving)
         {
             int result = 0;
-            result = mainFormModels.RemovePost(context, postId);
+            if(friendRemoving)
+            {
+                if(mainFormModels.user.IsAdmin == true)
+                {
+                    result = userProfileModel.RemovePost(context, postId);
+                }
+            }
+            else
+            {
+                result = mainFormModels.RemovePost(context, postId);
+            }
+            return result;
+        }
+
+
+        [HttpPost]
+        public int AdminRemovePost(int postId)
+        {
+            int result = 0;
+            if(mainFormModels.adminGuest == true)
+            {
+                result = userProfileModel.RemovePost(context, postId);
+            }
             return result;
         }
 
@@ -92,6 +114,7 @@ namespace FaceSpam_social_media.Controllers
         {
             userProfileModel.GetUserInfo(context, id);
             userProfileModel.mainUserId = mainFormModels.user.UserId;
+            userProfileModel.adminGuest = mainFormModels.user.IsAdmin;
 
             return View("Main", userProfileModel);
         }
@@ -119,15 +142,27 @@ namespace FaceSpam_social_media.Controllers
             if (verifyResult)
             {
                 mainFormModels.GetMainUserInfo(context, login, password);
+                mainFormModels.mainUserId = mainFormModels.user.UserId;
+                mainFormModels.user.Password = "Nice try, stupid litle dum-dummy";
                 return View("Main", mainFormModels);
             }
             else { return Content("Wrong login or password"); }
         }
 
-        public int ChangeLike(int postId)
+        public int ChangeLike(int postId, bool friendLike)
         {
-            mainFormModels.UpdatePostLike(context, postId);
-            return mainFormModels.CountLikes(postId);
+            int count = 0;
+            if(friendLike)
+            {
+                userProfileModel.UpdatePostLike(context, postId, mainFormModels.mainUserId);
+                count = userProfileModel.CountLikes(postId);
+            }
+            else
+            {
+                mainFormModels.UpdatePostLike(context, postId, mainFormModels.mainUserId);
+                count = mainFormModels.CountLikes(postId);
+            }
+            return count;
         }
 
         [HttpPost]
