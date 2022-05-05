@@ -4,6 +4,13 @@
 <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
 
 <script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    var friendCheck = false;
+    if (@Html.Raw(Json.Serialize(Model.user)) !=
+        @Html.Raw(Json.Serialize(Model.mainUserId))) {
+        friendCheck = true;
+    }
+</script>
 <script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
 
 @model Main
@@ -88,38 +95,41 @@
                 <div class="DashboardList">
                     @foreach (FaceSpam_social_media.DbModels.Post post in Model.user.Posts)
                     {
-                    <div class="PostMessage">
-                        <img src="@Model.user.ImageReference" class="PostEllipse" />
-                        <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
-                        <img src="~/images/removeButton.png" class="RemovePost" id="@post.PostId" />
-                        <br />
-                        <label class="PostText">@post.Text</label>
-                        @if (post.ImageReference != null)
-                        {
-                            <div>
-                                <img src=@post.ImageReference style="width: 90%; margin-left: 15px;" />
-                            </div>
-                        }
-                        <div style="background-color:transparent; height:50px;">
-                            <div class="Likes" style="display: inline-block;">
+                        <div class="PostMessage">
+                            <img src="@Model.user.ImageReference" class="PostEllipse" />
+                            <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
+                            @if (Model.mainUserId == Model.user.UserId || Model.adminGuest == true)
+                            {
+                                <img src="~/images/removeButton.png" class="RemovePost" id="@post.PostId" />
+                            }
+                            <br />
+                            <label class="PostText">@post.Text</label>
+                            @if (post.ImageReference != null)
+                            {
+                                <div>
+                                    <img src=@post.ImageReference style="width: 90%; margin-left: 15px;" />
+                                </div>
+                            }
+                            <div style="background-color:transparent; height:50px;">
+                                <div class="Likes" style="display: inline-block;">
 
-                                <form method="post" action="/Home/Comments">
-                                    @if (Model.CheckLike(Model.user.UserId, post.PostId))
-                                    {
-                                        <img src="~/images/heartRed.svg" class="HeartImage" id="@post.PostId" />
-                                    }
-                                    else
-                                    {
-                                        <img src="~/images/heart.svg" class="HeartImage" id="@post.PostId" />
-                                    }
-                                    <label class="LikeLabel">@Model.CountLikes(post.PostId)</label>
-                                    <img src="~/images/pencil.svg" />
-                                    <button class="CommentButton" name="id" value="@post.PostId" type="submit">comments</button>
-                                    <label class="Date">@post.DatePosting.ToString("dd.MM.yy")</label>
-                                </form>
+                                    <form method="post" action="/Home/Comments">
+                                        @if (Model.CheckLike(Model.user.UserId, post.PostId))
+                                        {
+                                            <img src="~/images/heartRed.svg" class="HeartImage" id="@post.PostId" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/heart.svg" class="HeartImage" id="@post.PostId" />
+                                        }
+                                        <label class="LikeLabel">@Model.CountLikes(post.PostId)</label>
+                                        <img src="~/images/pencil.svg" />
+                                        <button class="CommentButton" name="id" value="@post.PostId" type="submit">comments</button>
+                                        <label class="Date">@post.DatePosting.ToString("dd.MM.yy")</label>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     }
                 </div>
             </div>
