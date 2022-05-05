@@ -13,6 +13,9 @@ namespace FaceSpam_social_media
         // this field will be used to chech the opened user page
         // as a result view will be changed, if mainUserId is eqhal to user.UserID 
         public int mainUserId;
+        public bool? adminGuest;
+        public string message { get; set; }
+
         public int AddPost(DbModels.mydbContext context, string message, string reference)
         {
             DbModels.Post newPost = new DbModels.Post();
@@ -42,7 +45,7 @@ namespace FaceSpam_social_media
 
         public void GetLikes(DbModels.mydbContext context)
         {
-            user.Likes = context.Likes.Where(x => x.UserUserId == user.UserId).ToList();
+            user.Likes = context.Likes.Where(x => x.PostPost.UserUserId == user.UserId).ToList();
         }
 
         public int CountLikes(int postId)
@@ -55,19 +58,20 @@ namespace FaceSpam_social_media
             return user.Likes.Any(x => x.UserUserId == userId && x.PostPostId == postId);
         }
 
-        public void UpdatePostLike(DbModels.mydbContext context, int postId)
+        public void UpdatePostLike(DbModels.mydbContext context, int postId, int userId)
         {
-            if(CheckLike(user.UserId, postId))
+            bool liked = context.Likes.Any(x => x.UserUserId == userId && x.PostPostId == postId);
+            if (liked)
             {
                 context.Likes.Remove(context.Likes
-                    .Where(x => x.UserUserId == user.UserId && x.PostPostId == postId).First());
+                    .Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
                 context.SaveChanges();
                 user.Likes.Remove(user.Likes
-                    .Where(x => x.UserUserId == user.UserId && x.PostPostId == postId).First());
+                    .Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
             }
             else
             {
-                DbModels.Like like = new DbModels.Like() { UserUserId = user.UserId, PostPostId = postId };
+                DbModels.Like like = new DbModels.Like() { UserUserId = userId, PostPostId = postId };
                 context.Likes.Add(like);
                 context.SaveChanges();
                 user.Likes.Add(like);
@@ -114,6 +118,5 @@ namespace FaceSpam_social_media
             user.Password = null;
         }
 
-        public string message { get; set; }
     }
 }
