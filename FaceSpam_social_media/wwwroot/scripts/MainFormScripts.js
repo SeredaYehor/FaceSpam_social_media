@@ -5,10 +5,11 @@
     $(".DashboardList").on("click", ".RemovePost", function () {
         var id = $(this).attr("id");
         $(this).parent(".PostMessage").remove();
+        alert(friendCheck);
         $.ajax({
             type: "POST",
             url: '/Home/RemovePost',
-            data: { postId: id, },
+            data: { postId: id, friendRemoving: friendCheck },
             success: function (status) {
                 if (status == 0) {
                     alert("Error removing post");
@@ -97,10 +98,11 @@
         $.ajax({
             type: "GET",
             url: '/Home/ChangeLike',
-            data: { postId: id, },
+            data: { postId: id, friendLike: friendCheck },
             async: false,
             success: function (likes) {
                 result = likes;
+                alert(likes);
             }
         });
         return result;
