@@ -6,7 +6,8 @@
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
     var friendCheck = false;
-    if (@Html.Raw(Json.Serialize(Model.user)) !=
+    var likes = @Html.Raw(Json.Serialize(Model.user.Likes));
+    if (@Html.Raw(Json.Serialize(Model.user.UserId)) !=
         @Html.Raw(Json.Serialize(Model.mainUserId))) {
         friendCheck = true;
     }
@@ -34,7 +35,13 @@
                     <input type="submit" class="Button" value=@controller />
                 }
             }
-
+            @if (Model.user.IsAdmin == true)
+            {
+                @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value="Admin" />
+                }
+            }
             <div class="AdvertisementText">
                 Advertisement
             </div>
@@ -114,7 +121,7 @@
                                 <div class="Likes" style="display: inline-block;">
 
                                     <form method="post" action="/Home/Comments">
-                                        @if (Model.CheckLike(Model.user.UserId, post.PostId))
+                                        @if (Model.CheckLike(Model.mainUserId, post.PostId))
                                         {
                                             <img src="~/images/heartRed.svg" class="HeartImage" id="@post.PostId" />
                                         }
