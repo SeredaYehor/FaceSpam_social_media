@@ -29,7 +29,7 @@ namespace FaceSpam_social_media.DbModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("server=127.0.0.1;user=root;password=H3ll0W@rld;database=mydb", ServerVersion.Parse("8.0.25-mysql"));
+                optionsBuilder.UseMySql("server=127.0.0.1;user=root;password=Password;database=mydb", ServerVersion.Parse("8.0.25-mysql"));
             }
         }
 
@@ -254,6 +254,10 @@ namespace FaceSpam_social_media.DbModels
                 entity.Property(e => e.IsAdmin)
                     .HasMaxLength(1)
                     .HasColumnName("Is_admin");
+
+                entity.Property(e => e.IsBanned)
+                    .HasMaxLength(1)
+                    .HasColumnName("Is_banned");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
