@@ -5,7 +5,6 @@
     $(".DashboardList").on("click", ".RemovePost", function () {
         var id = $(this).attr("id");
         $(this).parent(".PostMessage").remove();
-        alert(friendCheck);
         $.ajax({
             type: "POST",
             url: '/Home/RemovePost',
@@ -102,7 +101,6 @@
             async: false,
             success: function (likes) {
                 result = likes;
-                alert(likes);
             }
         });
         return result;
