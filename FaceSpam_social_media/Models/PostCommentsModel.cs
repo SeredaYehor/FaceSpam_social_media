@@ -11,8 +11,10 @@ namespace FaceSpam_social_media.Models
         public DbModels.Post post = new DbModels.Post();
         public List<DbModels.User> users = new List<DbModels.User>();
 
-        public void GetComments(DbModels.mydbContext context)
+        public int mainUserId;
+        public void GetComments(DbModels.mydbContext context, int postId)
         {
+            post = context.Posts.Where(x => x.PostId == postId).FirstOrDefault();
             post.Messages = context.Messages.Where(x => x.PostPostId == post.PostId).ToList();
             post.UserUser = context.Users.Where(x=>x.UserId == post.UserUserId).FirstOrDefault();
 
@@ -22,7 +24,17 @@ namespace FaceSpam_social_media.Models
             }
         }
 
-        public void AddComment(DbModels.mydbContext context, string message)
+        public int RemoveComment(DbModels.mydbContext context, int commentId)
+        {
+            int result = -1;
+            DbModels.Message remove = context.Messages.Where(x => x.MessageId == commentId).First();
+            context.Messages.Remove(remove);
+            result = context.SaveChanges();
+            user.Messages.Remove(remove);
+            return result;
+        }
+
+        public int AddComment(DbModels.mydbContext context, string message)
         {
             DbModels.Message newMessage = new DbModels.Message();
             newMessage.PostPostId = post.PostId;
@@ -32,6 +44,7 @@ namespace FaceSpam_social_media.Models
 
             context.Messages.Add(newMessage);
             context.SaveChanges();
+            return newMessage.MessageId;
         }
     }
 }
