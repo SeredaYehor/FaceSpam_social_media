@@ -10,8 +10,7 @@ namespace FaceSpam_social_media
         public DbModels.User user;
         public List<DbModels.User> friends;
 
-        // this field will be used to chech the opened user page
-        // as a result view will be changed, if mainUserId is eqhal to user.UserID 
+        // need to be simplified
         public int mainUserId;
         public bool? adminGuest;
         public string message { get; set; }
@@ -60,7 +59,7 @@ namespace FaceSpam_social_media
 
         public void UpdatePostLike(DbModels.mydbContext context, int postId, int userId)
         {
-            bool liked = context.Likes.Any(x => x.UserUserId == userId && x.PostPostId == postId);
+            bool liked = CheckLike(userId, postId);
             if (liked)
             {
                 context.Likes.Remove(context.Likes
@@ -78,13 +77,19 @@ namespace FaceSpam_social_media
             }
         }
 
-        public void GetUser(DbModels.mydbContext context, string name, string password)
+        public void GetUser(DbModels.mydbContext context, int userId, string name = null, string password = null)
         {
-            user = context.Users.Where(x => x.Name == name && x.Password == password)
+            if (userId != -1)
+            {
+                user = context.Users.Where(x => x.UserId == userId).FirstOrDefault();
+            }
+            else
+            {
+                user = context.Users.Where(x => x.Name == name && x.Password == password)
                 .FirstOrDefault();
-
+            }
             mainUserId = user.UserId;
-            user.Password = null;
+            user.Password = "Nice try, stupid litle dum-dummy";
         }
 
         public void GetPosts(DbModels.mydbContext context)
@@ -98,24 +103,12 @@ namespace FaceSpam_social_media
                 .Select(x => x.FriendNavigation).ToList();
         }
 
-        public void GetMainUserInfo(DbModels.mydbContext context, string name, string password)
+        public void GetUserInfo(DbModels.mydbContext context, int userId, string name = null, string password = null)
         {
-            GetUser(context, name, password);
+            GetUser(context, userId, name, password);
             GetPosts(context);
             GetFriends(context);
             GetLikes(context);
-        }
-
-        // this function gets user info by id
-        // password is cleaned
-        public void GetUserInfo(DbModels.mydbContext context, int id)
-        {
-            user = context.Users.Where(x => x.UserId == id).FirstOrDefault();
-            GetPosts(context);
-            GetFriends(context);
-            GetLikes(context);
-
-            user.Password = null;
         }
 
     }
