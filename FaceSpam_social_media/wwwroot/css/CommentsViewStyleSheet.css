@@ -134,6 +134,11 @@ div.PostImageHeader {
     margin-top: 23px;
 }
 
+.CommentRemove {
+    margin-top: -8px;
+    margin-left: -20px;
+}
+
 @media screen and (min-height: 520px) {
 
     .Board {
