@@ -1,15 +1,10 @@
 using FaceSpam_social_media.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using System.IO;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
+using FaceSpam_social_media.DbModels;
 
 namespace FaceSpam_social_media.Controllers
 {
@@ -18,8 +13,7 @@ namespace FaceSpam_social_media.Controllers
         private readonly ILogger<HomeController> _logger;
 
         public static Main mainFormModels = new Main();
-        public static Main userProfileModel = new Main();
-        public DbModels.mydbContext context = new DbModels.mydbContext();
+        public mydbContext context = new mydbContext();
         public static MessagesForm messages = new MessagesForm();
         public static FriendsViewModel friendsModel = new FriendsViewModel();
         public static PostCommentsModel commentsModel = new PostCommentsModel();
@@ -39,7 +33,7 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Admin()
         {
-            if(usersManagment.Init(context, mainFormModels.user))
+            if(usersManagment.Init(context, mainFormModels.executor))
             {
                 return View(usersManagment);
             }
@@ -62,17 +56,10 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
-        public int RemovePost(int postId, bool friendRemoving)
+        public int RemovePost(int postId)
         {
             int result = 0;
-            if(friendRemoving)
-            {
-                if(mainFormModels.user.IsAdmin == true)
-                {
-                    result = userProfileModel.RemovePost(context, postId);
-                }
-            }
-            else
+            if(mainFormModels.executor.IsAdmin == true)
             {
                 result = mainFormModels.RemovePost(context, postId);
             }
@@ -84,20 +71,18 @@ namespace FaceSpam_social_media.Controllers
         public int AdminRemovePost(int postId)
         {
             int result = 0;
-            if(mainFormModels.adminGuest == true)
+            if(mainFormModels.executor.IsAdmin == true)
             {
-                result = userProfileModel.RemovePost(context, postId);
+                result = mainFormModels.RemovePost(context, postId);
             }
             return result;
         }
 
         [HttpPost]
         public IActionResult Comments(int id)
-        { 
-            commentsModel.user = mainFormModels.user;
-            commentsModel.mainUserId = mainFormModels.mainUserId;
+        {
+            commentsModel.user = mainFormModels.executor;
             commentsModel.GetComments(context, id);
-
             return View("Comments", commentsModel);
         }
 
@@ -115,14 +100,14 @@ namespace FaceSpam_social_media.Controllers
             return result;
         }
 
-        public DbModels.User GetUser() {
+        public User GetUser() {
 
-            return mainFormModels.user;
+            return mainFormModels.executor;
         }
 
         public IActionResult Messages()
         {
-            messages.user = mainFormModels.user;
+            messages.user = mainFormModels.executor;
             messages.GetChats(context);
             return View(messages);
         }
@@ -130,24 +115,22 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public IActionResult Main()
         {
+            mainFormModels.user = mainFormModels.executor;
+            mainFormModels.GetFriends(context);
             return View(mainFormModels);
         }
 
         [HttpPost]
         public IActionResult UserProfile(int id) 
         {
-            userProfileModel.GetUserInfo(context, id);
-            userProfileModel.mainUserId = mainFormModels.user.UserId;
-            userProfileModel.adminGuest = mainFormModels.user.IsAdmin;
-
-            return View("Main", userProfileModel);
+            mainFormModels.GetUserInfo(context, true, id);
+            return View("Main", mainFormModels);
         }
 
         public IActionResult Friends(int id)
         {
             friendsModel.GetUserById(context, id);
-            friendsModel.mainUserId = mainFormModels.user.UserId;
-
+            friendsModel.mainUserId = mainFormModels.executor.UserId;
             return View(friendsModel);
         }
 
@@ -156,60 +139,30 @@ namespace FaceSpam_social_media.Controllers
             friendsModel.DeleteFriend(context, id);
         }
 
-        [HttpPost]
-        public IActionResult VerifyUserLogin(string login, string password)
-        {
-            loginModel.Login = login;
-            loginModel.Password = password;
-
-            bool verifyResult = loginModel.Verify(context);
-            if (verifyResult)
-            {
-                mainFormModels.GetUserInfo(context, -1, login, password);
-                if(mainFormModels.user.IsBanned == true)
-                {
-                    return Content("Oi, you have been banned.");
-                }
-                return View("Main", mainFormModels);
-            }
-            return Content("Wrong login or password"); 
-        }
-
         public int ChangeLike(int postId, bool friendLike)
         {
             int count = 0;
-            if(friendLike)
-            {
-                userProfileModel.UpdatePostLike(context, postId, mainFormModels.mainUserId);
-                count = userProfileModel.CountLikes(postId);
-            }
-            else
-            {
-                mainFormModels.UpdatePostLike(context, postId, mainFormModels.mainUserId);
-                count = mainFormModels.CountLikes(postId);
-            }
+            mainFormModels.UpdatePostLike(context, postId);
+            count = mainFormModels.CountLikes(postId);
             return count;
         }
 
         [HttpPost]
-        public (DbModels.User, int) AddPost(IFormFile file, string text)
+        public (User, int) AddPost(IFormFile file, string text)
         {
-            string reference = FileManager.UploadImage(file);
             int lastPostId = -1;
-            if (reference != null)
-            {
-                lastPostId = mainFormModels.AddPost(context, text, reference);
-            }
+            string reference = FileManager.UploadImage(file);
+            lastPostId = mainFormModels.AddPost(context, text, reference);
             return (mainFormModels.user, lastPostId);
         }
 
-        public (DbModels.User, int) SendMessage(string textboxMessage)
+        public (User, int) SendMessage(string textboxMessage)
         {
             int id = messages.SendMessage(context, textboxMessage);
             return (messages.user, id);
         }
 
-        public List<DbModels.Message> GetChatMessages(int chatId)
+        public List<Message> GetChatMessages(int chatId)
         {
             messages.GetChatMessages(context, chatId);
             return messages.chatMessages;
@@ -228,20 +181,14 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Settings()
         {
-            settingsModel.user = mainFormModels.user;
+            settingsModel.user = mainFormModels.executor;
             return View(settingsModel);
         }
 
         public IActionResult ChangeUserInfo(string email, string name, string description)
         {
             settingsModel.ChangeUserInfo(context, email, name, description);
-            mainFormModels.user.Name = settingsModel.user.Name;
-            mainFormModels.user.Email = settingsModel.user.Email;
-            mainFormModels.user.Description = settingsModel.user.Description;
-
-            commentsModel.user = mainFormModels.user;
-            friendsModel.user = mainFormModels.user;
-
+            mainFormModels.UpdateData(settingsModel.user);
             return View("Main", mainFormModels);
         }
         
@@ -260,10 +207,29 @@ namespace FaceSpam_social_media.Controllers
             if (!repeatCheck)
             {
                 authModel.CreateUser(login, password, email, context);
-                mainFormModels.GetUserInfo(context, -1, login, password);
+                mainFormModels.GetUserInfo(context, false, -1, login, password);
                 return View("Main", mainFormModels);
             }
             return Content("This user is already registered.");
+        }
+
+        [HttpPost]
+        public IActionResult VerifyUserLogin(string login, string password)
+        {
+            loginModel.Login = login;
+            loginModel.Password = password;
+
+            bool verifyResult = loginModel.Verify(context);
+            if (verifyResult)
+            {
+                mainFormModels.GetUserInfo(context, false, -1, login, password);
+                if (mainFormModels.user.IsBanned == true)
+                {
+                    return Content("Oi, you have been banned.");
+                }
+                return View("Main", mainFormModels);
+            }
+            return Content("Wrong login or password");
         }
     }
 }
