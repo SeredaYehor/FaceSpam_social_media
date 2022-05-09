@@ -8,7 +8,7 @@
         $.ajax({
             type: "POST",
             url: '/Home/RemovePost',
-            data: { postId: id, friendRemoving: friendCheck },
+            data: { postId: id },
             success: function (status) {
                 if (status == 0) {
                     alert("Error removing post");
@@ -75,11 +75,12 @@
             }
         postObject += '<div style="background-color:transparent; height:50px;">' +
             '<div class="Likes" style="display: inline-block;">' +
+            '<form method="post" action="/Home/Comments">' +
             '<img src="../images/heart.svg" style="margin-right: 5px;" class="HeartImage" id="' + postId + '" />' +
             '<label class="LikeLabel" style="margin-right:5px;">0</label>' +
-            '</div><img src="../images/pencil.svg" style="display: inline-block; margin-right:8px;" />' +
-            '<label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF; margin-right:5px;">comments 0</label>' +
-            '<label class="Date">' + date + '</label></div></div>';
+            '<img src="../images/pencil.svg" style="display: inline-block; margin-right:8px;" />' +
+            '<button class="CommentButton" name="id" value="' + postId + '" type="submit">comments</button>' +
+            '<label class="Date">' + date + '</label></form></div></div>';
         $(".DashboardList").append(postObject);
     }
 
@@ -97,7 +98,7 @@
         $.ajax({
             type: "GET",
             url: '/Home/ChangeLike',
-            data: { postId: id, friendLike: friendCheck },
+            data: { postId: id },
             async: false,
             success: function (likes) {
                 result = likes;
