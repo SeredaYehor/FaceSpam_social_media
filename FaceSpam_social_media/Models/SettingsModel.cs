@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using FaceSpam_social_media.DbModels;
 
 namespace FaceSpam_social_media.Models
 {
     public class SettingsModel
     {
-        public DbModels.User user = new DbModels.User();
+        public User user = new User();
 
         [StringLength(40, ErrorMessage = "The field must have between {2} and {1} characters.", MinimumLength = 5)]
         [DataType(DataType.EmailAddress, ErrorMessage = "E-mail is not valid.")]
@@ -15,7 +16,7 @@ namespace FaceSpam_social_media.Models
         [StringLength(255, ErrorMessage = "The field must have between {2} and {1} characters.", MinimumLength = 4)]
         public string description { get; set; }
 
-        public void ChangeUserInfo(DbModels.mydbContext context, string email, string name, string description)
+        public void ChangeUserInfo(mydbContext context, string email, string name, string description)
         {
             int id = user.UserId;
             user = context.Users.Where(x => x.UserId == id ).FirstOrDefault();

@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FaceSpam_social_media.DbModels;
 
 namespace FaceSpam_social_media.Models
 {
     public class UsersManagment
     {
-        public DbModels.User admin;
-        public List<DbModels.User> users;
+        public User admin;
+        public List<User> users;
 
-        public bool Init(DbModels.mydbContext context, DbModels.User user)
+        public bool Init(mydbContext context, User user)
         {
             bool result = false;
             if(user.IsAdmin == true)
@@ -21,15 +22,15 @@ namespace FaceSpam_social_media.Models
             }
             return result;
         }
-        public void GetAllUsers(DbModels.mydbContext context)
+        public void GetAllUsers(mydbContext context)
         {
             users = context.Users.Where(x => x.UserId != admin.UserId).ToList();
         }
 
-        public int UpdateStatus(DbModels.mydbContext context, int userId)
+        public int UpdateStatus(mydbContext context, int userId)
         {
             int result = -1;
-            DbModels.User target = users.Where(x => x.UserId == userId).First();
+            User target = users.Where(x => x.UserId == userId).First();
             bool? status = target.IsBanned;
             target.IsBanned = !status;
             context.Users.Update(target);
