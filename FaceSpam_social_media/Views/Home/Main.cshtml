@@ -5,6 +5,7 @@
 
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/scripts/FriendsFormScripts.js" asp-append-version="true"></script>
 
 @model Main
 @{
@@ -12,7 +13,6 @@
     string username = Model.user.Name;
     string description = Model.user.Description;
 }
-
 
 <body class="Background">
 <div class="bg"></div>
@@ -43,7 +43,15 @@
         <div class="AvatarAndFriends">
             <div class="UserImage">
                 <img src="@Model.user.ImageReference" />
-                <input type="submit" class="EditProfile" value="Edit profile" />
+                @if (Model.mainUserId == Model.user.UserId)
+                {
+                    <input type="submit" class="EditProfile" value="Edit profile" />
+                }
+                else
+                {
+                    <input type="submit" class="EditProfile" id="@Model.user.UserId" value="@(Model.isFriend 
+                        ? "Remove" : "Pal up")" onclick="CheckAction(this)"/>
+                }
             </div>
 
             <div class="Friends">
@@ -56,7 +64,7 @@
                                 <img src="@friend.ImageReference" class="PostEllipse" style="width: 49px; height: 49px;" />
                             </button>
                         </form>
-                    }
+                        }
                 </div>
                 @using (Html.BeginForm("Friends", "Home", FormMethod.Post))
                 {
