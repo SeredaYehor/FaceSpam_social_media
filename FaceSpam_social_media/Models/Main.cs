@@ -114,6 +114,22 @@ namespace FaceSpam_social_media
             user.Password = null;
         }
 
+        // function is used to learn is friend chosen person or not
+
+        public bool isFriend;
+
+        public bool IsFriend(int id)
+        {
+            foreach (var user in friends)
+            {
+                if (user.UserId == id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public string message { get; set; }
     }
 }
