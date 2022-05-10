@@ -4,6 +4,9 @@
     ViewData["Title"] = "Friends page";
 
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
+
+    string friendReference = "/Home/Friends";
+    string usersReference = "/Home/UserList";
 }
 
 <script src="/lib/jquery/dist/jquery.js"></script>
@@ -42,10 +45,14 @@
         <div class="Board">
             <div class="SearchZone">
                 <div style="display: flex; flex-direction: row; margin-top: 10px; background-color: #3485FF;">
-                    <b> <label class="FriendsLabel">Friends: &nbsp; </label> </b>
+
+                    <b> <label class="FriendsLabel"> @(Model.friendPage ? "Friends  " : "All users") </label> </b>
+                    <form method="post" action="@(Model.friendPage ? usersReference : friendReference)">
+                        <button type="submit" name="id" value="@Model.mainUserId" class="AddFriendButton"><img class="AddFriendIcon" src="~/Images/add-user.png" /></button>
+                    </form>
 
                     <form action="SearchFriend">
-                        <div style="position: relative; margin-left: 160px">
+                        <div style="position: relative;">
                             <input type="text" name="name" class="Search" placeholder="Search" />
                             <img src="~/Images/glass-icon.png" class="SearchImage" />
                         </div>
@@ -57,23 +64,29 @@
 
                 <div class="FriendZone">
                     <div>
-                        @foreach (var friend in Model.friends)
+                        @foreach (var user in Model.friendPage ? Model.friends : Model.allUsers)
                         {
-                        <div id="@friend.Name" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
+                        <div id="@user.Name" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
                             <form method="post" action="/Home/UserProfile">
-                                <button class="EnterUserProfile" type="submit" name="id" value="@friend.UserId">
-                                    <img class="UserImage" src="@friend.ImageReference" />
-                                        <label class="Names"> @friend.Name </label>
-
-                                        @if(Model.mainUserId == Model.user.UserId) 
-                                        {
-                                            <input id="@friend.UserId" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this)" />
-                                        }
-                                        &nbsp;
-                                        @*Write button does not work. When all formls will be ready it will get the link*@
-                                        <input type="submit" class="FriendButton" value="Write" />
+                                <button class="EnterUserProfile" type="submit" name="id" value="@user.UserId">
+                                    <img class="UserImage" src="@user.ImageReference" />
+                                    <label class="Names"> @user.Name </label>
                                 </button>
-                            </form>                     
+                            </form>
+
+                            <input type="submit" class="FriendButton" value="Write" />
+                            &nbsp;
+                            @if (Model.mainUserId == Model.user.UserId)
+                            {
+                                @if (Model.friendPage)
+                                {
+                                    <input id="@user.UserId" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this, true)" />
+                                }
+                                else
+                                {
+                                    <input id="@user.UserId" type="submit" class="FriendButton" value="@Model.IsFriend(user.UserId)" onclick="CheckAction(this)" />
+                                }
+                            }
                         </div>
                         }
                     </div>
