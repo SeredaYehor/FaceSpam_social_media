@@ -92,6 +92,7 @@ namespace FaceSpam_social_media.Controllers
         {
             userProfileModel.GetUserInfo(context, id);
             userProfileModel.mainUserId = mainFormModels.user.UserId;
+            userProfileModel.isFriend = mainFormModels.IsFriend(id);
 
             return View("Main", userProfileModel);
         }
@@ -99,14 +100,38 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Friends(int id)
         {
             friendsModel.GetUserById(context, id);
+            if (friendsModel.allUsers.Count > 0)
+            {
+                friendsModel.allUsers.Clear();
+            }
+            friendsModel.friendPage = true;
+            friendsModel.mainUserId = mainFormModels.user.UserId;
+            return View(friendsModel);
+        }
+
+        public IActionResult UserList()
+        {
+            friendsModel.GetAllUsers(context);
+            friendsModel.friendPage = false;
             friendsModel.mainUserId = mainFormModels.user.UserId;
 
-            return View(friendsModel);
+            return View("Friends", friendsModel);
         }
 
         public void DeleteFriend(int id)
         {
+            userProfileModel.isFriend = mainFormModels.IsFriend(id);
+
             friendsModel.DeleteFriend(context, id);
+            mainFormModels.GetFriends(context);
+        }
+
+        public void AddFriend(int id)
+        {
+            userProfileModel.isFriend = mainFormModels.IsFriend(id);
+
+            friendsModel.AddFriend(context, id);
+            mainFormModels.GetFriends(context);
         }
 
         [HttpPost]
