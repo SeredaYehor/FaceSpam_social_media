@@ -51,6 +51,7 @@
                     AddNewPost(user["item1"], text, user["item2"], formData.get('file'));
                 }
                 $("#Browse").text("Browse");
+                formData = new FormData();
             }
         });
     })
