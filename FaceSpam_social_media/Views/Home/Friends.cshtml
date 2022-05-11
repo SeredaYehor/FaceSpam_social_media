@@ -5,8 +5,8 @@
 
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
 
-    string friendReference = "/Home/Friends";
-    string usersReference = "/Home/UserList";
+    string friendPage = "/Home/Friends";
+    string usersPage = "/Home/UserList";
 }
 
 <script src="/lib/jquery/dist/jquery.js"></script>
@@ -47,8 +47,11 @@
                 <div style="display: flex; flex-direction: row; margin-top: 10px; background-color: #3485FF;">
 
                     <b> <label class="FriendsLabel"> @(Model.friendPage ? "Friends  " : "All users") </label> </b>
-                    <form method="post" action="@(Model.friendPage ? usersReference : friendReference)">
-                        <button type="submit" name="id" value="@Model.mainUserId" class="AddFriendButton"><img class="AddFriendIcon" src="~/Images/add-user.png" /></button>
+
+                    <form method="post" action="@(Model.friendPage ? usersPage : friendPage)">
+                        <button type="submit" name="id" value="@Model.mainUserId" class="AddFriendButton">
+                        <img class="AddFriendIcon" src="@(Model.friendPage ? "../Images/people.png" : "../Images/friends.png")"/>
+                        </button>
                     </form>
 
                     <form action="SearchFriend">
