@@ -100,8 +100,8 @@ namespace FaceSpam_social_media.Controllers
             return result;
         }
 
-        public User GetUser() {
-
+        public User GetUser() 
+        {
             return mainFormModels.executor;
         }
 
@@ -130,26 +130,34 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Friends(int id)
         {
             friendsModel.GetUserById(context, id);
+            ///Incapsulate this if in your class 
             if (friendsModel.allUsers.Count > 0)
             {
                 friendsModel.allUsers.Clear();
             }
+            ///
+            
+            ///Incapsulate this lines in GetAllUser function
             friendsModel.friendPage = true;
             friendsModel.mainUserId = mainFormModels.executor.UserId;
+            ///
             return View(friendsModel);
         }
 
         public IActionResult UserList()
         {
             friendsModel.GetAllUsers(context);
+            //Incapsulate this lines in GetAllUser function
             friendsModel.friendPage = false;
             friendsModel.mainUserId = mainFormModels.user.UserId;
+            //
 
             return View("Friends", friendsModel);
         }
 
         public void DeleteFriend(int id)
         {
+            //Try to optimize it with new mainFormModel class from Dev 
             userProfileModel.isFriend = mainFormModels.IsFriend(id);
 
             friendsModel.DeleteFriend(context, id);
@@ -158,6 +166,7 @@ namespace FaceSpam_social_media.Controllers
 
         public void AddFriend(int id)
         {
+            //Try to optimize it with new mainFormModel class from Dev 
             userProfileModel.isFriend = mainFormModels.IsFriend(id);
 
             friendsModel.AddFriend(context, id);
