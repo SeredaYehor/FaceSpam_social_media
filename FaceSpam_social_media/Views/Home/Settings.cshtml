@@ -16,24 +16,30 @@
         <div class="bg bg3"></div>
         <div class="Wrapper">
             <div class="Navigation">
-            @foreach (string controller in controllers)
-            {
-                @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                @foreach (string controller in controllers)
                 {
-                    <input type="submit" class="Button" value=@controller />
+                    @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                    {
+                        <input type="submit" class="Button" value=@controller />
+                    }
                 }
-            }
+                @if (Model.user.IsAdmin == true)
+                {
+                    @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
+                    {
+                        <input type="submit" class="Button" value="Admin" />
+                    }
+                }
+                <div class="AdvertisementText">
+                    Advertisement
+                </div>
 
-            <div class="AdvertisementText">
-                Advertisement
-            </div>
-
-            <div>
-                <div class="AdvertisementImage">
-                    <img src="~/Images/AdvertisementTest.png" />
+                <div>
+                    <div class="AdvertisementImage">
+                        <img src="~/Images/AdvertisementTest.png" />
+                    </div>
                 </div>
             </div>
-        </div>
         
             <div class="SettingsMainPage">
                 <div class="SettingsName">Settings</div>

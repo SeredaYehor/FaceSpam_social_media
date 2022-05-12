@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FaceSpam_social_media.DbModels;
 
 namespace FaceSpam_social_media.Models
 {
     public class PostCommentsModel
     {
-        public DbModels.User user = new DbModels.User();
-        public DbModels.Post post = new DbModels.Post();
-        public List<DbModels.User> users = new List<DbModels.User>();
+        public User user = new User();
+        public Post post = new Post();
+        public List<User> users = new List<User>();
 
-        public void GetComments(DbModels.mydbContext context)
+        public int mainUserId;
+        public void GetComments(mydbContext context, int postId)
         {
+            post = context.Posts.Where(x => x.PostId == postId).FirstOrDefault();
             post.Messages = context.Messages.Where(x => x.PostPostId == post.PostId).ToList();
             post.UserUser = context.Users.Where(x=>x.UserId == post.UserUserId).FirstOrDefault();
 
@@ -22,9 +25,19 @@ namespace FaceSpam_social_media.Models
             }
         }
 
-        public void AddComment(DbModels.mydbContext context, string message)
+        public int RemoveComment(mydbContext context, int commentId)
         {
-            DbModels.Message newMessage = new DbModels.Message();
+            int result = -1;
+            Message remove = context.Messages.Where(x => x.MessageId == commentId).First();
+            context.Messages.Remove(remove);
+            result = context.SaveChanges();
+            user.Messages.Remove(remove);
+            return result;
+        }
+
+        public int AddComment(mydbContext context, string message)
+        {
+            Message newMessage = new Message();
             newMessage.PostPostId = post.PostId;
             newMessage.UserUserId = user.UserId;
             newMessage.Text = message;
@@ -32,6 +45,7 @@ namespace FaceSpam_social_media.Models
 
             context.Messages.Add(newMessage);
             context.SaveChanges();
+            return newMessage.MessageId;
         }
     }
 }

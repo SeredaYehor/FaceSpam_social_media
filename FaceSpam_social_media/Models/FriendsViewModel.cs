@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FaceSpam_social_media.DbModels;
 
 namespace FaceSpam_social_media.Models
 {
     public class FriendsViewModel
     {
-
-        public DbModels.User user;
-        public List<DbModels.User> friends;
+        public User user;
+        public List<User> friends;
         public List<DbModels.User> allUsers = new List<DbModels.User>();
         public int mainUserId;
-
+      
         public bool friendPage;
 
-        public void GetUserById(DbModels.mydbContext context, int id)
+        public void GetUserById(mydbContext context, int id)
         {
             user = context.Users.Where(x => x.UserId == id).FirstOrDefault();
 
@@ -23,15 +23,16 @@ namespace FaceSpam_social_media.Models
                 .Select(x => x.FriendNavigation).ToList();
         }
 
-        public void GetAllUsers(DbModels.mydbContext context)
+        public void GetAllUsers(mydbContext context)
         {
             allUsers = context.Users.ToList();
             allUsers.Remove(allUsers.Where(x=>x.UserId == mainUserId).First());
         }
 
-        public void DeleteFriend(DbModels.mydbContext context, int id)
+        public void DeleteFriend(mydbContext context, int id)
+
         {
-            DbModels.Friend friend = new DbModels.Friend();
+            Friend friend = new Friend();
             friend = context.Friends
                 .Where(x=>x.FriendId == id && x.UserUserId==user.UserId).FirstOrDefault();
 

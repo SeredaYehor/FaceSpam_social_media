@@ -28,7 +28,13 @@
                     <input type="submit" class="Button" value=@controller />
                 }
             }
-
+            @if (Model.user.IsAdmin == true)
+            {
+                @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value="Admin" />
+                }
+            }
             <div class="AdvertisementText">
                 Advertisement
             </div>

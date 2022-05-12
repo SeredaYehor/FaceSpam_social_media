@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using FaceSpam_social_media.DbModels;
 
 namespace FaceSpam_social_media
 {
     public class Main
     {
-        public DbModels.User user;
-        public List<DbModels.User> friends;
+        public User user;
+        public User executor;
+        public List<User> friends;
+        public string message { get; set; }
 
-        // this field will be used to chech the opened user page
-        // as a result view will be changed, if mainUserId is eqhal to user.UserID 
-        public int mainUserId;
-        public int AddPost(DbModels.mydbContext context, string message, string reference)
+        public int AddPost(mydbContext context, string message, string reference)
         {
-            DbModels.Post newPost = new DbModels.Post();
+            Post newPost = new Post();
             newPost.Text = message;
             newPost.UserUserId = user.UserId;
             newPost.DatePosting = DateTime.Now;
@@ -29,10 +28,26 @@ namespace FaceSpam_social_media
             return newPost.PostId;
         }
 
-        public int RemovePost(DbModels.mydbContext context, int postId)
+        private void RemoveChildRows(mydbContext context, int postId, bool removeLikes)
+        {
+            if(removeLikes)
+            {
+                List<Like> likesRemove = context.Likes.Where(x => x.PostPostId == postId).ToList();
+                context.Likes.RemoveRange(likesRemove);
+            }
+            else
+            {
+                List<Message> messagesRemove = context.Messages.Where(x => x.PostPostId == postId).ToList();
+                context.Messages.RemoveRange(messagesRemove);
+            }
+            context.SaveChanges();
+        }
+        public int RemovePost(mydbContext context, int postId)
         {
             int entries = 1;
-            DbModels.Post remove = context.Posts.Where(x => x.PostId == postId && x.UserUserId == user.UserId)
+            RemoveChildRows(context, postId, false);
+            RemoveChildRows(context, postId, true);
+            Post remove = context.Posts.Where(x => x.PostId == postId && x.UserUserId == user.UserId)
                 .First();
             context.Posts.Remove(remove);
             entries = context.SaveChanges();
@@ -40,9 +55,9 @@ namespace FaceSpam_social_media
             return entries;
         }
 
-        public void GetLikes(DbModels.mydbContext context)
+        public void GetLikes(mydbContext context)
         {
-            user.Likes = context.Likes.Where(x => x.UserUserId == user.UserId).ToList();
+            user.Likes = context.Likes.Where(x => x.PostPost.UserUserId == user.UserId).ToList();
         }
 
         public int CountLikes(int postId)
@@ -55,63 +70,69 @@ namespace FaceSpam_social_media
             return user.Likes.Any(x => x.UserUserId == userId && x.PostPostId == postId);
         }
 
-        public void UpdatePostLike(DbModels.mydbContext context, int postId)
+        public void UpdatePostLike(mydbContext context, int postId)
         {
-            if(CheckLike(user.UserId, postId))
+            int userId = executor.UserId;
+            bool liked = CheckLike(userId, postId);
+            if (liked)
             {
                 context.Likes.Remove(context.Likes
-                    .Where(x => x.UserUserId == user.UserId && x.PostPostId == postId).First());
+                    .Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
                 context.SaveChanges();
                 user.Likes.Remove(user.Likes
-                    .Where(x => x.UserUserId == user.UserId && x.PostPostId == postId).First());
+                    .Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
             }
             else
             {
-                DbModels.Like like = new DbModels.Like() { UserUserId = user.UserId, PostPostId = postId };
+                Like like = new Like() { UserUserId = userId, PostPostId = postId };
                 context.Likes.Add(like);
                 context.SaveChanges();
                 user.Likes.Add(like);
             }
         }
 
-        public void GetUser(DbModels.mydbContext context, string name, string password)
+        public void GetUser(mydbContext context, ref User current, int userId, string name = null, string password = null)
         {
-            user = context.Users.Where(x => x.Name == name && x.Password == password)
+            if (userId != -1)
+            {
+                current = context.Users.Where(x => x.UserId == userId).FirstOrDefault();
+            }
+            else
+            {
+                current = context.Users.Where(x => x.Name == name && x.Password == password)
                 .FirstOrDefault();
-
-            mainUserId = user.UserId;
-            user.Password = null;
+            }
+            current.Password = "Nice try, stupid litle dum-dummy";
         }
 
-        public void GetPosts(DbModels.mydbContext context)
+        public void GetPosts(mydbContext context)
         {
             user.Posts = context.Posts.Where(x => x.UserUser == user).ToList();
         }
 
-        public void GetFriends(DbModels.mydbContext context)
+        public void GetFriends(mydbContext context)
         {
             friends = context.Friends.Where(x => x.UserUserId == user.UserId)
                 .Select(x => x.FriendNavigation).ToList();
         }
 
-        public void GetMainUserInfo(DbModels.mydbContext context, string name, string password)
+        public void GetUserInfo(mydbContext context, bool friendDashboard, int userId, string name = null, string password = null)
         {
-            GetUser(context, name, password);
+            GetUser(context, ref user, userId, name, password);
+            if (!friendDashboard)
+            {
+                executor = user;
+            }
             GetPosts(context);
             GetFriends(context);
             GetLikes(context);
         }
 
-        // this function gets user info by id
-        // password is cleaned
-        public void GetUserInfo(DbModels.mydbContext context, int id)
+        public void UpdateData(User change)
         {
-            user = context.Users.Where(x => x.UserId == id).FirstOrDefault();
-            GetPosts(context);
-            GetFriends(context);
-            GetLikes(context);
-
-            user.Password = null;
+            executor.Name = change.Name;
+            executor.Description = change.Description;
+            executor.Email = change.Email;
         }
 
         // function is used to learn is friend chosen person or not
