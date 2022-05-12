@@ -251,7 +251,13 @@ namespace FaceSpam_social_media.DbModels
                     .HasMaxLength(100)
                     .HasColumnName("Image_reference");
 
-                entity.Property(e => e.IsAdmin).HasColumnName("Is_admin");
+                entity.Property(e => e.IsAdmin)
+                    .HasMaxLength(1)
+                    .HasColumnName("Is_admin");
+
+                entity.Property(e => e.IsBanned)
+                    .HasMaxLength(1)
+                    .HasColumnName("Is_banned");
 
                 entity.Property(e => e.Name)
                     .IsRequired()

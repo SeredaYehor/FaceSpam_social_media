@@ -4,6 +4,8 @@
 <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
 
 <script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+</script>
 <script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
 
 @model Main
@@ -27,7 +29,13 @@
                     <input type="submit" class="Button" value=@controller />
                 }
             }
-
+            @if (Model.executor.IsAdmin == true)
+            {
+                @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value="Admin" />
+                }
+            }
             <div class="AdvertisementText">
                 Advertisement
             </div>
@@ -43,7 +51,10 @@
         <div class="AvatarAndFriends">
             <div class="UserImage">
                 <img src="@Model.user.ImageReference" />
-                <input type="submit" class="EditProfile" value="Edit profile" />
+                @using (Html.BeginForm("Settings", "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="EditProfile" value="Edit profile" />
+                }
             </div>
 
             <div class="Friends">
@@ -74,7 +85,7 @@
             <div class="Dashboard">
                 @*Now textbox can send input data to controller and then clear it on widget*@
 
-                @if (Model.user.UserId == Model.mainUserId)
+                @if (Model.user.UserId == Model.executor.UserId)
                 {
                     @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "Post" })
                     <div style="vertical-align: 10px; margin-bottom: 15px; display: inline-block; width: 17%;">
@@ -88,38 +99,41 @@
                 <div class="DashboardList">
                     @foreach (FaceSpam_social_media.DbModels.Post post in Model.user.Posts)
                     {
-                    <div class="PostMessage">
-                        <img src="@Model.user.ImageReference" class="PostEllipse" />
-                        <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
-                        <img src="~/images/removeButton.png" class="RemovePost" id="@post.PostId" />
-                        <br />
-                        <label class="PostText">@post.Text</label>
-                        @if (post.ImageReference != null)
-                        {
-                            <div>
-                                <img src=@post.ImageReference style="width: 90%; margin-left: 15px;" />
-                            </div>
-                        }
-                        <div style="background-color:transparent; height:50px;">
-                            <div class="Likes" style="display: inline-block;">
+                        <div class="PostMessage">
+                            <img src="@Model.user.ImageReference" class="PostEllipse" />
+                            <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
+                            @if (Model.executor.UserId == Model.user.UserId || Model.executor.IsAdmin == true)
+                            {
+                                <img src="~/images/removeButton.png" class="RemovePost" id="@post.PostId" />
+                            }
+                            <br />
+                            <label class="PostText">@post.Text</label>
+                            @if (post.ImageReference != null)
+                            {
+                                <div>
+                                    <img src=@post.ImageReference style="width: 90%; margin-left: 15px;" />
+                                </div>
+                            }
+                            <div style="background-color:transparent; height:50px;">
+                                <div class="Likes" style="display: inline-block;">
 
-                                <form method="post" action="/Home/Comments">
-                                    @if (Model.CheckLike(Model.user.UserId, post.PostId))
-                                    {
-                                        <img src="~/images/heartRed.svg" class="HeartImage" id="@post.PostId" />
-                                    }
-                                    else
-                                    {
-                                        <img src="~/images/heart.svg" class="HeartImage" id="@post.PostId" />
-                                    }
-                                    <label class="LikeLabel">@Model.CountLikes(post.PostId)</label>
-                                    <img src="~/images/pencil.svg" />
-                                    <button class="CommentButton" name="id" value="@post.PostId" type="submit">comments</button>
-                                    <label class="Date">@post.DatePosting.ToString("dd.MM.yy")</label>
-                                </form>
+                                    <form method="post" action="/Home/Comments">
+                                        @if (Model.CheckLike(Model.executor.UserId, post.PostId))
+                                        {
+                                            <img src="~/images/heartRed.svg" class="HeartImage" id="@post.PostId" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/heart.svg" class="HeartImage" id="@post.PostId" />
+                                        }
+                                        <label class="LikeLabel">@Model.CountLikes(post.PostId)</label>
+                                        <img src="~/images/pencil.svg" />
+                                        <button class="CommentButton" name="id" value="@post.PostId" type="submit">comments</button>
+                                        <label class="Date">@post.DatePosting.ToString("dd.MM.yy")</label>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     }
                 </div>
             </div>
