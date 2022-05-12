@@ -40,6 +40,7 @@ function AddFriend(obj) {
 }
 
 function CheckAction(obj) {
+    //This switch should be changed to if statement
     switch (obj.value) {
         case "Remove":
             obj.value = "Pal up";
