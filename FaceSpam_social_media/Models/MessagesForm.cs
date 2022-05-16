@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using FaceSpam_social_media.DbModels;
 
@@ -11,24 +10,28 @@ namespace FaceSpam_social_media.Models
     {
         public User user = new User();
         public List<Chat> chats = new List<Chat>();
+        public List<User> members = new List<User>();
         public List<Message> chatMessages = new List<Message>();
+        public Chat selectedChat = new Chat();
+
         public string message { get; set; }
         public int currentChat { get; set; }
-        public void GetChatMessages(mydbContext context, int chatId)
+        public Chat GetChatMessages(mydbContext context, int chatId)
         {
             currentChat = chatId;
             chatMessages = context.Messages.Where(x => x.ChatChatId == currentChat)
                 .Include(x => x.UserUser).ToList();
+            members = context.ChatMembers.Where(x => x.ChatChatId == currentChat).Select(y => y.UserUser).ToList();
+            return chats.Where(x => x.ChatId == currentChat).First();
         }
 
         public int RemoveMessage(mydbContext context, int messageId)
         {
             int entries = 1;
-            Message remove = context.Messages.Where(x => x.MessageId == messageId && x.UserUserId == user.UserId)
-                .First();
+            Message remove = context.Messages.Where(x => x.MessageId == messageId).First();
             context.Messages.Remove(remove);
             entries = context.SaveChanges();
-            chatMessages.Remove(chatMessages.Where(x => x.MessageId == messageId && x.UserUserId == user.UserId).First());
+            chatMessages.Remove(chatMessages.Where(x => x.MessageId == messageId).First());
             return entries;
         }
 
@@ -49,6 +52,12 @@ namespace FaceSpam_social_media.Models
         {
             chats = context.ChatMembers.Where(x => x.UserUserId == user.UserId)
                 .Select(x => x.ChatChat).ToList();
+        }
+
+        public void SelectChat(mydbContext context, int chatId)
+        {
+            selectedChat = chats.Where(x => x.ChatId == chatId).First();
+            GetChatMessages(context, chatId);
         }
     }
 }
