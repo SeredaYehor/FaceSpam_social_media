@@ -112,6 +112,13 @@ namespace FaceSpam_social_media.Controllers
             return View(messages);
         }
 
+        public IActionResult GetChat(int chatId)
+        {
+            messages.user = mainFormModels.executor;
+            messages.SelectChat(context, chatId);
+            return View(messages);
+        }
+
         [HttpPost]
         public IActionResult Main()
         {
@@ -162,18 +169,30 @@ namespace FaceSpam_social_media.Controllers
             return (messages.user, id);
         }
 
-        public List<Message> GetChatMessages(int chatId)
+        public (List<Message>, Chat, int) GetChatMessages(int chatId)
         {
-            messages.GetChatMessages(context, chatId);
-            return messages.chatMessages;
+            Chat chat = messages.GetChatMessages(context, chatId);
+            return (messages.chatMessages, chat, messages.members.Count);
         }
         
+        public List<User> GetChatUsers()
+        {
+            return messages.members;
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         
+        public IActionResult Groups()
+        {
+            messages.user = mainFormModels.executor;
+            messages.GetChats(context);
+            return View(messages);
+        }
+
         public IActionResult Login()
         {
             return View();
