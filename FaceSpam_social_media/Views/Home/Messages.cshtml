@@ -60,19 +60,70 @@
             </div>
         </div>
 
-        <div class="Groups">
-            <div class="SearchField">
-                <input type="text" class="SearchTextBox" />
-                <img src="~/images/searchImg.png" class="SearchImage" />
-            </div>
-            <div class="GroupsList" id="groups">
-                @foreach (FaceSpam_social_media.DbModels.Chat chat in Model.chats)
+        <div>
+            <div class="GroupInfo">
+                <div class="ImageNameGroup">
+                    <div class="GroupImage" style="background-size: cover; background-repeat: no-repeat;"></div>
+                    @if (Model.selectedChat != null)
+                    {
+                        <label class="GroupPanelName">@Model.selectedChat.ChatName</label>
+                    }
+                    else
+                    {
+                        <label class="GroupPanelName"></label>
+                    }
+                </div>
+                @if (Model.selectedChat != null)
                 {
-                    <div class="GroupPanel" id="@chat.ChatName">
-                        <img src="@chat.ImageReference" class="Ellipse" />
-                        <label class="GroupName" id="@chat.ChatId">@chat.ChatName</label>
-                    </div>
+                    <label class="GroupDescription">@Model.selectedChat.Description</label>
                 }
+                else
+                {
+                    <label class="GroupDescription"></label>
+                }
+                <div class="GroupStatus">
+                    <div style="display: flex; flex-direction: row; width: 40%; height: 50%">
+                        @if (Model.selectedChat != null)
+                        {
+                            <img src=@Model.selectedChat.ImageReference class="MembersImage" />
+                            <label class="MembersCounter"></label>
+                        }
+                        else
+                        {
+                            <img src="../Images/people.png" class="MembersImage" />
+                            <label class="MembersCounter">10</label>
+                        }
+                    </div>
+                    <input type="submit" class="QuitGroup" value="Quit" />
+                </div>
+            </div>
+
+            <div class="Groups">
+                <div class="SearchField">
+                    <input type="text" class="SearchTextBox" />
+                    <img src="~/images/searchImg.png" class="SearchImage" />
+                </div>
+                <div class="GroupsList" id="groups">
+                    @foreach (FaceSpam_social_media.DbModels.Chat chat in Model.chats)
+                    {
+                        <div class="GroupPanel" id="@chat.ChatName">
+                            <img src="@chat.ImageReference" class="Ellipse" />
+                            <label class="GroupName" id="@chat.ChatId">@chat.ChatName</label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Popup">
+        <div class="PopupNavigation">
+            <img src="../images/removeButton.png" style="margin: 5px 5px; width: 30px; height: 30px;" id="ClosePopup" />
+            <label style="color: blue; font-weight: 600; font-size: 24px; margin-left: 10px;">Chat members</label>
+        </div>
+        <div class="MembersList">
+            <div class="MemberPanel">
+                <img src="../images/Cyberdemon.png" class="Ellipse" />
+                <label class="GroupName" id="1">Dorenskiy</label>
             </div>
         </div>
     </div>
