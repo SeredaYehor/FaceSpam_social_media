@@ -9,11 +9,126 @@
         margin-right: 50px;
     }
 
+.Popup {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    border-radius: 5px;
+    width: 300px;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    background: white;
+    animation-name: animateright;
+    animation-duration: 1s;
+}
+
+.PopupNavigation {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+    background: white;
+}
+
+.MembersList {
+    width: 100%;
+    height: calc(100% - 50px);
+    background: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.MemberPanel {
+    width: 100%;
+    height: 70px;
+    border-radius: 5px;
+    background: #3485FF;
+    display: flex;
+    flex-direction: row;
+    margin-top: 2px;
+}
+
+@-webkit-keyframes animateright {
+    from {
+        right: -300px;
+        opacity: 0
+    }
+
+    to {
+        right: 0;
+        opacity: 1
+    }
+}
+
+.ImageNameGroup {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 50%
+}
+
+.GroupPanelName {
+    align-items: center;
+    font-size: 18px;
+    color: white;
+    display: flex;
+}
+
+.GroupStatus {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 20%
+}
+
+.MembersCounter {
+    margin-left: -30px;
+    margin-top: 5px;
+    color: white;
+    font-size: 30px;
+}
+
+.MembersImage {
+    margin-left: 5px;
+    width: 50px;
+    height: 50px;
+}
+
+.GroupDescription {
+    overflow: hidden;
+    word-wrap: break-word;
+    height: 70px;
+    width: 90%;
+    margin-left: 5px;
+    font-size: 14px;
+    color: grey;
+}
+
+.QuitGroup {
+    box-sizing: border-box;
+    border-radius: 20px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    border: none;
+    color: #3485FF;
+    background: white;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+    transition: .5s;
+    border: none;
+}
+
 .Groups {
     width: 300px;
     height: 650px;
     background: #3485FF;
     border-radius: 5px;
+    margin-top: 10px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
@@ -34,6 +149,21 @@
     border-radius: 5px;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.GroupInfo {
+    width: 300px;
+    height: 300px;
+    background: #3485FF;
+    border-radius: 5px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.GroupImage {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    margin: 5px 5px;
 }
 
 .GroupPanel {
