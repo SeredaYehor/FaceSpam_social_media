@@ -1,5 +1,33 @@
 ﻿$(document).ready(function () {
-        $(".MessageArea").hide();
+    $(".MessageArea").hide();
+    $(".GroupInfo").hide();
+    $(".Popup").hide();
+
+    $(".GroupStatus").click(function () {
+        $(".MembersList").empty();
+        $.ajax({
+            type: "GET",
+            url: '/Home/GetChatUsers',
+            success: function (members) {
+                for (var i = 0; i < members.length; i++) {
+                    DisplayMember(members[i]["userId"], members[i]["name"], members[i]["imageReference"]);
+                }
+            }
+        });
+        $(".Popup").show();
+    })
+
+    function DisplayMember(id, name, image) {
+        var panel = '<div class="MemberPanel">' +
+            '<img src="' + image + '" class="Ellipse" />' +
+            '<label class="GroupName" id="' + id + '">' + name + '</label>';
+        $(".MembersList").append(panel);
+    }
+
+    $("#ClosePopup").click(function () {
+        $(".Popup").hide();
+    })
+
 
         $(".ChatMessages").on("click", ".RemoveMessage", function () {
             var id = $(this).attr("id");
@@ -47,18 +75,34 @@
                 async: false,
                 data: { chatId: id },
                 success: function (messages) { //get array object of Message models
-                    for (var index = 0; index < messages.length; index++) { //adding all messages for this chat
-                        var messageId = messages[index]["messageId"].toString();                      
-                        var dt = new Date(messages[index]["dateSending"]);
+                    SetGroupPanel(messages["item2"], messages["item3"]);
+                    for (var index = 0; index < messages["item1"].length; index++) { //adding all messages for this chat
+                        var messageId = messages["item1"][index]["messageId"].toString();
+                        var dt = new Date(messages["item1"][index]["dateSending"]);
                         var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
-                        var text = messages[index]["text"].toString();
-                        var userName = messages[index]["userUser"]["name"].toString();
-                        var userImg = messages[index]["userUser"]["imageReference"].toString();
+                        var text = messages["item1"][index]["text"].toString();
+                        var userName = messages["item1"][index]["userUser"]["name"].toString();
+                        var userImg = messages["item1"][index]["userUser"]["imageReference"].toString();
                         GetMessageObj(messageId, userName, userImg, time, text);
                     }
                 }
             });
         }
+
+    function SetGroupPanel(groupInfo, members) {
+        $(".GroupInfo").children(".ImageNameGroup").children(".GroupImage").attr("style",
+            "background: url(\'" + groupInfo["imageReference"].toString() + "\'); background-size: cover; background-repeat: no-repeat;");
+        $(".GroupPanelName").text(groupInfo["chatName"].toString());
+        $(".GroupDescription").text(groupInfo["description"]);
+        if (members > 2) {
+            $(".MembersCounter").text(members);
+            $(".GroupStatus").show();
+        }
+        else {
+            $(".GroupStatus").hide();
+        }
+        $(".GroupInfo").attr("style", "");
+    }
 
         function SendMessages(message) {
             $.ajax({ //async call of controller
