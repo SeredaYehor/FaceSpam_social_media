@@ -9,10 +9,10 @@ namespace FaceSpam_social_media.Models
     public class FriendsViewModel
     {
         public User user;
-        public List<User> friends;
-        public List<DbModels.User> allUsers = new List<DbModels.User>();
+        public List<User> friends = new List<User>();
+        public List<User> allUsers = new List<User>();
         public int mainUserId;
-      
+
         public bool friendPage;
 
         public void GetUserById(mydbContext context, int id)
@@ -25,25 +25,23 @@ namespace FaceSpam_social_media.Models
 
         public void GetAllUsers(mydbContext context)
         {
-            allUsers = context.Users.ToList();
-            allUsers.Remove(allUsers.Where(x=>x.UserId == mainUserId).First());
+            allUsers = context.Users.Where(x=>x.UserId != mainUserId).ToList();
         }
 
         public void DeleteFriend(mydbContext context, int id)
-
         {
             Friend friend = new Friend();
             friend = context.Friends
-                .Where(x=>x.FriendId == id && x.UserUserId==user.UserId).FirstOrDefault();
+                .Where(x=>x.FriendId == id && x.UserUserId==mainUserId).FirstOrDefault();
 
             context.Friends.Remove(friend);
             context.SaveChanges();
-            friends.Remove(friends.Where(x=>x.UserId==id).FirstOrDefault());
+            friends.Remove(friends.Where(x => x.UserId == id).FirstOrDefault());
         }
 
-        public void AddFriend(DbModels.mydbContext context, int id)
+        public void AddFriend(mydbContext context, int id)
         {
-            DbModels.Friend newFriend = new DbModels.Friend();
+            Friend newFriend = new Friend();
             newFriend.UserUserId = mainUserId;
             newFriend.FriendId = id;
 
@@ -67,6 +65,12 @@ namespace FaceSpam_social_media.Models
             }         
 
             return result;
+        }
+
+        public void GetMainFormData(Main mainModel)
+        {
+            friends = mainModel.friends;
+            mainUserId = mainModel.executor.UserId;
         }
     }
 }
