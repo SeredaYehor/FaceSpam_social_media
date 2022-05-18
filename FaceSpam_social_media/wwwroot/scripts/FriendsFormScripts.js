@@ -14,6 +14,7 @@
 function DeleteFriend(obj, friendPage = false) {
 
     var user = obj.id;
+    alert(user);
     $.ajax({
         type: "GET",
         url: "/Home/DeleteFriend",
@@ -40,15 +41,12 @@ function AddFriend(obj) {
 }
 
 function CheckAction(obj) {
-    //This switch should be changed to if statement
-    switch (obj.value) {
-        case "Remove":
-            obj.value = "Pal up";
-            DeleteFriend(obj);
-            break;
-        case "Pal up":
-            obj.value = "Remove";
-            AddFriend(obj);
-            break;
-    }   
+    if (obj.value == "Remove") {
+        obj.value = "Pal up";
+        DeleteFriend(obj);
+    }
+    else if (obj.value == "Pal up") {
+        obj.value = "Remove";
+        AddFriend(obj);
+    }
 }
