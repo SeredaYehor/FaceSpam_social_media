@@ -14,7 +14,6 @@
 function DeleteFriend(obj, friendPage = false) {
 
     var user = obj.id;
-    alert(user);
     $.ajax({
         type: "GET",
         url: "/Home/DeleteFriend",
@@ -45,7 +44,7 @@ function CheckAction(obj) {
         obj.value = "Pal up";
         DeleteFriend(obj);
     }
-    else if (obj.value == "Pal up") {
+    else {
         obj.value = "Remove";
         AddFriend(obj);
     }
