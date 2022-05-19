@@ -33,7 +33,7 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Admin()
         {
-            if(usersManagment.Init(context, mainFormModels.executor))
+            if (usersManagment.Init(context, mainFormModels.executor))
             {
                 return View(usersManagment);
             }
@@ -59,7 +59,7 @@ namespace FaceSpam_social_media.Controllers
         public int RemovePost(int postId)
         {
             int result = 0;
-            if(mainFormModels.executor.IsAdmin == true)
+            if (mainFormModels.executor.IsAdmin == true)
             {
                 result = mainFormModels.RemovePost(context, postId);
             }
@@ -71,7 +71,7 @@ namespace FaceSpam_social_media.Controllers
         public int AdminRemovePost(int postId)
         {
             int result = 0;
-            if(mainFormModels.executor.IsAdmin == true)
+            if (mainFormModels.executor.IsAdmin == true)
             {
                 result = mainFormModels.RemovePost(context, postId);
             }
@@ -100,8 +100,8 @@ namespace FaceSpam_social_media.Controllers
             return result;
         }
 
-        public User GetUser() {
-
+        public User GetUser()
+        {
             return mainFormModels.executor;
         }
 
@@ -117,26 +117,46 @@ namespace FaceSpam_social_media.Controllers
         {
             mainFormModels.user = mainFormModels.executor;
             mainFormModels.GetFriends(context);
+            friendsModel.GetMainFormData(mainFormModels);
+
             return View(mainFormModels);
         }
 
         [HttpPost]
-        public IActionResult UserProfile(int id) 
+        public IActionResult UserProfile(int id)
         {
             mainFormModels.GetUserInfo(context, true, id);
+
             return View("Main", mainFormModels);
         }
 
         public IActionResult Friends(int id)
         {
             friendsModel.GetUserById(context, id);
-            friendsModel.mainUserId = mainFormModels.executor.UserId;
+            friendsModel.allUsers.Clear();
+            friendsModel.friendPage = true;
+
             return View(friendsModel);
+        }
+
+        public IActionResult UserList()
+        {
+            friendsModel.GetAllUsers(context);
+            friendsModel.friendPage = false;
+
+            return View("Friends", friendsModel);
         }
 
         public void DeleteFriend(int id)
         {
             friendsModel.DeleteFriend(context, id);
+            mainFormModels.GetFriends(context);
+        }
+
+        public void AddFriend(int id)
+        {
+            friendsModel.AddFriend(context, id);
+            mainFormModels.GetFriends(context);
         }
 
         public int ChangeLike(int postId, bool friendLike)
@@ -167,13 +187,13 @@ namespace FaceSpam_social_media.Controllers
             messages.GetChatMessages(context, chatId);
             return messages.chatMessages;
         }
-        
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        
+
         public IActionResult Login()
         {
             return View();
@@ -191,7 +211,7 @@ namespace FaceSpam_social_media.Controllers
             mainFormModels.UpdateData(settingsModel.user);
             return View("Main", mainFormModels);
         }
-        
+
         public IActionResult Authentication()
         {
             return View();
@@ -223,6 +243,10 @@ namespace FaceSpam_social_media.Controllers
             if (verifyResult)
             {
                 mainFormModels.GetUserInfo(context, false, -1, login, password);
+                mainFormModels.user = mainFormModels.executor;
+                mainFormModels.GetFriends(context);
+                friendsModel.GetMainFormData(mainFormModels);
+
                 if (mainFormModels.user.IsBanned == true)
                 {
                     return Content("Oi, you have been banned.");

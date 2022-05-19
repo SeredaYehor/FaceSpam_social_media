@@ -134,5 +134,23 @@ namespace FaceSpam_social_media
             executor.Description = change.Description;
             executor.Email = change.Email;
         }
+
+        // function is used to learn is friend chosen person or not
+
+        public bool isFriend;
+
+        public bool IsFriend(int id)
+        {
+            foreach (var user in friends)
+            {
+                if (user.UserId == id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public string message { get; set; }
     }
 }
