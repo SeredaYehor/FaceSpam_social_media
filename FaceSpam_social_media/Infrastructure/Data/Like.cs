@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FaceSpam_social_media.DbModels
+namespace FaceSpam_social_media.Infrastructure.Data
 {
     public partial class Like
     {
-        public int LikeId { get; set; }
+        public int Id/*LikeId*/ { get; set; }
         public int UserUserId { get; set; }
         public int? PostPostId { get; set; }
         public int? MessageMessageId { get; set; }

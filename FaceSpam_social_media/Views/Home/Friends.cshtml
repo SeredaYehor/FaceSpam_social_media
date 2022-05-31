@@ -61,13 +61,13 @@
                         {
                         <div id="@friend.Name" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
                             <form method="post" action="/Home/UserProfile">
-                                <button class="EnterUserProfile" type="submit" name="id" value="@friend.UserId">
+                                <button class="EnterUserProfile" type="submit" name="id" value="@friend.Id">
                                     <img class="UserImage" src="@friend.ImageReference" />
                                         <label class="Names"> @friend.Name </label>
 
-                                        @if(Model.mainUserId == Model.user.UserId) 
+                                        @if(Model.mainUserId == Model.user.Id) 
                                         {
-                                            <input id="@friend.UserId" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this)" />
+                                            <input id="@friend.Id" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this)" />
                                         }
                                         &nbsp;
                                         @*Write button does not work. When all formls will be ready it will get the link*@

@@ -60,7 +60,7 @@
                 <img src="~/images/searchImg.png" class="SearchImage" />
             </div>
             <div class="GroupsList" id="groups">
-                @foreach (FaceSpam_social_media.DbModels.Chat chat in Model.chats)
+                @foreach (FaceSpam_social_media.Infrastructure.Data.Chat chat in Model.chats)
                 {
                     <div class="GroupPanel" id="@chat.ChatName">
                         <img src="@chat.ImageReference" class="Ellipse" />

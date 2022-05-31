@@ -2,33 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FaceSpam_social_media.Infrastructure.Data;
+using FaceSpam_social_media.Infrastructure.Repository;
 
 namespace FaceSpam_social_media.Models
 {
     public class FriendsViewModel
     {
+        private readonly IRepository _repository;
 
-        public DbModels.User user;
-        public List<DbModels.User> friends;
+        public FriendsViewModel(IRepository repository)
+        {
+            _repository = repository;
+        }
+
+        public User user;
+        public List<User> friends;
         public int mainUserId;
 
-        public void GetUserById(DbModels.mydbContext context, int id)
+        public void GetUserById(MVCDBContext context, int id)
         {
-            user = context.Users.Where(x => x.UserId == id).FirstOrDefault();
+            user = context.Users.Where(x => x.Id == id).FirstOrDefault();
 
-            friends = context.Friends.Where(x => x.UserUserId == user.UserId)
+            friends = context.Friends.Where(x => x.UserUserId == user.Id)
                 .Select(x => x.FriendNavigation).ToList();
         }
 
-        public void DeleteFriend(DbModels.mydbContext context, int id)
+        public void DeleteFriend(MVCDBContext context, int id)
         {
-            DbModels.Friend friend = new DbModels.Friend();
+            Friend friend = new Friend();
             friend = context.Friends
-                .Where(x=>x.FriendId == id && x.UserUserId==user.UserId).FirstOrDefault();
+                .Where(x=>x.FriendId == id && x.UserUserId==user.Id).FirstOrDefault();
 
             context.Friends.Remove(friend);
             context.SaveChanges();
-            friends.Remove(friends.Where(x=>x.UserId==id).FirstOrDefault());
+            friends.Remove(friends.Where(x=>x.Id == id).FirstOrDefault());
         }
     }
 }

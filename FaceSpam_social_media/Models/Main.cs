@@ -2,22 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FaceSpam_social_media.Infrastructure.Data;
+using FaceSpam_social_media.Infrastructure.Repository;
 
 namespace FaceSpam_social_media
 {
     public class Main
     {
-        public DbModels.User user;
-        public List<DbModels.User> friends;
+        public IRepository _repository;
+
+        public Main()
+        {
+        }
+        public User user;
+        public List<User> friends;
 
         // this field will be used to chech the opened user page
         // as a result view will be changed, if mainUserId is eqhal to user.UserID 
         public int mainUserId;
-        public int AddPost(DbModels.mydbContext context, string message, string reference)
+
+        public void UpdateMainUserInfo(string name, string email, string description)
         {
-            DbModels.Post newPost = new DbModels.Post();
+            user.Name = name;
+            user.Email = email;
+            user.Description = description;
+        }
+        public int AddPost(MVCDBContext context, string message, string reference)
+        {
+            Post newPost = new Post();
             newPost.Text = message;
-            newPost.UserUserId = user.UserId;
+            newPost.UserUserId = user.Id;
             newPost.DatePosting = DateTime.Now;
             if(reference != null)
             {
@@ -26,12 +40,13 @@ namespace FaceSpam_social_media
             context.Posts.Add(newPost);
             context.SaveChanges();
             user.Posts.Add(newPost);
-            return newPost.PostId;
+            return newPost.Id/*PostId*/;
         }
 
-        public void GetLikes(DbModels.mydbContext context)
+        public void GetLikes(/*MVCDBContext context*/)
         {
-            user.Likes = context.Likes.Where(x => x.UserUserId == user.UserId).ToList();
+            user.Likes = _repository.GetAll<Like>().Where(x => x.UserUserId == user.Id).ToList();
+            //user.Likes = context.Likes.Where(x => x.UserUserId == user.Id).ToList();
         }
 
         public int CountLikes(int postId)
@@ -44,61 +59,62 @@ namespace FaceSpam_social_media
             return user.Likes.Any(x => x.UserUserId == userId && x.PostPostId == postId);
         }
 
-        public void UpdatePostLike(DbModels.mydbContext context, int postId)
+        public void UpdatePostLike(MVCDBContext context, int postId)
         {
-            if(CheckLike(user.UserId, postId))
+            if(CheckLike(user.Id, postId))
             {
                 context.Likes.Remove(context.Likes
-                    .Where(x => x.UserUserId == user.UserId && x.PostPostId == postId).First());
+                    .Where(x => x.UserUserId == user.Id && x.PostPostId == postId).First());
                 context.SaveChanges();
                 user.Likes.Remove(user.Likes
-                    .Where(x => x.UserUserId == user.UserId && x.PostPostId == postId).First());
+                    .Where(x => x.UserUserId == user.Id && x.PostPostId == postId).First());
             }
             else
             {
-                DbModels.Like like = new DbModels.Like() { UserUserId = user.UserId, PostPostId = postId };
+                Like like = new Like() { UserUserId = user.Id, PostPostId = postId };
                 context.Likes.Add(like);
                 context.SaveChanges();
                 user.Likes.Add(like);
             }
         }
 
-        public void GetUser(DbModels.mydbContext context, string name, string password)
+        public void GetUser(string name, string password)
         {
-            user = context.Users.Where(x => x.Name == name && x.Password == password)
+            user = _repository.GetAll<User>().Where(x => x.Name == name && x.Password == password)
                 .FirstOrDefault();
 
-            mainUserId = user.UserId;
+            mainUserId = user.Id;
             user.Password = null;
         }
 
-        public void GetPosts(DbModels.mydbContext context)
+        public void GetPosts(/*MVCDBContext context*/)
         {
-            user.Posts = context.Posts.Where(x => x.UserUser == user).ToList();
+            user.Posts = _repository.GetAll<Post>().Where(x => x.UserUser == user).ToList();
+            //user.Posts = context.Posts.Where(x => x.UserUser == user).ToList();
         }
 
-        public void GetFriends(DbModels.mydbContext context)
+        public void GetFriends(MVCDBContext context)
         {
-            friends = context.Friends.Where(x => x.UserUserId == user.UserId)
+            friends = context.Friends.Where(x => x.UserUserId == user.Id)
                 .Select(x => x.FriendNavigation).ToList();
         }
 
-        public void GetMainUserInfo(DbModels.mydbContext context, string name, string password)
+        public void GetMainUserInfo(MVCDBContext context, string name, string password)
         {
-            GetUser(context, name, password);
-            GetPosts(context);
+            GetUser(name, password);
+            GetPosts(/*context*/);
             GetFriends(context);
-            GetLikes(context);
+            GetLikes(/*context*/);
         }
 
         // this function gets user info by id
         // password is cleaned
-        public void GetUserInfo(DbModels.mydbContext context, int id)
+        public void GetUserInfo(MVCDBContext context, int id)
         {
-            user = context.Users.Where(x => x.UserId == id).FirstOrDefault();
-            GetPosts(context);
+            user = _repository.GetAll<User>().Where(x => x.Id == id).FirstOrDefault();
+            GetPosts(/*context*/);
             GetFriends(context);
-            GetLikes(context);
+            GetLikes(/*context*/);
 
             user.Password = null;
         }

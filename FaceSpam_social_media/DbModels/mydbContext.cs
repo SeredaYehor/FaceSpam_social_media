@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -29,7 +29,7 @@ namespace FaceSpam_social_media.DbModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("server=127.0.0.1;user=root;password=Password;database=mydb", ServerVersion.Parse("8.0.25-mysql"));
+                optionsBuilder.UseMySql("server=127.0.0.1;user=root;password=password;database=mydb", ServerVersion.Parse("8.0.25-mysql"));
             }
         }
 
@@ -267,4 +267,4 @@ namespace FaceSpam_social_media.DbModels
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
-}
+}*/

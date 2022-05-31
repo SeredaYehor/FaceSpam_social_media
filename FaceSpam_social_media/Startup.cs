@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using FaceSpam_social_media.Extensions;
+using FaceSpam_social_media.Infrastructure.Repository;
+using FaceSpam_social_media.Services;
+using FaceSpam_social_media.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +17,7 @@ namespace FaceSpam_social_media
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -23,6 +28,9 @@ namespace FaceSpam_social_media
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSQL(Configuration);
+            services.AddScoped<IRepository, EntityFrameworkRepository>();
+            services.AddScoped<IUserService, UserService>();
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );

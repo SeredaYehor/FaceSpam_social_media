@@ -63,8 +63,8 @@
                     @foreach (var comment in Model.post.Messages)
                     {
                         <div style="display: flex; align-items: center; flex-direction: row">
-                            <img src="@Model.users.First(x=>x.UserId == comment.UserUserId).ImageReference" class="UserImage" />
-                            <label class="UserName"> @Model.users.First(x => x.UserId == comment.UserUserId).Name </label>
+                            <img src="@Model.users.First(x=>x.Id == comment.UserUserId).ImageReference" class="UserImage" />
+                            <label class="UserName"> @Model.users.First(x => x.Id == comment.UserUserId).Name </label>
                             <label class="Time"> @comment.DateSending.ToString("dd.MM.y HH:mm") </label>
                         </div>
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FaceSpam_social_media.DbModels
+namespace FaceSpam_social_media.Infrastructure.Data
 {
     public partial class Post
     {
@@ -13,7 +13,7 @@ namespace FaceSpam_social_media.DbModels
             Messages = new HashSet<Message>();
         }
 
-        public int PostId { get; set; }
+        public int Id/*PostId*/ { get; set; }
         public string Text { get; set; }
         public DateTime DatePosting { get; set; }
         public string ImageReference { get; set; }

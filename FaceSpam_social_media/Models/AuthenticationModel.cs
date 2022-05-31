@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FaceSpam_social_media.Infrastructure.Data;
+using FaceSpam_social_media.Infrastructure.Repository;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FaceSpam_social_media.Models
 {
     public class AuthenticationModel
     {
+        private readonly IRepository _repository;
+
+        public AuthenticationModel(IRepository repository)
+        {
+            _repository = repository;
+        }
+
         [Required(ErrorMessage ="Enter login.")]
         [StringLength(45, ErrorMessage = "The field must have between {2} and {1} characters.", MinimumLength = 4)]
         public string Login { get; set; }
@@ -28,23 +33,11 @@ namespace FaceSpam_social_media.Models
         [DataType(DataType.EmailAddress, ErrorMessage = "E-mail is not valid.")]
         public string Email { get; set; }
 
-        public bool Verify(DbModels.mydbContext context)
+        public bool Verify(string login, string email)
         {
-            bool result = context.Users.Any(x => x.Name == Login || x.Email == Email);
+            bool result = _repository.GetAll<User>().Any(u => u.Name == login || u.Email == email);
 
             return result;
-        }
-
-        public void CreateUser(string login, string password, string email, DbModels.mydbContext context)
-        {
-            DbModels.User send = new DbModels.User();
-            send.Name = login;
-            send.Password = password;
-            send.Email = email;
-            send.ImageReference = "../Images/DefaultUserImage.png";
-            context.Users.Add(send);
-            context.SaveChanges();
-
         }
     }
 

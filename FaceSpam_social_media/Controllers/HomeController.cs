@@ -10,25 +10,46 @@ using System.Web;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using FaceSpam_social_media.Infrastructure.Data;
+using FaceSpam_social_media.Services;
+using FaceSpam_social_media.Infrastructure.Repository;
 
 namespace FaceSpam_social_media.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IRepository _repository;
+        private readonly IUserService _userService;
 
         public static Main mainFormModels = new Main();
-        public static Main userProfileModel = new Main();
-        public DbModels.mydbContext context = new DbModels.mydbContext();
-        public static MessagesForm messages = new MessagesForm();
-        public static FriendsViewModel friendsModel = new FriendsViewModel();
-        public static PostCommentsModel commentsModel = new PostCommentsModel();
-        public static LoginModel loginModel = new LoginModel();
-        public static SettingsModel settingsModel = new SettingsModel();
-        public static AuthenticationModel authModel = new AuthenticationModel();
-        public HomeController(ILogger<HomeController> logger)
+        public static Main userProfileModel;
+        public MVCDBContext context = new MVCDBContext();
+        public static MessagesForm messages;
+        public static FriendsViewModel friendsModel;
+        public static PostCommentsModel commentsModel;
+        public static LoginModel loginModel;
+        public static SettingsModel settingsModel;
+        public static AuthenticationModel authModel;
+
+        /*public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+        }*/
+        public HomeController(ILogger<HomeController> logger, IUserService userService, IRepository repository)
+        {
+            _logger = logger;
+            _userService = userService;
+            _repository = repository;
+
+            mainFormModels._repository = repository;
+            //userProfileModel = new Main(repository);
+            messages = new MessagesForm(repository);
+            friendsModel = new FriendsViewModel(repository);
+            commentsModel = new PostCommentsModel(repository);
+            loginModel = new LoginModel(repository);
+            settingsModel = new SettingsModel(/*repository*/);
+            authModel = new AuthenticationModel(repository);
         }
 
         public IActionResult Index()
@@ -40,7 +61,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Comments(int id)
         { 
             commentsModel.user = mainFormModels.user;
-            commentsModel.post = context.Posts.Where(x => x.PostId == id).FirstOrDefault();
+            commentsModel.post = context.Posts.Where(x => x.Id/*PostId*/ == id).FirstOrDefault();
             commentsModel.GetComments(context);
 
             return View("Comments", commentsModel);
@@ -53,7 +74,7 @@ namespace FaceSpam_social_media.Controllers
             return View("Comments", commentsModel);
         }
 
-        public DbModels.User GetUser() {
+        public User GetUser() {
 
             return mainFormModels.user;
         }
@@ -75,7 +96,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult UserProfile(int id) 
         {
             userProfileModel.GetUserInfo(context, id);
-            userProfileModel.mainUserId = mainFormModels.user.UserId;
+            userProfileModel.mainUserId = mainFormModels.user.Id;
 
             return View("Main", userProfileModel);
         }
@@ -83,7 +104,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Friends(int id)
         {
             friendsModel.GetUserById(context, id);
-            friendsModel.mainUserId = mainFormModels.user.UserId;
+            friendsModel.mainUserId = mainFormModels.user.Id;
 
             return View(friendsModel);
         }
@@ -96,10 +117,7 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public IActionResult VerifyUserLogin(string login, string password)
         {
-            loginModel.Login = login;
-            loginModel.Password = password;
-
-            bool verifyResult = loginModel.Verify(context);
+            bool verifyResult = loginModel.Verify(login, password);
             if (verifyResult)
             {
                 mainFormModels.GetMainUserInfo(context, login, password);
@@ -115,7 +133,7 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
-        public (DbModels.User, int) AddPost(IFormFile file, string text)
+        public (User, int) AddPost(IFormFile file, string text)
         {
             string image_ref = null;
             if (file != null)
@@ -142,13 +160,13 @@ namespace FaceSpam_social_media.Controllers
             }
         }
 
-        public DbModels.User SendMessage(string textboxMessage)
+        public User SendMessage(string textboxMessage)
         {
             messages.SendMessage(context, textboxMessage);
             return messages.user;
         }
 
-        public List<DbModels.Message> GetChatMessages(int chatId)
+        public List<Message> GetChatMessages(int chatId)
         {
             messages.GetChatMessages(context, chatId);
             return messages.chatMessages;
@@ -172,39 +190,38 @@ namespace FaceSpam_social_media.Controllers
         }
         public IActionResult ChangeUserInfo(string email, string name, string description)
         {
-            settingsModel.ChangeUserInfo(context, email, name, description);
-            mainFormModels.user.Name = settingsModel.user.Name;
-            mainFormModels.user.Email = settingsModel.user.Email;
-            mainFormModels.user.Description = settingsModel.user.Description;
+            int id = mainFormModels.user.Id;
+            _userService.UpdateUser(id, name, email, description);
+            mainFormModels.UpdateMainUserInfo(settingsModel.user.Name, settingsModel.user.Email, settingsModel.user.Description);
 
             commentsModel.user = mainFormModels.user;
             friendsModel.user = mainFormModels.user;
 
             return View("Main", mainFormModels);
         }
-        
+
         public IActionResult Authentication()
         {
             return View();
         }
-
         [HttpPost]
-        public IActionResult VerifyUserAuthentication(string login, string password, string email)
+        public async Task <IActionResult> VerifyUserAuthentication(string login, string password, string email)
         {
-            authModel.Login = login;
-            authModel.Password = password;
-            authModel.Email = email;
-            bool repeatCheck = authModel.Verify(context);
-
+            bool repeatCheck = authModel.Verify(login, email);
             if (repeatCheck)
             {
                 return Content("This user is already registered.");
             }
-            else {
-                authModel.CreateUser(login, password, email, context);
+            else
+            {
+                string imageReference = "../Images/DefaultUserImage.png";
+                await _userService.AddUser(login, password, email, imageReference);
+
                 mainFormModels.GetMainUserInfo(context, login, password);
                 return View("Main", mainFormModels);
             }
         }
+        //
+
     }
 }
