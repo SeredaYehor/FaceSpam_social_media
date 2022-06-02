@@ -9,11 +9,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 85vh;
 }
 
 .FaceSpamLogo {
-    /* margin-right: 150px; */
-    margin-top: calc(1080px/7);
+    margin-top: 5vh;
 }
 
     .FaceSpamLogo img {
@@ -57,4 +57,15 @@ body {
     box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
     transition: .5s;
     border: none;
+}
+
+@media screen and (max-width: 990px){
+    .FaceSpamLogo img{
+        width: 350px;
+    }
+}
+@media screen and (max-width: 770px) {
+    .TextArea {
+        width: 350px;
+    }
 }
