@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace FaceSpam_social_media.Infrastructure.Data
 {
-    public partial class Message
+    public partial class Message : IEntity
     {
         public Message()
         {
             Likes = new HashSet<Like>();
         }
 
-        public int Id/*MessageId*/ { get; set; }
+        public int Id { get; set; }
         public string Text { get; set; }
         public DateTime DateSending { get; set; }
         public int UserUserId { get; set; }

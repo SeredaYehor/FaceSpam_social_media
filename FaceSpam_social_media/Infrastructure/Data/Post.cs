@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace FaceSpam_social_media.Infrastructure.Data
 {
-    public partial class Post
+    public partial class Post : IEntity
     {
         public Post()
         {

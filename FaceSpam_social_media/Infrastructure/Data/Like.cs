@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace FaceSpam_social_media.Infrastructure.Data
 {
-    public partial class Like
+    public partial class Like : IEntity
     {
         public int Id/*LikeId*/ { get; set; }
         public int UserUserId { get; set; }

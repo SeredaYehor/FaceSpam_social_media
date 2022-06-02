@@ -5,8 +5,9 @@ using System.Collections.Generic;
 
 namespace FaceSpam_social_media.Infrastructure.Data
 { 
-    public partial class Friend
+    public partial class Friend : IEntity
     {
+        public int Id { get; set; }
         public int UserUserId { get; set; }
         public int FriendId { get; set; }
 

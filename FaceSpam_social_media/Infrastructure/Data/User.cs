@@ -16,7 +16,7 @@ namespace FaceSpam_social_media.Infrastructure.Data
             Posts = new HashSet<Post>();
         }
 
-        public int Id/*UserId*/ { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
