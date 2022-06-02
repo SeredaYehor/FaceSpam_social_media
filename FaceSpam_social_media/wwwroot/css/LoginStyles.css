@@ -306,6 +306,13 @@ body {
         line-height: 12px;
         transition: 0.5s;
     }
+    .PasswordCheckbox {
+        margin-right: 50px;
+    }
+
+    .Button {
+        margin-top: 25px;
+    }
 
     @media screen and (max-width: 1145px) {
         .Wrapper {

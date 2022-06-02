@@ -199,6 +199,13 @@ body {
     .FaceSpamLogo {
         margin-right: 5%;
     }
+    .PasswordCheckbox {
+        margin-right: 50px;
+    }
+
+    .Button {
+        margin-top: 25px;
+    }
 }
 
 @media screen and (max-width: 1145px) {
@@ -354,6 +361,15 @@ body {
     .PasswordCheckbox {
         font-size: 13px;
         white-space: nowrap;
+    }
+}
+@media screen and (max-height: 800px){
+    .PasswordCheckbox {
+        margin-right: 50px;
+    }
+
+    .Button {
+        margin-top: 25px;
     }
 }
 
