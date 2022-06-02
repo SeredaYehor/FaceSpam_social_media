@@ -19,7 +19,6 @@ namespace FaceSpam_social_media.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IRepository _repository;
         private readonly IUserService _userService;
 
         public static Main mainFormModels = new Main();
@@ -31,16 +30,11 @@ namespace FaceSpam_social_media.Controllers
         public static LoginModel loginModel;
         public static SettingsModel settingsModel;
         public static AuthenticationModel authModel;
-
-        /*public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }*/
-        public HomeController(ILogger<HomeController> logger, IUserService userService, IRepository repository)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, IPostService postService,
+            IRepository repository)
         {
             _logger = logger;
             _userService = userService;
-            _repository = repository;
 
             mainFormModels._repository = repository;
             //userProfileModel = new Main(repository);
@@ -61,7 +55,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Comments(int id)
         { 
             commentsModel.user = mainFormModels.user;
-            commentsModel.post = context.Posts.Where(x => x.Id/*PostId*/ == id).FirstOrDefault();
+            commentsModel.post = context.Posts.Where(x => x.Id == id).FirstOrDefault();
             commentsModel.GetComments(context);
 
             return View("Comments", commentsModel);
@@ -82,7 +76,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Messages()
         {
             messages.user = mainFormModels.user;
-            messages.GetChats(context);
+            messages.GetChats();
             return View(messages);
         }
 
@@ -126,14 +120,14 @@ namespace FaceSpam_social_media.Controllers
             else { return Content("Wrong login or password"); }
         }
 
-        public int ChangeLike(int postId)
+        public async Task<int> ChangeLike(int postId)
         {
-            mainFormModels.UpdatePostLike(context, postId);
-            return mainFormModels.CountLikes(postId);
+            int count = await mainFormModels.UpdatePostLike(postId);
+            return count;
         }
 
         [HttpPost]
-        public (User, int) AddPost(IFormFile file, string text)
+        public async Task<int> AddPost(IFormFile file, string text)
         {
             string image_ref = null;
             if (file != null)
@@ -141,13 +135,13 @@ namespace FaceSpam_social_media.Controllers
                 string extension = Path.GetExtension(file.FileName);
                 if(extension != ".jpg" && extension != ".png")
                 {
-                    return (mainFormModels.user, -1);
+                    return (-1);
                 }
                 image_ref = "../Images/" + file.FileName;
                 AddImageToPost(file);
             }
-            int lastPostId = mainFormModels.AddPost(context, text, image_ref);
-            return (mainFormModels.user, lastPostId);
+            int lastPostId = await mainFormModels.AddPost(text, image_ref);
+            return (lastPostId);
         }
 
         public async void AddImageToPost(IFormFile file)
@@ -160,15 +154,16 @@ namespace FaceSpam_social_media.Controllers
             }
         }
 
-        public User SendMessage(string textboxMessage)
+        [HttpPost]
+        public async Task<int> SendMessage(string textboxMessage)
         {
-            messages.SendMessage(context, textboxMessage);
-            return messages.user;
+            int result = await messages.SendMessage(textboxMessage);
+            return result;
         }
 
         public List<Message> GetChatMessages(int chatId)
         {
-            messages.GetChatMessages(context, chatId);
+            messages.GetChatMessages(chatId);
             return messages.chatMessages;
         }
         
@@ -205,7 +200,7 @@ namespace FaceSpam_social_media.Controllers
             return View();
         }
         [HttpPost]
-        public async Task <IActionResult> VerifyUserAuthentication(string login, string password, string email)
+        public async Task<IActionResult> VerifyUserAuthentication(string login, string password, string email)
         {
             bool repeatCheck = authModel.Verify(login, email);
             if (repeatCheck)
@@ -221,7 +216,6 @@ namespace FaceSpam_social_media.Controllers
                 return View("Main", mainFormModels);
             }
         }
-        //
 
     }
 }
