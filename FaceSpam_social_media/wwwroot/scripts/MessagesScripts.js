@@ -46,12 +46,12 @@
 
         function SendMessages(message) {
             $.ajax({ //async call of controller
-                type: "GET",  //request type
+                type: "POST",  //request type
                 url: '/Home/SendMessage', //url to controller
                 data: { textboxMessage: message, }, //controller argument
-                success: function (user) { //get array object of Message models
-                    var name = user["name"].toString();
-                    var image = user["imageReference"].toString();
+                success: function (result) { //get array object of Message models
+                    var name = jsUser["name"];
+                    var image = jsUser["imageReference"];
                     var dt = new Date();
                     var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                     GetMessageObj(name, image, time, message); //class of message
