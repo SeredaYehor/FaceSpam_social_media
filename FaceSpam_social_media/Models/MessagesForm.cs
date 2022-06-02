@@ -16,33 +16,35 @@ namespace FaceSpam_social_media.Models
         {
             _repository = repository;
         }
+
         public User user = new User();
         public List<Chat> chats = new List<Chat>();
         public List<Message> chatMessages = new List<Message>();
         public string message { get; set; }
         public int currentChat { get; set; }
-        public void GetChatMessages(MVCDBContext context, int chatId)
+
+        public void GetChatMessages(int chatId)
         {
             currentChat = chatId;
-            chatMessages = context.Messages.Where(x => x.ChatChatId == currentChat)
+            chatMessages = _repository.GetAll<Message>().Where(x => x.ChatChatId == currentChat)
                 .Include(x => x.UserUser).ToList();
         }
 
-        public void SendMessage(MVCDBContext context, string inputMessage)
+        public async Task<int> SendMessage(string inputMessage)
         {
             Message send = new Message();
             send.Text = inputMessage;
             send.ChatChatId = currentChat;
             send.DateSending = DateTime.Now;
             send.UserUserId = user.Id;
-            context.Messages.Add(send);
-            context.SaveChanges();
+            send = await _repository.AddAsync<Message>(send);
             chatMessages.Add(send);
+            return send.Id;
         }
 
-        public void GetChats(MVCDBContext context)
+        public void GetChats()
         {
-            chats = context.ChatMembers.Where(x => x.UserUserId == user.Id)
+            chats = _repository.GetAll<ChatMember>().Where(x => x.UserUserId == user.Id)
                 .Select(x => x.ChatChat).ToList();
         }
     }

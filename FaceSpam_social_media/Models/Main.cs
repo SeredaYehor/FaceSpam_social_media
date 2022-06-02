@@ -27,7 +27,9 @@ namespace FaceSpam_social_media
             user.Email = email;
             user.Description = description;
         }
-        public int AddPost(MVCDBContext context, string message, string reference)
+
+
+        public async Task<int> AddPost(string message, string reference)
         {
             Post newPost = new Post();
             newPost.Text = message;
@@ -37,16 +39,14 @@ namespace FaceSpam_social_media
             {
                 newPost.ImageReference = reference;
             }
-            context.Posts.Add(newPost);
-            context.SaveChanges();
+            newPost = await _repository.AddAsync<Post>(newPost);
             user.Posts.Add(newPost);
-            return newPost.Id/*PostId*/;
+            return newPost.Id;
         }
 
-        public void GetLikes(/*MVCDBContext context*/)
+        public void GetLikes()
         {
             user.Likes = _repository.GetAll<Like>().Where(x => x.UserUserId == user.Id).ToList();
-            //user.Likes = context.Likes.Where(x => x.UserUserId == user.Id).ToList();
         }
 
         public int CountLikes(int postId)
@@ -59,23 +59,22 @@ namespace FaceSpam_social_media
             return user.Likes.Any(x => x.UserUserId == userId && x.PostPostId == postId);
         }
 
-        public void UpdatePostLike(MVCDBContext context, int postId)
+        public async Task<int> UpdatePostLike(int postId)
         {
             if(CheckLike(user.Id, postId))
             {
-                context.Likes.Remove(context.Likes
+                await _repository.DeleteAsync<Like>(_repository.GetAll<Like>()
                     .Where(x => x.UserUserId == user.Id && x.PostPostId == postId).First());
-                context.SaveChanges();
                 user.Likes.Remove(user.Likes
                     .Where(x => x.UserUserId == user.Id && x.PostPostId == postId).First());
             }
             else
             {
                 Like like = new Like() { UserUserId = user.Id, PostPostId = postId };
-                context.Likes.Add(like);
-                context.SaveChanges();
+                like = await _repository.AddAsync<Like>(like);
                 user.Likes.Add(like);
             }
+            return CountLikes(postId);
         }
 
         public void GetUser(string name, string password)
@@ -87,24 +86,23 @@ namespace FaceSpam_social_media
             user.Password = null;
         }
 
-        public void GetPosts(/*MVCDBContext context*/)
+        public void GetPosts()
         {
             user.Posts = _repository.GetAll<Post>().Where(x => x.UserUser == user).ToList();
-            //user.Posts = context.Posts.Where(x => x.UserUser == user).ToList();
         }
 
-        public void GetFriends(MVCDBContext context)
+        public void GetFriends()
         {
-            friends = context.Friends.Where(x => x.UserUserId == user.Id)
+            friends = _repository.GetAll<Friend>().Where(x => x.UserUserId == user.Id)
                 .Select(x => x.FriendNavigation).ToList();
         }
 
         public void GetMainUserInfo(MVCDBContext context, string name, string password)
         {
             GetUser(name, password);
-            GetPosts(/*context*/);
-            GetFriends(context);
-            GetLikes(/*context*/);
+            GetPosts();
+            GetFriends();
+            GetLikes();
         }
 
         // this function gets user info by id
@@ -112,9 +110,9 @@ namespace FaceSpam_social_media
         public void GetUserInfo(MVCDBContext context, int id)
         {
             user = _repository.GetAll<User>().Where(x => x.Id == id).FirstOrDefault();
-            GetPosts(/*context*/);
-            GetFriends(context);
-            GetLikes(/*context*/);
+            GetPosts();
+            GetFriends();
+            GetLikes();
 
             user.Password = null;
         }
