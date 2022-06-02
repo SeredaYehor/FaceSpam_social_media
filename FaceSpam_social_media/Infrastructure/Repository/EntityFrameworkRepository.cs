@@ -32,7 +32,7 @@ namespace FaceSpam_social_media.Infrastructure.Repository
 
             return result.Entity;
         }
-        //public async Task<TEntity> DeleteAsync
+        
         public async Task<TEntity> DeleteAsync<TEntity>(TEntity entity) where TEntity : class, IEntity
         {
             var result = _dbContext.Set<TEntity>()

@@ -24,6 +24,8 @@ namespace FaceSpam_social_media.Infrastructure.Repository
         /// </summary>
         /// <typeparam name="TEntity">Current entity type</typeparam>
         /// <returns></returns>
-        IQueryable<TEntity> GetAll<TEntity>() where TEntity : class, IEntity;  
+        IQueryable<TEntity> GetAll<TEntity>() where TEntity : class, IEntity;
+
+        Task<TEntity> DeleteAsync<TEntity>(TEntity entity) where TEntity : class, IEntity;
     }
 }
