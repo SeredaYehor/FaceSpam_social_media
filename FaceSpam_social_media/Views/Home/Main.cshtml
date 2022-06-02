@@ -3,9 +3,6 @@
 <link href="~/css/MainFormStyleSheet.css" rel="stylesheet" asp-append-version="true" />
 <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
 
-<script src="/lib/jquery/dist/jquery.js"></script>
-<script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
-
 @model Main
 @{
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
@@ -13,11 +10,17 @@
     string description = Model.user.Description;
 }
 
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" asp-append-version="true">
+    var jsUser = @Html.Raw(Json.Serialize(Model.user));
+</script>
+<script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
+
 
 <body class="Background">
-<div class="bg"></div>
-<div class="bg bg2"></div>
-<div class="bg bg3"></div>
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
     <div class="Wrapper">
         <div class="Navigation">
             @foreach (string controller in controllers)
@@ -103,17 +106,17 @@
                                 <div class="Likes" style="display: inline-block;">
 
                                     <form method="post" action="/Home/Comments">
-                                        @if (Model.CheckLike(Model.user.Id, post.PostId))
+                                        @if (Model.CheckLike(Model.user.Id, post.Id))
                                         {
-                                            <img src="~/images/heartRed.svg" class="HeartImage" id="@post.PostId" />
+                                            <img src="~/images/heartRed.svg" class="HeartImage" id="@post.Id" />
                                         }
                                         else
                                         {
-                                            <img src="~/images/heart.svg" class="HeartImage" id="@post.PostId" />
+                                            <img src="~/images/heart.svg" class="HeartImage" id="@post.Id" />
                                         }
-                                        <label class="LikeLabel">@Model.CountLikes(post.PostId)</label>
+                                        <label class="LikeLabel">@Model.CountLikes(post.Id)</label>
                                         <img src="~/images/pencil.svg" />
-                                        <button class="CommentButton" name="id" value="@post.PostId" type="submit">comments</button>
+                                        <button class="CommentButton" name="id" value="@post.Id" type="submit">comments</button>
                                         <label class="Date">@post.DatePosting.ToString("dd.MM.yy")</label>
                                     </form>
                                 </div>
