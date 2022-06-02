@@ -16,15 +16,17 @@ namespace FaceSpam_social_media.Services
         {
             _repository = repository;
         }
-        public async Task GetPost()
+        /*public async Task GetPost()
         {
-           /**/
-        }
-        /*public async Task<int> AddPost()
+        }*/
+
+        public async Task<Post> AddPost(Post post)
         {
-            
+            var newPost = await _repository.AddAsync(post);
+            return newPost;
         }
-        public async Task UpdatePost()
+
+        /*public async Task UpdatePost()
         {
            
         }*/
