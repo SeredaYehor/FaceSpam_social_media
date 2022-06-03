@@ -1,6 +1,8 @@
 ﻿$(document).ready(function () {
-    $(".MessageArea").hide();
-    $(".GroupInfo").hide();
+    if (selectedChat == 0) {
+        $(".MessageArea").hide();
+        $(".GroupInfo").hide();
+    }
     $(".Popup").hide();
 
     $(".GroupStatus").click(function () {
