@@ -9,6 +9,9 @@
 <!--Kakaya shlyapa-->
 <!--8 realtime hours wasted for adding this functionality-->
 <script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    var selectedChat = @Model.currentChat;
+</script>
 <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
 
 <body>
@@ -48,7 +51,22 @@
 
         <div class="Chat">
             <div class="ChatMessages" id="Chat">
-                <label style="margin-top: 50%; margin-left: 30%; color: dimgrey;">Select chat to write messages</label>
+                @if (Model.currentChat != 0)
+                {
+                    @foreach (var message in Model.chatMessages)
+                    {
+                        <div class="MessageBody">
+                            <img src="@message.UserUser.ImageReference" class="Ellipse" style="width: 50px; height: 50px;" />
+                            <label class="MessageNickName">@message.UserUser.Name<label class="MessageDate">@message.DateSending</label></label>
+                            <img src="../images/removeButton.png" class="RemoveMessage" id="@message.MessageId" />
+                            <br /><label class="MessageText">@message.Text</label>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <label style="margin-top: 50%; margin-left: 30%; color: dimgrey;">Select chat to write messages</label>
+                }
             </div>
             <hr class="Line" />
             <div class="MessageArea">
@@ -106,10 +124,20 @@
                 <div class="GroupsList" id="groups">
                     @foreach (FaceSpam_social_media.DbModels.Chat chat in Model.chats)
                     {
-                        <div class="GroupPanel" id="@chat.ChatName">
-                            <img src="@chat.ImageReference" class="Ellipse" />
-                            <label class="GroupName" id="@chat.ChatId">@chat.ChatName</label>
-                        </div>
+                        if (Model.currentChat != chat.ChatId)
+                        {
+                            <div class="GroupPanel" id="@chat.ChatName">
+                                <img src="@chat.ImageReference" class="Ellipse" />
+                                <label class="GroupName" id="@chat.ChatId">@chat.ChatName</label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="GroupPanel active" id="@chat.ChatName">
+                                <img src="@chat.ImageReference" class="Ellipse" />
+                                <label class="GroupName" id="@chat.ChatId">@chat.ChatName</label>
+                            </div>
+                        }
                     }
                 </div>
             </div>
