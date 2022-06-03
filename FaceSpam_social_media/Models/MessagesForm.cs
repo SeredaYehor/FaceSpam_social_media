@@ -54,10 +54,47 @@ namespace FaceSpam_social_media.Models
                 .Select(x => x.ChatChat).ToList();
         }
 
+        public void QuitGroup(mydbContext context, int Id)
+        {
+            Chat remove = context.Chats.Where(x => x.ChatId == Id).FirstOrDefault();
+            context.Chats.Remove(remove);
+            context.SaveChanges();
+            chats.Remove(remove);
+        }
+
         public void SelectChat(mydbContext context, int chatId)
         {
             selectedChat = chats.Where(x => x.ChatId == chatId).First();
             GetChatMessages(context, chatId);
+        }
+
+        public List<User> SelectAllUsers(mydbContext context)
+        {
+            List<User> users = context.Users.Where(x => x.UserId != user.UserId).ToList();
+            return users;
+        }
+
+        public Chat CreateGroup(mydbContext context, string name, string description, List<int> members)
+        {
+            members.Add(user.UserId);
+            Chat created = new Chat()
+            {
+                ChatName = name,
+                Description = description,
+                DateCreating = DateTime.Now,
+                Admin = user.UserId,
+            };
+            context.Chats.Add(created);
+            context.SaveChanges();
+            foreach (int member in members)
+            {
+                ChatMember newMember = new ChatMember() 
+                { ChatChatId = created.ChatId, 
+                  UserUserId = member };
+                context.Add(newMember);
+            }
+            context.SaveChanges();
+            return created;
         }
     }
 }
