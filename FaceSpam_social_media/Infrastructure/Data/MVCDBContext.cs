@@ -12,13 +12,6 @@ namespace FaceSpam_social_media.Infrastructure.Data
         }
         public MVCDBContext(DbContextOptions options) : base(options)
         { }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseMySql("server=127.0.0.1;user=root;password=password;database=mydb", ServerVersion.Parse("8.0.25-mysql"));
-            }
-        }
 
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<ChatMember> ChatMembers { get; set; }
