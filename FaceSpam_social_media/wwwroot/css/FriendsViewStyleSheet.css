@@ -57,6 +57,26 @@
         box-shadow: inset 0px 3px 3px rgba(0, 0, 0, 0.35);
     }
 
+.GroupWriteButton {
+    outline: none;
+    border: none;
+    background: #FFFFFF;
+    transition: 0.5s;
+    border-radius: 15px;
+    height: 24px;
+    width: 72px;
+    color: #0066FF;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    box-shadow: inset 5px 3px 3px rgba(0, 0, 0, 0.15);
+}
+
+    .GroupWriteButton:hover {
+        box-shadow: inset 0px 3px 3px rgba(0, 0, 0, 0.35);
+    }
+
 .Board {
     background-color: #3485FF;
     border-radius: 5px;
