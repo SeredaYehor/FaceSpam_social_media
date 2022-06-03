@@ -9,11 +9,13 @@
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript"></script>
 <script type="text/javascript" src="~/scripts/FriendsFormScripts.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/scripts/GroupsFormScripts.js" asp-append-version="true"></script>
 
 <body>
     <link rel="stylesheet" href="~/css/FriendsViewStyleSheet.css" asp-append-version="true" />
     <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/GroupsViewStyleSheet.css" rel="stylesheet" asp-append-version="true" />
 
     <div class="bg"></div>
     <div class="bg bg2"></div>
@@ -50,6 +52,7 @@
                 <div style="display: flex; flex-direction: row; margin-top: 10px; background-color: #3485FF;">
                     <b> <label class="FriendsLabel">Groups: &nbsp; </label> </b>
 
+                    <input type="submit" class="CreateGroupButton" value="Create" />
                     <form action="SearchFriend">
                         <div style="position: relative; margin-left: 160px">
                             <input type="text" name="name" class="Search" placeholder="Search" />
@@ -62,20 +65,52 @@
                 <div class="Line"></div>
 
                 <div class="FriendZone">
-                    <div>
+                    <div class="GroupsPanels" id="ass">
                         @foreach (var chat in Model.chats)
                         {
-                            <div id="@chat.ChatName" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
-                                <img class="UserImage" src="@chat.ImageReference" />
-                                <label class="Names"> @chat.ChatName </label>
-                                <input id="@chat.ChatId" type="submit" class="FriendButton" value="Quit" onclick="DeleteChat(this)" />
-                                &nbsp;
-                                @*Write button does not work. When all formls will be ready it will get the link*@
-                                <input type="submit" class="FriendButton" value="Write" />
-                            </div>
+                        <div id="@chat.ChatName" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
+                            <img class="UserImage" src="@chat.ImageReference" />
+                            <label class="Names"> @chat.ChatName </label>
+                            <input id="@chat.ChatId" type="submit" class="FriendButton" value="Quit" onclick="DeleteChat(this)" />
+                            &nbsp;
+                            @using (Html.BeginForm("Messages", "Home", new { current = chat.ChatId }, 
+                                 FormMethod.Post))
+                            {
+                                <input type="submit" class="GroupWriteButton" value="Write" />
+                            }
+                        </div>
                         }
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="CreateGroup">
+            <div style="display: flex;">
+                <div style="width: 20%; margin-left: 10px;">
+                    <div class="GroupImage"></div>
+                    <input type="file" accept="image/*" id="myFile" style="display: none;" />
+                    <input type="button" class="Upload" value="Upload image" style="width: 100%;" />
+                </div>
+                <div style="margin: 10px 10px;">
+                    <div>
+                        <label class="GroupLabel">Name:</label>
+                        <input type="text" id="name" class="InputInterface" style="margin-left: 60px;"/>
+                    </div>
+                    <br />
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <label class="GroupLabel">Description:</label>
+                        <textarea id="description" class="InputInterface" style="margin-left: 10px; height: 80px; resize: none;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="SecondPanel">
+                <div class="UsersList">
+                    <input type="text" class="SearchBox" />
+                    <div class="List">
+                    </div>
+                </div>
+                <input type="submit" value="Create chat" class="ConfirmButton"/>
             </div>
         </div>
     </div>
