@@ -31,6 +31,13 @@ namespace FaceSpam_social_media.Controllers
             return View();
         }
 
+        [HttpPost]
+        public List<User> SelectUsers()
+        {
+            List<User> users = messages.SelectAllUsers(context);
+            return users;
+        }
+
         public IActionResult Admin()
         {
             if(usersManagment.Init(context, mainFormModels.executor))
@@ -105,9 +112,14 @@ namespace FaceSpam_social_media.Controllers
             return mainFormModels.executor;
         }
 
-        public IActionResult Messages()
+        public IActionResult Messages(int current = 0)
         {
             messages.user = mainFormModels.executor;
+            messages.currentChat = current;
+            if(current != 0)
+            {
+                messages.GetChatMessages(context, current);
+            }
             messages.GetChats(context);
             return View(messages);
         }
@@ -152,6 +164,19 @@ namespace FaceSpam_social_media.Controllers
             mainFormModels.UpdatePostLike(context, postId);
             count = mainFormModels.CountLikes(postId);
             return count;
+        }
+
+        [HttpPost]
+        public Chat CreateGroup(string chatName, string chatDescription, List<int> members)
+        {
+            Chat result = messages.CreateGroup(context, chatName, chatDescription, members);
+            return result;
+        }
+
+        [HttpPost]
+        public void QuitGroup(int groupId)
+        {
+            messages.QuitGroup(context, groupId);
         }
 
         [HttpPost]
