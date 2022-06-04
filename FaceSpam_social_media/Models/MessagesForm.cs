@@ -10,11 +10,10 @@ namespace FaceSpam_social_media.Models
 {
     public class MessagesForm
     {
-        private readonly IRepository _repository;
+        public IRepository _repository;
 
-        public MessagesForm(IRepository repository)
+        public MessagesForm()
         {
-            _repository = repository;
         }
 
         public User user = new User();

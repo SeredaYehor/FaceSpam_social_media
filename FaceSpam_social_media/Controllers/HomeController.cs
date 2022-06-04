@@ -24,7 +24,7 @@ namespace FaceSpam_social_media.Controllers
         public static Main mainFormModels = new Main();
         public static Main userProfileModel;
         public MVCDBContext context = new MVCDBContext();
-        public static MessagesForm messages;
+        public static MessagesForm messages = new MessagesForm();
         public static FriendsViewModel friendsModel;
         public static PostCommentsModel commentsModel;
         public static LoginModel loginModel;
@@ -38,7 +38,7 @@ namespace FaceSpam_social_media.Controllers
 
             mainFormModels._repository = repository;
             //userProfileModel = new Main(repository);
-            messages = new MessagesForm(repository);
+            messages._repository = repository;
             friendsModel = new FriendsViewModel(repository);
             commentsModel = new PostCommentsModel(repository);
             loginModel = new LoginModel(repository);
