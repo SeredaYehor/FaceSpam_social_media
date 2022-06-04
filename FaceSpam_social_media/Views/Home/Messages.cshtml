@@ -57,7 +57,7 @@
                     {
                         <div class="MessageBody">
                             <img src="@message.UserUser.ImageReference" class="Ellipse" style="width: 50px; height: 50px;" />
-                            <label class="MessageNickName">@message.UserUser.Name<label class="MessageDate">@message.DateSending</label></label>
+                            <label class="MessageNickName">@message.UserUser.Name<label class="MessageDate">@message.DateSending.ToString("H:mm:ss")</label></label>
                             <img src="../images/removeButton.png" class="RemoveMessage" id="@message.MessageId" />
                             <br /><label class="MessageText">@message.Text</label>
                         </div>
@@ -71,7 +71,7 @@
             <hr class="Line" />
             <div class="MessageArea">
                 <div class="UserImageDiv">
-                    <img src="~/images/W1ld 3lf.jpg" class="UserImage" />
+                    <img src="@Model.user.ImageReference" class="UserImage" />
                 </div>
                 @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "MessageTextBox" })
                 <input type="submit" class="ButtonSend" formaction="/Home/SendMessage" value="Send" />
@@ -81,13 +81,15 @@
         <div>
             <div class="GroupInfo">
                 <div class="ImageNameGroup">
-                    <div class="GroupImage" style="background-size: cover; background-repeat: no-repeat;"></div>
                     @if (Model.selectedChat != null)
                     {
+                        <div class="GroupImage" style="background-size: cover; 
+                            background-repeat: no-repeat; background-image: url(@Model.selectedChat.ImageReference)"></div>
                         <label class="GroupPanelName">@Model.selectedChat.ChatName</label>
                     }
                     else
                     {
+                        <div class="GroupImage" style="background-size: cover; background-repeat: no-repeat;"></div>
                         <label class="GroupPanelName"></label>
                     }
                 </div>
@@ -101,16 +103,8 @@
                 }
                 <div class="GroupStatus">
                     <div style="display: flex; flex-direction: row; width: 40%; height: 50%">
-                        @if (Model.selectedChat != null)
-                        {
-                            <img src=@Model.selectedChat.ImageReference class="MembersImage" />
-                            <label class="MembersCounter"></label>
-                        }
-                        else
-                        {
-                            <img src="../Images/people.png" class="MembersImage" />
-                            <label class="MembersCounter">10</label>
-                        }
+                        <img src="~/Images/people.png" class="MembersImage" />
+                        <label class="MembersCounter">@Model.members.Count</label>
                     </div>
                     <input type="submit" class="QuitGroup" value="Quit" />
                 </div>
@@ -144,15 +138,15 @@
         </div>
     </div>
     <div class="Popup">
-        <div class="PopupNavigation">
-            <img src="../images/removeButton.png" style="margin: 5px 5px; width: 30px; height: 30px;" id="ClosePopup" />
-            <label style="color: blue; font-weight: 600; font-size: 24px; margin-left: 10px;">Chat members</label>
-        </div>
-        <div class="MembersList">
-            <div class="MemberPanel">
-                <img src="../images/Cyberdemon.png" class="Ellipse" />
-                <label class="GroupName" id="1">Dorenskiy</label>
+            <div class="PopupNavigation">
+                <img src="~/images/removeButton.png" style="margin: 5px 5px; width: 30px; height: 30px;" id="ClosePopup" />
+                <label style="color: blue; font-weight: 600; font-size: 24px; margin-left: 10px;">Chat members</label>
             </div>
-        </div>
+            <div class="MembersList">
+                <div class="MemberPanel">
+                    <img src="../images/Cyberdemon.png" class="Ellipse" />
+                    <label class="GroupName" id="1">Dorenskiy</label>
+                </div>
+            </div>
     </div>
 </body>
