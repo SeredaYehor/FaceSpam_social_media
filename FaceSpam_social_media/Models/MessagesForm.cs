@@ -18,11 +18,16 @@ namespace FaceSpam_social_media.Models
         public int currentChat { get; set; }
         public Chat GetChatMessages(mydbContext context, int chatId)
         {
-            currentChat = chatId;
-            chatMessages = context.Messages.Where(x => x.ChatChatId == currentChat)
-                .Include(x => x.UserUser).ToList();
-            members = context.ChatMembers.Where(x => x.ChatChatId == currentChat).Select(y => y.UserUser).ToList();
-            return chats.Where(x => x.ChatId == currentChat).First();
+            if (chatId != 0)
+            {
+                currentChat = chatId;
+                chatMessages = context.Messages.Where(x => x.ChatChatId == currentChat)
+                    .Include(x => x.UserUser).ToList();
+                selectedChat = chats.Where(x => x.ChatId == chatId).First();
+                members = context.ChatMembers.Where(x => x.ChatChatId == currentChat).Select(y => y.UserUser).ToList();
+                return chats.Where(x => x.ChatId == currentChat).First();
+            }
+            return new Chat();
         }
 
         public int RemoveMessage(mydbContext context, int messageId)

@@ -115,11 +115,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Messages(int current = 0)
         {
             messages.user = mainFormModels.executor;
-            messages.currentChat = current;
-            if(current != 0)
-            {
-                messages.GetChatMessages(context, current);
-            }
+            messages.GetChatMessages(context, current);
             messages.GetChats(context);
             return View(messages);
         }
