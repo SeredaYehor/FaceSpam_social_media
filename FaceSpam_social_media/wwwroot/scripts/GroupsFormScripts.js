@@ -49,8 +49,11 @@
             url: '/Home/CreateGroup',
             async: false,
             data: formData,
+<<<<<<< HEAD
             contentType: false,
             processData: false,
+=======
+>>>>>>> fc03ee56f234e03c86e36d8bba6766729701a462
             success: function (group) {
                 GenerateGroupPanel(group["chatId"], group["imageReference"],
                     group["chatName"]);
