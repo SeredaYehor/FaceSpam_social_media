@@ -9,34 +9,33 @@ namespace FaceSpam_social_media.Models
 {
     public class FriendsViewModel
     {
-        private readonly IRepository _repository;
+        public IRepository _repository;
 
-        public FriendsViewModel(IRepository repository)
+        public FriendsViewModel()
         {
-            _repository = repository;
         }
 
         public User user;
         public List<User> friends;
         public int mainUserId;
 
-        public void GetUserById(MVCDBContext context, int id)
+        public void GetUserById(int id)
         {
-            user = context.Users.Where(x => x.Id == id).FirstOrDefault();
+            user = _repository.GetAll<User>().Where(x => x.Id == id).FirstOrDefault();
 
-            friends = context.Friends.Where(x => x.UserUserId == user.Id)
+            friends = _repository.GetAll<Friend>().Where(x => x.UserUserId == user.Id)
                 .Select(x => x.FriendNavigation).ToList();
         }
 
-        public void DeleteFriend(MVCDBContext context, int id)
+        public async Task<int> DeleteFriend(int id)
         {
-            Friend friend = new Friend();
-            friend = context.Friends
+            var friend = new Friend();
+            friend = _repository.GetAll<Friend>()
                 .Where(x=>x.FriendId == id && x.UserUserId==user.Id).FirstOrDefault();
 
-            context.Friends.Remove(friend);
-            context.SaveChanges();
+            await _repository.DeleteAsync(friend);
             friends.Remove(friends.Where(x=>x.Id == id).FirstOrDefault());
+            return friend.Id;
         }
     }
 }

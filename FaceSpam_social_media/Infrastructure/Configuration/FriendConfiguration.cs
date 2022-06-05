@@ -17,6 +17,8 @@ namespace FaceSpam_social_media.Infrastructure.Configuration
             builder.HasIndex(e => e.FriendId, "fk_User_has_User_User1_idx");
 
             builder.HasIndex(e => e.UserUserId, "fk_User_has_User_User_idx");
+            
+            builder.Property(e => e.Id).HasColumnName("friendship_id");
 
             builder.Property(e => e.UserUserId).HasColumnName("User_user_id");
 
