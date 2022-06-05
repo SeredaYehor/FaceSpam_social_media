@@ -30,6 +30,17 @@ namespace FaceSpam_social_media.Models
             return new Chat();
         }
 
+        public int RemoveChatMember(mydbContext context, int memberId)
+        {
+            User member = members.Where(x => x.UserId == memberId).First();
+            ChatMember remove = context.ChatMembers.Where(x => x.UserUserId == memberId 
+            && x.ChatChatId == selectedChat.ChatId).First();
+            context.ChatMembers.Remove(remove);
+            context.SaveChanges();
+            members.Remove(member);
+            return members.Count;
+        }
+
         public int RemoveMessage(mydbContext context, int messageId)
         {
             int entries = 1;
