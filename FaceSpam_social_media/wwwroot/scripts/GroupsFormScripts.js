@@ -7,12 +7,16 @@
     })
 
     $("#myFile").change(function () {
-        var path = null;
-        path = document.getElementById("myFile").files[0];
-        if (path != null) {
-            $(".GroupImage").css("background-image", URL.createObjectURL(path));
+        const path = document.getElementById("myFile").files[0];
+        $(".GroupImage").empty();
+        if (path) {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(path);
+            fileReader.addEventListener("load", function () {
+                var image = '<img src="' + fileReader.result + '" />';
+                $(".GroupImage").append(image);
+            });
         }
-        formData.set('file', path);
     })
 
     $(".List").on('click', ".MemberActionButton", function () {
