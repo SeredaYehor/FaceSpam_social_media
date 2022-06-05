@@ -1,7 +1,6 @@
 ﻿@model MessagesForm
 @{
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
-    string a = "";
 }
 
 <!--HEHE BOI (~w~)-->
@@ -11,6 +10,10 @@
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
     var selectedChat = @Model.currentChat;
+    var members = @Model.members.Count;
+    if (members < 3) {
+        //there should be group status hide
+    }
 </script>
 <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
 
@@ -83,8 +86,8 @@
                 <div class="ImageNameGroup">
                     @if (Model.selectedChat != null)
                     {
-                        <div class="GroupImage" style="background-size: cover; 
-                            background-repeat: no-repeat; background-image: url(@Model.selectedChat.ImageReference)"></div>
+                        <div class="GroupImage" style="background-size: cover;
+                            background-repeat: no-repeat; background-image: url('@Model.selectedChat.ImageReference')"></div>
                         <label class="GroupPanelName">@Model.selectedChat.ChatName</label>
                     }
                     else
@@ -101,13 +104,13 @@
                 {
                     <label class="GroupDescription"></label>
                 }
-                <div class="GroupStatus">
-                    <div style="display: flex; flex-direction: row; width: 40%; height: 50%">
-                        <img src="~/Images/people.png" class="MembersImage" />
-                        <label class="MembersCounter">@Model.members.Count</label>
+                    <div class="GroupStatus">
+                        <div style="display: flex; flex-direction: row; width: 40%; height: 50%">
+                            <img src="~/Images/people.png" class="MembersImage" />
+                            <label class="MembersCounter">@Model.members.Count</label>
+                        </div>
+                        <input type="submit" class="QuitGroup" value="Quit" />
                     </div>
-                    <input type="submit" class="QuitGroup" value="Quit" />
-                </div>
             </div>
 
             <div class="Groups">
@@ -143,10 +146,6 @@
                 <label style="color: blue; font-weight: 600; font-size: 24px; margin-left: 10px;">Chat members</label>
             </div>
             <div class="MembersList">
-                <div class="MemberPanel">
-                    <img src="../images/Cyberdemon.png" class="Ellipse" />
-                    <label class="GroupName" id="1">Dorenskiy</label>
-                </div>
             </div>
     </div>
 </body>
