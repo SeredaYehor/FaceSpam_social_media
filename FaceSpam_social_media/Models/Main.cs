@@ -151,6 +151,6 @@ namespace FaceSpam_social_media
             return false;
         }
 
-        public string message { get; set; }
+        //public string message { get; set; }
     }
 }

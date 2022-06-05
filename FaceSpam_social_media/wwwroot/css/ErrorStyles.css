@@ -59,13 +59,20 @@ body {
     border: none;
 }
 
-@media screen and (max-width: 990px){
-    .FaceSpamLogo img{
+@media screen and (max-width: 990px) {
+    .FaceSpamLogo img {
         width: 350px;
     }
 }
+
 @media screen and (max-width: 770px) {
     .TextArea {
         width: 350px;
+    }
+}
+
+@media screen and (max-height: 600px) {
+    .FaceSpamLogo img {
+        width: 300px;
     }
 }

@@ -112,7 +112,7 @@ body {
 }
 
 .LoginText {
-    min-width: 80px;
+    min-width: 110px;
 }
 /* Password */
 .Password {
@@ -120,16 +120,16 @@ body {
 }
 
 .PasswordText {
-    max-width: 80px;
+    max-width: 110px;
 }
 
 .PasswordCheckbox {
     display: flex;
-    align-items: center;
     color: gray;
     font-size: 15px;
     margin-top: 25px;
     line-height: 20px;
+    width: 120px;
 }
 
     .PasswordCheckbox input {
@@ -137,12 +137,12 @@ body {
         font-size: 1px;
         height: 20px;
         width: 20px;
-        margin-left: 5px;
+        margin-right: 5px;
     }
 /* Button */
 .Button {
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: -35px;
 }
 
     .Button input {
@@ -225,6 +225,15 @@ body {
             transition: 0.5s;
         }
 
+    .PasswordCheckbox {
+        width: 130px;
+    }
+
+    #password-checkbox {
+        height: 25px;
+        width: 25px;
+    }
+
     .Button input {
         width: 240px;
         height: 50px;
@@ -267,6 +276,20 @@ body {
         font-size: 26px;
         margin-bottom: -30px;
         margin-top: -15px;
+    }
+
+    .PasswordCheckbox {
+        position: absolute;
+        margin-top: 50px;
+    }
+
+    #password-checkbox {
+        height: 20px;
+        width: 20px;
+    }
+
+    .Button {
+        margin-top: 45px;
     }
 }
 
@@ -342,7 +365,7 @@ body {
 
 @media screen and (max-height: 745px) {
     .FaceSpamLogo img {
-        width: 250px;
+        width: 350px;
     }
 
     .Card {
@@ -373,6 +396,15 @@ body {
         outline: none;
         border: 0px;
         transition: 0.5s;
+    }
+
+    .PasswordCheckbox {
+        width: 130px;
+    }
+
+    #password-checkbox {
+        height: 25px;
+        width: 25px;
     }
 
     .Button input {
