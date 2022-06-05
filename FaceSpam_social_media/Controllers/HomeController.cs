@@ -120,6 +120,13 @@ namespace FaceSpam_social_media.Controllers
             return View(messages);
         }
 
+        [HttpPost]
+        public int RemoveChatMember(int memberId)
+        {
+            int members = messages.RemoveChatMember(context, memberId);
+            return members;
+        }
+
         public IActionResult GetChat(int chatId)
         {
             messages.user = mainFormModels.executor;
