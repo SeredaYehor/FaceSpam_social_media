@@ -22,7 +22,7 @@ namespace FaceSpam_social_media.Controllers
         private readonly IUserService _userService;
 
         public static Main mainFormModels = new Main();
-        public static Main userProfileModel;
+        public static Main userProfileModel = new Main();
         public MVCDBContext context = new MVCDBContext();
         public static MessagesForm messages = new MessagesForm();
         public static FriendsViewModel friendsModel = new FriendsViewModel();
@@ -37,7 +37,7 @@ namespace FaceSpam_social_media.Controllers
             _userService = userService;
 
             mainFormModels._repository = repository;
-            //userProfileModel = new Main(repository);
+            userProfileModel._repository = repository;
             messages._repository = repository;
             friendsModel._repository = repository;
             //friendsModel = new FriendsViewModel(repository);
