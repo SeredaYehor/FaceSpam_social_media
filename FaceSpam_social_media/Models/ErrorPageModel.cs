@@ -12,6 +12,7 @@ namespace FaceSpam_social_media.Models
 
         public void IfError(string Error)
         {
+            //Reduce this multiple if 
             if (Error == "Login")
             {
                 WhereError = "Wrong login or password";
