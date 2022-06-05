@@ -19,10 +19,24 @@
         $(".Popup").show();
     })
 
+    $(".MembersList").on("click", ".RemoveMember", function () {
+        var id = $(this).attr("id");
+        $(this).parent().remove();
+        $.ajax({
+            type: "POST",
+            url: '/Home/RemoveChatMember',
+            data: { memberId: id, },
+            success: function (counter) {
+                $(".MembersCounter").text(counter);
+            }
+        });
+    })
+
     function DisplayMember(id, name, image) {
         var panel = '<div class="MemberPanel">' +
             '<img src="' + image + '" class="Ellipse" />' +
-            '<label class="GroupName" id="' + id + '">' + name + '</label>';
+            '<label class="GroupName" id="' + id + '">' + name + '</label>' +
+            '<input type="submit" class="RemoveMember" id="' + id + '" value="Remove" /></div>';
         $(".MembersList").append(panel);
     }
 
@@ -96,13 +110,8 @@
             "background: url(\'" + groupInfo["imageReference"].toString() + "\'); background-size: cover; background-repeat: no-repeat;");
         $(".GroupPanelName").text(groupInfo["chatName"].toString());
         $(".GroupDescription").text(groupInfo["description"]);
-        if (members > 2) {
-            $(".MembersCounter").text(members);
-            $(".GroupStatus").show();
-        }
-        else {
-            $(".GroupStatus").hide();
-        }
+        $(".MembersCounter").text(members);
+        $(".GroupStatus").show();
         $(".GroupInfo").attr("style", "");
     }
 
