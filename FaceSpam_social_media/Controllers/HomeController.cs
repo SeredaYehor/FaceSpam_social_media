@@ -25,10 +25,10 @@ namespace FaceSpam_social_media.Controllers
         public static Main userProfileModel;
         public MVCDBContext context = new MVCDBContext();
         public static MessagesForm messages = new MessagesForm();
-        public static FriendsViewModel friendsModel;
-        public static PostCommentsModel commentsModel;
+        public static FriendsViewModel friendsModel = new FriendsViewModel();
+        public static PostCommentsModel commentsModel = new PostCommentsModel();
         public static LoginModel loginModel;
-        public static SettingsModel settingsModel;
+        public static SettingsModel settingsModel = new SettingsModel();
         public static AuthenticationModel authModel;
         public HomeController(ILogger<HomeController> logger, IUserService userService, IPostService postService,
             IRepository repository)
@@ -39,10 +39,13 @@ namespace FaceSpam_social_media.Controllers
             mainFormModels._repository = repository;
             //userProfileModel = new Main(repository);
             messages._repository = repository;
-            friendsModel = new FriendsViewModel(repository);
-            commentsModel = new PostCommentsModel(repository);
+            friendsModel._repository = repository;
+            //friendsModel = new FriendsViewModel(repository);
+
+            commentsModel._repository = repository;
+            //commentsModel = new PostCommentsModel(repository);
             loginModel = new LoginModel(repository);
-            settingsModel = new SettingsModel(/*repository*/);
+            settingsModel._repository = repository; 
             authModel = new AuthenticationModel(repository);
         }
 
@@ -55,17 +58,17 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Comments(int id)
         { 
             commentsModel.user = mainFormModels.user;
-            commentsModel.post = context.Posts.Where(x => x.Id == id).FirstOrDefault();
-            commentsModel.GetComments(context);
+            commentsModel.GetPost(id);
+            commentsModel.GetComments();
 
             return View("Comments", commentsModel);
         }
 
-        public IActionResult AddComment(string message)
+        [HttpPost]
+        public async Task<int> AddComment(string message)
         {
-            commentsModel.AddComment(context, message);
-
-            return View("Comments", commentsModel);
+            int result = await commentsModel.AddComment(message);
+            return result;
         }
 
         public User GetUser() {
@@ -89,7 +92,7 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public IActionResult UserProfile(int id) 
         {
-            userProfileModel.GetUserInfo(context, id);
+            userProfileModel.GetUserInfo(id);
             userProfileModel.mainUserId = mainFormModels.user.Id;
 
             return View("Main", userProfileModel);
@@ -97,15 +100,16 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult Friends(int id)
         {
-            friendsModel.GetUserById(context, id);
+            friendsModel.GetUserById(id);
             friendsModel.mainUserId = mainFormModels.user.Id;
 
             return View(friendsModel);
         }
 
-        public void DeleteFriend(int id)
+        public async Task<int> DeleteFriend(int id)
         {
-            friendsModel.DeleteFriend(context, id);
+            int result = await friendsModel.DeleteFriend(id);
+            return result;
         }
 
         [HttpPost]
@@ -114,7 +118,7 @@ namespace FaceSpam_social_media.Controllers
             bool verifyResult = loginModel.Verify(login, password);
             if (verifyResult)
             {
-                mainFormModels.GetMainUserInfo(context, login, password);
+                mainFormModels.GetMainUserInfo(login, password);
                 return View("Main", mainFormModels);
             }
             else { return Content("Wrong login or password"); }
@@ -183,12 +187,12 @@ namespace FaceSpam_social_media.Controllers
             settingsModel.user = mainFormModels.user;
             return View(settingsModel);
         }
-        public IActionResult ChangeUserInfo(string email, string name, string description)
+        public async Task<IActionResult> ChangeUserInfo(string email, string name, string description)
         {
             int id = mainFormModels.user.Id;
-            _userService.UpdateUser(id, name, email, description);
-            mainFormModels.UpdateMainUserInfo(settingsModel.user.Name, settingsModel.user.Email, settingsModel.user.Description);
-
+            await _userService.UpdateUser(id, name, email, description);
+            
+            mainFormModels.UpdateUserInfo(name, email, description);
             commentsModel.user = mainFormModels.user;
             friendsModel.user = mainFormModels.user;
 
@@ -212,7 +216,7 @@ namespace FaceSpam_social_media.Controllers
                 string imageReference = "../Images/DefaultUserImage.png";
                 await _userService.AddUser(login, password, email, imageReference);
 
-                mainFormModels.GetMainUserInfo(context, login, password);
+                mainFormModels.GetMainUserInfo(login, password);
                 return View("Main", mainFormModels);
             }
         }

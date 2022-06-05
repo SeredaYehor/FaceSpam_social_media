@@ -21,14 +21,12 @@ namespace FaceSpam_social_media
         // as a result view will be changed, if mainUserId is eqhal to user.UserID 
         public int mainUserId;
 
-        public void UpdateMainUserInfo(string name, string email, string description)
+        public void UpdateUserInfo(string name, string email, string description)
         {
-            user.Name = name;
-            user.Email = email;
-            user.Description = description;
+            if (name != null) { user.Name = name; }
+            if (email != null) { user.Email = email; }
+            if (description != null) { user.Description = description; }
         }
-
-
         public async Task<int> AddPost(string message, string reference)
         {
             Post newPost = new Post();
@@ -97,7 +95,7 @@ namespace FaceSpam_social_media
                 .Select(x => x.FriendNavigation).ToList();
         }
 
-        public void GetMainUserInfo(MVCDBContext context, string name, string password)
+        public void GetMainUserInfo(string name, string password)
         {
             GetUser(name, password);
             GetPosts();
@@ -107,7 +105,7 @@ namespace FaceSpam_social_media
 
         // this function gets user info by id
         // password is cleaned
-        public void GetUserInfo(MVCDBContext context, int id)
+        public void GetUserInfo(int id)
         {
             user = _repository.GetAll<User>().Where(x => x.Id == id).FirstOrDefault();
             GetPosts();

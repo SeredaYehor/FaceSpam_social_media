@@ -5,6 +5,7 @@ using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
 using FaceSpam_social_media.Infrastructure.Data;
 using FaceSpam_social_media.Infrastructure.Repository;
+using System.Collections.Generic;
 
 namespace FaceSpam_social_media.Services
 {
@@ -60,6 +61,7 @@ namespace FaceSpam_social_media.Services
             }
 
             await _repository.UpdateAsync(user);
+            //return user.Id;
         }
     }
 }
