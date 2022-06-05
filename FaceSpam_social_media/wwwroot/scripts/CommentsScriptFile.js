@@ -26,7 +26,7 @@
             userName = user["name"].toString();
             image = user["imageReference"].toString();
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "/Home/AddComment",
                 async: false,
                 data: { message: text, },

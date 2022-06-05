@@ -9,37 +9,44 @@ namespace FaceSpam_social_media.Models
 {
     public class PostCommentsModel
     {
-        private readonly IRepository _repository;
+        public IRepository _repository;
 
-        public PostCommentsModel(IRepository repository)
+        public PostCommentsModel()
         {
-            _repository = repository;
         }
+
         public User user = new User();
         public Post post = new Post();
         public List<User> users = new List<User>();
+        public List<Message> chatMessages = new List<Message>();
 
-        public void GetComments(MVCDBContext context)
+        public void GetPost(int id)
         {
-            post.Messages = context.Messages.Where(x => x.PostPostId == post.Id/*PostId*/).ToList();
-            post.UserUser = context.Users.Where(x=>x.Id == post.UserUserId).FirstOrDefault();
+            post = _repository.GetAll<Post>().Where(x => x.Id == id).FirstOrDefault();
+        }
+        public void GetComments()
+        {
+            post.Messages = _repository.GetAll<Message>().Where(x => x.PostPostId == post.Id/*PostId*/).ToList();
+            post.UserUser = _repository.GetAll<User>().Where(x=>x.Id == post.UserUserId).FirstOrDefault();
 
             foreach (var comment in post.Messages)
             {
-                users.Add(context.Users.Where(x => x.Id == comment.UserUserId).FirstOrDefault());
+                users.Add(_repository.GetAll<User>().Where(x => x.Id == comment.UserUserId).FirstOrDefault());
             }
         }
 
-        public void AddComment(MVCDBContext context, string message)
+        public async Task<int> AddComment(string message)
         {
-            Message newMessage = new Message();
-            newMessage.PostPostId = post.Id/*PostId*/;
-            newMessage.UserUserId = user.Id;
-            newMessage.Text = message;
-            newMessage.DateSending = DateTime.Now;
+            var newComment = await _repository.AddAsync(new Message
+            {
+                PostPostId = post.Id,
+                UserUserId = user.Id,
+                Text = message,
+                DateSending = DateTime.Now
+            });
 
-            context.Messages.Add(newMessage);
-            context.SaveChanges();
+            post.Messages.Add(newComment);
+            return newComment.Id;
         }
     }
 }

@@ -31,14 +31,15 @@ namespace FaceSpam_social_media.Models
 
         public async Task<int> SendMessage(string inputMessage)
         {
-            Message send = new Message();
-            send.Text = inputMessage;
-            send.ChatChatId = currentChat;
-            send.DateSending = DateTime.Now;
-            send.UserUserId = user.Id;
-            send = await _repository.AddAsync<Message>(send);
-            chatMessages.Add(send);
-            return send.Id;
+            var newMessage = await _repository.AddAsync(new Message
+            {
+                Text = inputMessage,
+                ChatChatId = currentChat,
+                DateSending = DateTime.Now,
+                UserUserId = user.Id
+            });
+            chatMessages.Add(newMessage);
+            return newMessage.Id;
         }
 
         public void GetChats()
