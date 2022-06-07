@@ -1,24 +1,44 @@
 ﻿$(document).ready(function () {
+    $(document).on("click", ".CommentRemove", function () {
+        var id = $(this).attr("id");
+        $(this).parent().parent().remove();
+        $.ajax({
+            type: "POST",
+            url: '/Home/RemoveComment',
+            data: { commentId: id },
+            success: function (status) {
+                if (status == -1) {
+                    alert("Error removing comment");
+                }
+            }
+        });
+    })
 });
-    function GetMessage(message, time, user, image) {
+
+    function GetMessage(messageId, message, time, user, image) {
         messageObject =
+            '<div>' +
             '<div style="display: flex; align-items: center; flex-direction: row">' +
             '<img src="' + image + '" class="UserImage" />' +
             '<label class="UserName">' + user + '</label>' +
             '<label class="Time">' + time + '</label>' +
+            '<img src="../images/removeButton.png" class="CommentRemove" id="' + messageId +  '" />' +
             '</div>' +
             '<div>' +
             '<label class="PostedMessage">' + message + '</label>' +
+            '</div>' +
             '</div>';
         $("#comments").append(messageObject);
     }
 
     function AddMessage() {
         var text = document.getElementById("message").value;
+        document.getElementById("message").value = null;
         var time = GetTime();
 
         var userName = "";
         var image = "";
+        var messageId;
 
         $.ajax({
             url: "/Home/GetUser",
@@ -30,11 +50,11 @@
                 url: "/Home/AddComment",
                 async: false,
                 data: { message: text, },
+                success: function (id) {
+                    messageId = id;
+                }
             });
-
-            document.getElementById("message").value = null;
-
-            GetMessage(text, time, userName, image);
+            GetMessage(messageId, text, time, userName, image);
         });
     }
 

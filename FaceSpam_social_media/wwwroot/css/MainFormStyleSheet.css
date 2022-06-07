@@ -3,7 +3,6 @@
 }
 
 .Background {
-    background-image: url('../images/background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -231,6 +230,10 @@
     color: #3485FF;
     background-color: transparent;
     border: none;
+}
+
+.RemovePost {
+    margin-left: 65%;
 }
 
 @media screen and (max-width: 1082px) {

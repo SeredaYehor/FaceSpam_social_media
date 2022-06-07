@@ -7,11 +7,10 @@ namespace FaceSpam_social_media.Models
 {
     public class AuthenticationModel
     {
-        private readonly IRepository _repository;
+        public IRepository _repository;
 
-        public AuthenticationModel(IRepository repository)
+        public AuthenticationModel()
         {
-            _repository = repository;
         }
 
         [Required(ErrorMessage ="Enter login.")]
@@ -39,6 +38,7 @@ namespace FaceSpam_social_media.Models
 
             return result;
         }
+
     }
 
 }

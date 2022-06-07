@@ -20,7 +20,8 @@ namespace FaceSpam_social_media.Infrastructure.Data
         public string Name { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        public sbyte? IsAdmin { get; set; }
+        public bool? IsAdmin { get; set; }
+        public bool? IsBanned { get; set; }
         public string Description { get; set; }
         public string ImageReference { get; set; }
 

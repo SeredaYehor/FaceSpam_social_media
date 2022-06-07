@@ -61,7 +61,6 @@ namespace FaceSpam_social_media.Services
             }
 
             await _repository.UpdateAsync(user);
-            //return user.Id;
         }
     }
 }

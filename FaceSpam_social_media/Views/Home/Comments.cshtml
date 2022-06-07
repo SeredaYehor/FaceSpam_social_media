@@ -28,7 +28,13 @@
                     <input type="submit" class="Button" value=@controller />
                 }
             }
-
+            @if (Model.user.IsAdmin == true)
+            {
+                @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value="Admin" />
+                }
+            }
             <div class="AdvertisementText">
                 Advertisement
             </div>
@@ -62,14 +68,20 @@
                 <div id="comments">
                     @foreach (var comment in Model.post.Messages)
                     {
-                        <div style="display: flex; align-items: center; flex-direction: row">
-                            <img src="@Model.users.First(x=>x.Id == comment.UserUserId).ImageReference" class="UserImage" />
-                            <label class="UserName"> @Model.users.First(x => x.Id == comment.UserUserId).Name </label>
-                            <label class="Time"> @comment.DateSending.ToString("dd.MM.y HH:mm") </label>
-                        </div>
-
                         <div>
-                            <label class="PostedMessage"> @comment.Text </label>
+                            <div style="display: flex; align-items: center; flex-direction: row">
+                                <img src="@Model.users.First(x=>x.Id == comment.UserUserId).ImageReference" class="UserImage" />
+                                <label class="UserName"> @Model.users.First(x => x.Id == comment.UserUserId).Name </label>
+                                <label class="Time"> @comment.DateSending.ToString("dd.MM.y HH:mm") </label>
+                                @if (Model.user.Id == comment.UserUserId || Model.user.IsAdmin == true)
+                                {
+                                    <img src="~/images/removeButton.png" class="CommentRemove" id="@comment.Id" />
+                                }
+                            </div>
+
+                            <div>
+                                <label class="PostedMessage"> @comment.Text </label>
+                            </div>
                         </div>
                     }
 

@@ -9,23 +9,26 @@ namespace FaceSpam_social_media.Models
 {
     public class PostCommentsModel
     {
+        public User user = new User();
+        public Post post = new Post();
+        public List<User> users = new List<User>();
+        public List<Message> chatMessages = new List<Message>();
+        public int mainUserId;
+        
         public IRepository _repository;
 
         public PostCommentsModel()
         {
         }
 
-        public User user = new User();
-        public Post post = new Post();
-        public List<User> users = new List<User>();
-        public List<Message> chatMessages = new List<Message>();
 
-        public void GetPost(int id)
+        /*public void GetPost(int id)
         {
             post = _repository.GetAll<Post>().Where(x => x.Id == id).FirstOrDefault();
-        }
-        public void GetComments()
+        }*/
+        public void GetComments(int id)
         {
+            post = _repository.GetAll<Post>().Where(x => x.Id == id).FirstOrDefault();
             post.Messages = _repository.GetAll<Message>().Where(x => x.PostPostId == post.Id/*PostId*/).ToList();
             post.UserUser = _repository.GetAll<User>().Where(x=>x.Id == post.UserUserId).FirstOrDefault();
 
@@ -33,6 +36,15 @@ namespace FaceSpam_social_media.Models
             {
                 users.Add(_repository.GetAll<User>().Where(x => x.Id == comment.UserUserId).FirstOrDefault());
             }
+        }
+
+        public async Task<int> RemoveComment(int commentId)
+        {
+            Message remove = _repository.GetAll<Message>().Where(x => x.Id == commentId).First();
+            await _repository.DeleteAsync(remove);
+            chatMessages.Remove(remove);
+            user.Messages.Remove(remove);
+            return remove.Id;
         }
 
         public async Task<int> AddComment(string message)

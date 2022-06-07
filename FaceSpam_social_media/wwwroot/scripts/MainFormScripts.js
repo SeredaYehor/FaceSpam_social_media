@@ -2,6 +2,21 @@
 
     var formData = new FormData();
 
+    $(".DashboardList").on("click", ".RemovePost", function () {
+        var id = $(this).attr("id");
+        $(this).parent(".PostMessage").remove();
+        $.ajax({
+            type: "POST",
+            url: '/Home/RemovePost',
+            data: { postId: id },
+            success: function (status) {
+                if (status == 0) {
+                    alert("Error removing post");
+                }
+            }
+        });
+    })
+
     $("#Browse").click(function () {
         document.getElementById('myFile').click();
     })
@@ -36,6 +51,7 @@
                     AddNewPost(jsUser, text, postId, formData.get('file'));
                 }
                 $("#Browse").text("Browse");
+                formData = new FormData();
             }
         });
     })
@@ -50,7 +66,8 @@
         var date = GetCurrentDate();
         var postObject = '<div class="PostMessage">' +
             '<img src="' + user["imageReference"] + '"class="PostEllipse" />' +
-            '<label style="position: relative; font-size: 18px; color: #3485FF;">' + user["name"] + '</label>' +
+            '<label style="margin-left: 3px; position: relative; font-size: 18px; color: #3485FF;">' + user["name"] + '</label>' +
+            '<img src="../images/removeButton.png" class="RemovePost" id="' + postId + '" />' +
             '<br />' +
             '<label class="PostText">' + text + '</label>';
             if(postImage != null)
@@ -59,11 +76,12 @@
             }
         postObject += '<div style="background-color:transparent; height:50px;">' +
             '<div class="Likes" style="display: inline-block;">' +
+            '<form method="post" action="/Home/Comments">' +
             '<img src="../images/heart.svg" style="margin-right: 5px;" class="HeartImage" id="' + postId + '" />' +
             '<label class="LikeLabel" style="margin-right:5px;">0</label>' +
-            '</div><img src="../images/pencil.svg" style="display: inline-block; margin-left: 10px; margin-right:8px;" />' +
-            '<label style="position: relative; display: inline-block; font-size: 12px; color: #3485FF; margin-right:5px;">comments 0</label>' +
-            '<label class="Date">' + date + '</label></div></div>';
+            '<img src="../images/pencil.svg" style="display: inline-block; margin-right:8px;" />' +
+            '<button class="CommentButton" name="id" value="' + postId + '" type="submit">comments</button>' +
+            '<label class="Date">' + date + '</label></form></div></div>';
         $(".DashboardList").append(postObject);
     }
 
@@ -81,7 +99,7 @@
         $.ajax({
             type: "GET",
             url: '/Home/ChangeLike',
-            data: { postId: id, },
+            data: { postId: id },
             async: false,
             success: function (likes) {
                 result = likes;

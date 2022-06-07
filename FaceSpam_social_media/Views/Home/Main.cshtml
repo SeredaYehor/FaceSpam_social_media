@@ -1,7 +1,12 @@
-
 <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
 <link href="~/css/MainFormStyleSheet.css" rel="stylesheet" asp-append-version="true" />
 <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
+
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+</script>
+<script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/scripts/FriendsFormScripts.js" asp-append-version="true"></script>
 
 @model Main
 @{
@@ -9,13 +14,6 @@
     string username = Model.user.Name;
     string description = Model.user.Description;
 }
-
-<script src="/lib/jquery/dist/jquery.js"></script>
-<script type="text/javascript" asp-append-version="true">
-    var jsUser = @Html.Raw(Json.Serialize(Model.user));
-</script>
-<script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
-
 
 <body class="Background">
     <div class="bg"></div>
@@ -30,7 +28,13 @@
                     <input type="submit" class="Button" value=@controller />
                 }
             }
-
+            @if (Model.executor.IsAdmin == true)
+            {
+                @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value="Admin" />
+                }
+            }
             <div class="AdvertisementText">
                 Advertisement
             </div>
@@ -46,7 +50,18 @@
         <div class="AvatarAndFriends">
             <div class="UserImage">
                 <img src="@Model.user.ImageReference" />
-                <input type="submit" class="EditProfile" value="Edit profile" />
+                @if (Model.executor.Id == Model.user.Id)
+                {
+                    @using (Html.BeginForm("Settings", "Home", FormMethod.Post))
+                    {
+                        <input type="submit" class="EditProfile" value="Edit profile" />
+                    }
+                }
+                else
+                {
+                    <input type="submit" class="EditProfile" id="@Model.user.Id" value="@(Model.isFriend 
+                        ? "Remove" : "Pal up")" onclick="CheckAction(this)"/>
+                }
             </div>
 
             <div class="Friends">
@@ -59,7 +74,7 @@
                                 <img src="@friend.ImageReference" class="PostEllipse" style="width: 49px; height: 49px;" />
                             </button>
                         </form>
-                    }
+                        }
                 </div>
                 @using (Html.BeginForm("Friends", "Home", FormMethod.Post))
                 {
@@ -77,7 +92,7 @@
             <div class="Dashboard">
                 @*Now textbox can send input data to controller and then clear it on widget*@
 
-                @if (Model.user.Id == Model.mainUserId)
+                @if (Model.user.Id == Model.executor.Id)
                 {
                     @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "Post" })
                     <div style="vertical-align: 10px; margin-bottom: 15px; display: inline-block; width: 17%;">
@@ -94,6 +109,10 @@
                         <div class="PostMessage">
                             <img src="@Model.user.ImageReference" class="PostEllipse" />
                             <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
+                            @if (Model.executor.Id == Model.user.Id || Model.executor.IsAdmin == true)
+                            {
+                                <img src="~/images/removeButton.png" class="RemovePost" id="@post.Id" />
+                            }
                             <br />
                             <label class="PostText">@post.Text</label>
                             @if (post.ImageReference != null)
@@ -106,7 +125,7 @@
                                 <div class="Likes" style="display: inline-block;">
 
                                     <form method="post" action="/Home/Comments">
-                                        @if (Model.CheckLike(Model.user.Id, post.Id))
+                                        @if (Model.CheckLike(Model.executor.Id, post.Id))
                                         {
                                             <img src="~/images/heartRed.svg" class="HeartImage" id="@post.Id" />
                                         }

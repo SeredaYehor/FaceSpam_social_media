@@ -1,6 +1,21 @@
 ﻿$(document).ready(function () {
         $(".MessageArea").hide();
 
+        $(".ChatMessages").on("click", ".RemoveMessage", function () {
+            var id = $(this).attr("id");
+            $(this).parent(".MessageBody").remove();
+            $.ajax({
+                type: "POST",
+                url: '/Home/RemoveMessage',
+                data: { messageId: id, },
+                success: function (status) {
+                    if (status == 0) {
+                        alert("Error removing message");
+                    }
+                }
+            });
+        })
+
         $(".GroupPanel").click(function () {
             $(".MessageArea").show();
             var value = $(this).children(".GroupName").attr("id"); //get value of attribute 'id'
@@ -16,12 +31,12 @@
             $(".MessageTextBox").val("");
         });
 
-         function GetMessageObj(name, image, time, text) {
+         function GetMessageObj(messageId, name, image, time, text) {
             messageObject = '<div class="MessageBody">' +
                 '<img src="' + image + '" class="Ellipse" style="width: 50px; height: 50px;"/>' +
-                '<label class="MessageNickName" >' + name + '<label class="MessageDate">' + time + '</label ></label>' +
-                '<br /><label class="MessageText">' + text + '</label ></div>';
-
+                 '<label class="MessageNickName" >' + name + '<label class="MessageDate">' + time + '</label ></label>' +
+                 '<img src="../images/removeButton.png" class="RemoveMessage" id="' + messageId + '" />' +
+                 '<br /><label class="MessageText">' + text + '</label ></div>';
              $(".ChatMessages").append(messageObject);
          }
 
@@ -33,28 +48,51 @@
                 data: { chatId: id },
                 success: function (messages) { //get array object of Message models
                     for (var index = 0; index < messages.length; index++) { //adding all messages for this chat
+                        var messageId = messages[index]["messageId"].toString();                      
                         var dt = new Date(messages[index]["dateSending"]);
                         var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                         var text = messages[index]["text"].toString();
                         var userName = messages[index]["userUser"]["name"].toString();
                         var userImg = messages[index]["userUser"]["imageReference"].toString();
-                        GetMessageObj(userName, userImg, time, text);
+                        GetMessageObj(messageId, userName, userImg, time, text);
                     }
                 }
             });
         }
 
-        function SendMessages(message) {
+        /*function SendMessages(message) {
             $.ajax({ //async call of controller
                 type: "POST",  //request type
                 url: '/Home/SendMessage', //url to controller
                 data: { textboxMessage: message, }, //controller argument
+<<<<<<< HEAD
+                success: function (user) { //get array object of Message models
+                    var name = user["item1"]["name"].toString();
+                    var image = user["item1"]["imageReference"].toString();
+                    var id = user["item2"].toString();
+=======
                 success: function (result) { //get array object of Message models
                     var name = jsUser["name"];
                     var image = jsUser["imageReference"];
+>>>>>>> d6cdff163649e3b7d0f25b34a7a000f7828156a9
                     var dt = new Date();
                     var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
-                    GetMessageObj(name, image, time, message); //class of message
+                    GetMessageObj(id, name, image, time, message); //class of message
+                }
+            });
+        }*/
+        function SendMessages(message) {
+            $.ajax({ //async call of controller
+                type: "GET",  //request type
+                url: '/Home/SendMessage', //url to controller
+                data: { textboxMessage: message, }, //controller argument
+                success: function (user) { //get array object of Message models
+                    var name = user["item1"]["name"].toString();
+                    var image = user["item1"]["imageReference"].toString();
+                    var id = user["item2"].toString();
+                    var dt = new Date();
+                    var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+                    GetMessageObj(id, name, image, time, message); //class of message
                 }
             });
         }

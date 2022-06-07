@@ -9,13 +9,16 @@ namespace FaceSpam_social_media
 {
     public class Main
     {
+        public User user;
+        public User executor;
+        public List<User> friends;
+        public string message { get; set; }
+
         public IRepository _repository;
 
         public Main()
         {
         }
-        public User user;
-        public List<User> friends;
 
         // this field will be used to chech the opened user page
         // as a result view will be changed, if mainUserId is eqhal to user.UserID 
@@ -40,6 +43,31 @@ namespace FaceSpam_social_media
             newPost = await _repository.AddAsync<Post>(newPost);
             user.Posts.Add(newPost);
             return newPost.Id;
+        }
+
+
+        /*private async Task RemoveChildRows(int postId, bool removeLikes)
+        {
+            if (removeLikes)
+            {
+                List<Like> likesRemove = _repository.GetAll<Like>().Where(x => x.PostPostId == postId).ToList();
+                await _repository.DeleteAsync(likesRemove);
+            }
+            else
+            {
+                List<Message> messagesRemove = _repository.GetAll<Message>().Where(x => x.PostPostId == postId).ToList();
+                await _repository.DeleteAsync(messagesRemove);
+            }
+        }*/
+        public async Task<int> RemovePost(int postId)
+        {
+            //RemoveChildRows(postId, false);
+            //RemoveChildRows(postId, true);
+            Post remove = _repository.GetAll<Post>().Where(x => x.Id == postId && x.UserUserId == user.Id)
+                .First();
+            await _repository.DeleteAsync(remove);
+            user.Posts.Remove(user.Posts.Where(x => x.Id == postId && x.UserUserId == user.Id).First());
+            return remove.Id;
         }
 
         public void GetLikes()
@@ -75,14 +103,20 @@ namespace FaceSpam_social_media
             return CountLikes(postId);
         }
 
-        public void GetUser(string name, string password)
+        public void GetUser(ref User current, int userId, string name = null, string password = null)
         {
-            user = _repository.GetAll<User>().Where(x => x.Name == name && x.Password == password)
+            if (userId != -1)
+            {
+                current = _repository.GetAll<User>().Where(x => x.Id == userId).FirstOrDefault();
+            }
+            else
+            {
+                current = _repository.GetAll<User>().Where(x => x.Name == name && x.Password == password)
                 .FirstOrDefault();
-
-            mainUserId = user.Id;
-            user.Password = null;
+            }
+            current.Password = "Nice try, stupid litle dum-dummy";
         }
+
 
         public void GetPosts()
         {
@@ -95,9 +129,29 @@ namespace FaceSpam_social_media
                 .Select(x => x.FriendNavigation).ToList();
         }
 
+        public void GetUserInfo(bool friendDashboard, int userId, string name = null, string password = null)
+        {
+            GetUser(ref user, userId, name, password);
+            if (!friendDashboard)
+            {
+                executor = user;
+            }
+            GetPosts();
+            GetFriends();
+            GetLikes();
+        }
+
+        public void UpdateData(User change)
+        {
+            executor.Name = change.Name;
+            executor.Description = change.Description;
+            executor.Email = change.Email;
+        }
+
         public void GetMainUserInfo(string name, string password)
         {
-            GetUser(name, password);
+            user = _repository.GetAll<User>().Where(x => x.Name == name && x.Password == password)
+                .FirstOrDefault();
             GetPosts();
             GetFriends();
             GetLikes();
@@ -111,10 +165,22 @@ namespace FaceSpam_social_media
             GetPosts();
             GetFriends();
             GetLikes();
+        }
+        // function is used to learn is friend chosen person or not
 
-            user.Password = null;
+        public bool isFriend;
+
+        public bool IsFriend(int id)
+        {
+            foreach (var user in friends)
+            {
+                if (user.Id == id)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
-        public string message { get; set; }
     }
 }

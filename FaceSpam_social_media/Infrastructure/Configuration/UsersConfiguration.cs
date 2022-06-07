@@ -28,6 +28,10 @@ namespace FaceSpam_social_media.Infrastructure.Configuration
 
             builder.Property(e => e.IsAdmin).HasColumnName("Is_admin");
 
+            builder.Property(e => e.IsBanned)
+                .HasColumnName("Is_banned")
+                .HasDefaultValue(false);
+
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(45);

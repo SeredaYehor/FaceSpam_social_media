@@ -10,6 +10,7 @@ namespace FaceSpam_social_media.Models
 {
     public class MessagesForm
     {
+
         public IRepository _repository;
 
         public MessagesForm()
@@ -29,6 +30,26 @@ namespace FaceSpam_social_media.Models
                 .Include(x => x.UserUser).ToList();
         }
 
+        public async Task<int> RemoveMessage(int messageId)
+        {
+            Message remove = _repository.GetAll<Message>().Where(x => x.Id == messageId && x.UserUserId == user.Id)
+                .First();
+            await _repository.DeleteAsync(remove);
+            chatMessages.Remove(chatMessages.Where(x => x.Id == messageId && x.UserUserId == user.Id).First());
+            return remove.Id;
+        }
+        /*
+        public int RemoveMessage(int messageId)
+        {
+            int entries = 1;
+            Message remove = _repository.GetAll<Message>().Where(x => x.Id == messageId && x.UserUserId == user.Id)
+                .First();
+            _repository.DeleteAsync(remove);
+            //entries = context.SaveChanges();
+            chatMessages.Remove(chatMessages.Where(x => x.Id == messageId && x.UserUserId == user.Id).First());
+            return entries;
+        }*/
+
         public async Task<int> SendMessage(string inputMessage)
         {
             var newMessage = await _repository.AddAsync(new Message
@@ -41,7 +62,6 @@ namespace FaceSpam_social_media.Models
             chatMessages.Add(newMessage);
             return newMessage.Id;
         }
-
         public void GetChats()
         {
             chats = _repository.GetAll<ChatMember>().Where(x => x.UserUserId == user.Id)
