@@ -30,6 +30,19 @@ namespace FaceSpam_social_media.Models
             return new Chat();
         }
 
+        public int AddMember(mydbContext context, int memberId)
+        {
+            ChatMember newMember = new ChatMember
+            {
+                ChatChatId = selectedChat.ChatId,
+                UserUserId = memberId
+            };
+            context.Add(newMember);
+            context.SaveChanges();
+            members.Add(context.Users.Where(x => x.UserId == memberId).First());
+            return members.Count;
+        }
+
         public int RemoveChatMember(mydbContext context, int memberId)
         {
             User member = members.Where(x => x.UserId == memberId).First();
@@ -70,7 +83,15 @@ namespace FaceSpam_social_media.Models
                 .Select(x => x.ChatChat).ToList();
         }
 
-        public void QuitGroup(mydbContext context, int Id)
+        public void QuitGroup(mydbContext context)
+        {
+            ChatMember chatMember = context.ChatMembers
+                .Where(x => x.ChatChatId == selectedChat.ChatId && x.UserUserId == user.UserId).First();
+            context.Remove(chatMember);
+            context.SaveChanges();
+        }
+
+        public void DeleteGroup(mydbContext context, int Id)
         {
             Chat remove = context.Chats.Where(x => x.ChatId == Id).FirstOrDefault();
             context.Chats.Remove(remove);
@@ -90,7 +111,7 @@ namespace FaceSpam_social_media.Models
             return users;
         }
 
-        public Chat CreateGroup(mydbContext context, string name, string description, List<int> members)
+        public Chat CreateGroup(mydbContext context, string name, string description, List<int> members, string reference)
         {
             members.Add(user.UserId);
             Chat created = new Chat()
@@ -100,13 +121,20 @@ namespace FaceSpam_social_media.Models
                 DateCreating = DateTime.Now,
                 Admin = user.UserId,
             };
+            if (reference != null)
+            {
+                created.ImageReference = reference;
+            }
             context.Chats.Add(created);
             context.SaveChanges();
+            chats.Add(created);
             foreach (int member in members)
             {
                 ChatMember newMember = new ChatMember() 
-                { ChatChatId = created.ChatId, 
-                  UserUserId = member };
+                { 
+                    ChatChatId = created.ChatId, 
+                    UserUserId = member 
+                };
                 context.Add(newMember);
             }
             context.SaveChanges();
