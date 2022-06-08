@@ -3,40 +3,111 @@
         $(".MessageArea").hide();
         $(".GroupInfo").hide();
     }
-    $(".Popup").hide();
 
-    $(".GroupStatus").click(function () {
+    $(".Popup").hide();
+    var Members;
+
+    $(".QuitGroup").click(function () {
+        $.ajax({
+            type: "GET",
+            url: '/Home/QuitGroup',
+            success: function () {
+                $(".MessageArea").hide();
+                $(".GroupInfo").hide();
+                $(".Popup").hide();
+                $(".ChatMessages").empty();
+                $(".GroupPanel#" + selectedChat).remove();
+            }
+        });
+    })
+
+    $(".MembersIcon").click(function () {
         $(".MembersList").empty();
+        Members = new Array();
         $.ajax({
             type: "GET",
             url: '/Home/GetChatUsers',
             success: function (members) {
                 for (var i = 0; i < members.length; i++) {
-                    DisplayMember(members[i]["userId"], members[i]["name"], members[i]["imageReference"]);
+                    Members.push(members[i]["userId"]);
+                    DisplayMember(members[i]["userId"], members[i]["name"], members[i]["imageReference"], "Remove");
                 }
             }
         });
         $(".Popup").show();
     })
 
-    $(".MembersList").on("click", ".RemoveMember", function () {
-        var id = $(this).attr("id");
-        $(this).parent().remove();
-        $.ajax({
-            type: "POST",
-            url: '/Home/RemoveChatMember',
-            data: { memberId: id, },
-            success: function (counter) {
-                $(".MembersCounter").text(counter);
-            }
-        });
+    $(".InviteButton").click(function () {
+        $(".MembersList").empty();
+        if ($(this).val() == "Invite") {
+            $.ajax({
+                type: "POST",
+                url: '/Home/SelectUsers',
+                success: function (members) {
+                    for (var i = 0; i < members.length; i++) {
+                        if (Members.indexOf(members[i]["userId"]) < 0) {
+                            DisplayMember(members[i]["userId"], members[i]["name"], members[i]["imageReference"], "Add");
+                        }
+                    }
+                }
+            });
+            $(this).val("Back");
+        }
+        else {
+            Members = new Array();
+            $.ajax({
+                type: "GET",
+                url: '/Home/GetChatUsers',
+                success: function (members) {
+                    for (var i = 0; i < members.length; i++) {
+                        Members.push(members[i]["userId"]);
+                        DisplayMember(members[i]["userId"], members[i]["name"], members[i]["imageReference"], "Remove");
+                    }
+                }
+            });
+            $(".Popup").show();
+            $(this).val("Invite");
+        }
     })
 
-    function DisplayMember(id, name, image) {
+
+    $(".MembersList").on("click", ".RemoveMember", function () {
+        var id = $(this).attr("id");
+        var action = $(this).val();
+        if (action == "Remove") {
+            $(this).parent().remove();
+            $.ajax({
+                type: "POST",
+                url: '/Home/RemoveChatMember',
+                data: { memberId: id, },
+                success: function (counter) {
+                    $(".MembersCounter").text(counter);
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: '/Home/AddMember',
+                data: { memberId: id, },
+                success: function (counter) {
+                    $(".MembersCounter").text(counter);
+                    $(".Popup").hide();
+                    $(".InviteButton").val("Invite");
+                    $(".MembersList").empty();
+                }
+            });
+        }
+    })
+
+    function DisplayMember(id, name, image, value) {
         var panel = '<div class="MemberPanel">' +
             '<img src="' + image + '" class="Ellipse" />' +
-            '<label class="GroupName" id="' + id + '">' + name + '</label>' +
-            '<input type="submit" class="RemoveMember" id="' + id + '" value="Remove" /></div>';
+            '<label class="GroupName" id="' + id + '">' + name + '</label>';
+        if (userId == chatAdmin || value != "Remove") {
+            panel += '<input type="submit" class="RemoveMember" id="' + id + '" value="' + value + '" />';
+        }
+        panel += '</div>';
         $(".MembersList").append(panel);
     }
 
@@ -63,6 +134,7 @@
         $(".GroupPanel").click(function () {
             $(".MessageArea").show();
             var value = $(this).children(".GroupName").attr("id"); //get value of attribute 'id'
+            selectedChat = value;
             $(".ChatMessages").empty(); //clear text from textbox
             GetChatMessages(value); //get all messages for selected chat
             $(".GroupPanel").attr("class", "GroupPanel inactive"); //make unselected GroupPanel not active
@@ -112,6 +184,7 @@
         $(".GroupDescription").text(groupInfo["description"]);
         $(".MembersCounter").text(members);
         $(".GroupStatus").show();
+        chatAdmin = groupInfo["admin"];
         $(".GroupInfo").attr("style", "");
     }
 

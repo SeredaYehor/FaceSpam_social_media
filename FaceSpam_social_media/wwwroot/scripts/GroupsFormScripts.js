@@ -10,6 +10,7 @@
         const path = document.getElementById("myFile").files[0];
         $(".GroupImage").empty();
         if (path) {
+            formData.set('file', path);
             const fileReader = new FileReader();
             fileReader.readAsDataURL(path);
             fileReader.addEventListener("load", function () {
@@ -38,8 +39,9 @@
             '<img class="UserImage" src="' + image + '" />' +
             '<label class="Names">' + name + '</label>' +
             '<input id="' + id + '" type="submit" class="FriendButton" value="Quit" onclick="DeleteChat(this)" />' +
-            '<input type="submit" class="FriendButton" value="Write" />' +
-            '</div>';
+            '<form action="/Home/Messages?current=' + id + '" method="post">' +
+            '<input type="submit" class="GroupWriteButton" value="Write" />' +
+            '</form></div>';
         $(".GroupsPanels").append(panel);
     }
     
