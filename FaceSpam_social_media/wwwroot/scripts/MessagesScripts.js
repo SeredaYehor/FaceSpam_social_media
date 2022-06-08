@@ -48,7 +48,7 @@
                 data: { chatId: id },
                 success: function (messages) { //get array object of Message models
                     for (var index = 0; index < messages.length; index++) { //adding all messages for this chat
-                        var messageId = messages[index]["messageId"].toString();                      
+                        var messageId = messages[index]["id"].toString();                      
                         var dt = new Date(messages[index]["dateSending"]);
                         var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                         var text = messages[index]["text"].toString();

@@ -38,17 +38,6 @@ namespace FaceSpam_social_media.Models
             chatMessages.Remove(chatMessages.Where(x => x.Id == messageId && x.UserUserId == user.Id).First());
             return remove.Id;
         }
-        /*
-        public int RemoveMessage(int messageId)
-        {
-            int entries = 1;
-            Message remove = _repository.GetAll<Message>().Where(x => x.Id == messageId && x.UserUserId == user.Id)
-                .First();
-            _repository.DeleteAsync(remove);
-            //entries = context.SaveChanges();
-            chatMessages.Remove(chatMessages.Where(x => x.Id == messageId && x.UserUserId == user.Id).First());
-            return entries;
-        }*/
 
         public async Task<int> SendMessage(string inputMessage)
         {
