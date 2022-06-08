@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using FaceSpam_social_media.DbModels;
+using System.Linq;
 
 namespace FaceSpam_social_media.Controllers
 {
@@ -127,6 +128,13 @@ namespace FaceSpam_social_media.Controllers
             return members;
         }
 
+        [HttpPost]
+        public int AddMember(int memberId)
+        {
+            int members = messages.AddMember(context, memberId);
+            return members;
+        }
+
         public IActionResult GetChat(int chatId)
         {
             messages.user = mainFormModels.executor;
@@ -170,16 +178,23 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
-        public Chat CreateGroup(string chatName, string chatDescription, List<int> members)
+        public Chat CreateGroup(string chatName, string chatDescription, string members, IFormFile file)
         {
-            Chat result = messages.CreateGroup(context, chatName, chatDescription, members);
+            List<int> listMembers = members.Split(',').Select(int.Parse).ToList();
+            string reference = FileManager.UploadImage(file);
+            Chat result = messages.CreateGroup(context, chatName, chatDescription, listMembers, reference);
             return result;
         }
 
-        [HttpPost]
-        public void QuitGroup(int groupId)
+        public void QuitGroup()
         {
-            messages.QuitGroup(context, groupId);
+            messages.QuitGroup(context);
+        }
+
+        [HttpPost]
+        public void DeleteGroup(int groupId)
+        {
+            messages.DeleteGroup(context, groupId);
         }
 
         [HttpPost]
