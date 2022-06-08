@@ -10,10 +10,9 @@
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
     var selectedChat = @Model.currentChat;
+    var chatAdmin = @Model.selectedChat.Admin;
     var members = @Model.members.Count;
-    if (members < 3) {
-        //there should be group status hide
-    }
+    var userId = @Model.user.UserId;
 </script>
 <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
 
@@ -105,7 +104,7 @@
                     <label class="GroupDescription"></label>
                 }
                     <div class="GroupStatus">
-                        <div style="display: flex; flex-direction: row; width: 40%; height: 50%">
+                        <div class="MembersIcon">
                             <img src="~/Images/people.png" class="MembersImage" />
                             <label class="MembersCounter">@Model.members.Count</label>
                         </div>
@@ -144,6 +143,7 @@
             <div class="PopupNavigation">
                 <img src="~/images/removeButton.png" style="margin: 5px 5px; width: 30px; height: 30px;" id="ClosePopup" />
                 <label style="color: blue; font-weight: 600; font-size: 24px; margin-left: 10px;">Chat members</label>
+                <input type="submit" class="InviteButton" value="Invite">
             </div>
             <div class="MembersList">
             </div>
