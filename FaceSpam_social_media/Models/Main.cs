@@ -46,27 +46,28 @@ namespace FaceSpam_social_media
         }
 
 
-        /*private async Task RemoveChildRows(int postId, bool removeLikes)
+        private async Task RemoveChildRows(int postId, bool removeLikes)
         {
             if (removeLikes)
             {
-                List<Like> likesRemove = _repository.GetAll<Like>().Where(x => x.PostPostId == postId).ToList();
-                await _repository.DeleteAsync(likesRemove);
+                IEnumerable<Like> likesRemove = _repository.GetAll<Like>().Where(x => x.PostPostId == postId);
+                await _repository.DeleteAsyncRange(likesRemove);
             }
             else
             {
                 List<Message> messagesRemove = _repository.GetAll<Message>().Where(x => x.PostPostId == postId).ToList();
-                await _repository.DeleteAsync(messagesRemove);
+                await _repository.DeleteAsyncRange(messagesRemove);
             }
-        }*/
+        }
+
         public async Task<int> RemovePost(int postId)
         {
-            //RemoveChildRows(postId, false);
-            //RemoveChildRows(postId, true);
+            user.Posts.Remove(user.Posts.Where(x => x.Id == postId && x.UserUserId == user.Id).First());
+            await RemoveChildRows(postId, false);
+            await RemoveChildRows(postId, true);
             Post remove = _repository.GetAll<Post>().Where(x => x.Id == postId && x.UserUserId == user.Id)
                 .First();
             await _repository.DeleteAsync(remove);
-            user.Posts.Remove(user.Posts.Where(x => x.Id == postId && x.UserUserId == user.Id).First());
             return remove.Id;
         }
 
