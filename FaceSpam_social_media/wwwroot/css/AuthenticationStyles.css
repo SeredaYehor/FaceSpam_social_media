@@ -30,6 +30,10 @@ body {
     background-color: #3485FF;
 }
 
+.ValidationError {
+    margin-top: -20px;
+}
+
 .Wrapper {
     max-width: 100%;
     display: flex;
@@ -112,7 +116,7 @@ body {
 }
 
 .LoginText {
-    width: 160px;
+    width: 110px;
 }
 /* Password */
 .Password {
@@ -120,31 +124,34 @@ body {
 }
 
 .PasswordText {
-    width: 160px;
+    width: 110px;
 }
 
 .PasswordCheckbox {
     display: flex;
-    align-items: center;
     color: gray;
-    height: 20px;
     font-size: 15px;
-    margin-top: 20px;
+    line-height: 20px;
+    width: 130px;
+    margin-top: 15px;
 }
 
     .PasswordCheckbox input {
         cursor: pointer;
+        font-size: 1px;
         height: 20px;
         width: 20px;
-        margin: 5px;
+        margin-right: 5px;
     }
 /* ConfirmPassword */
 .ConfirmPassword {
+    margin-top: -17px;
     display: flex;
+    line-height: 20px;
 }
 
 .ConfirmPasswordText {
-    width: 160px;
+    width: 110px;
 }
 /* Email */
 .Email {
@@ -152,7 +159,7 @@ body {
 }
 
 .EmailText {
-    width: 160px;
+    width: 110px;
 }
 /* Button */
 .Button {
@@ -199,6 +206,14 @@ body {
     .FaceSpamLogo {
         margin-right: 5%;
     }
+
+    .PasswordCheckbox {
+        margin-right: 50px;
+    }
+
+    .Button {
+        margin-top: 25px;
+    }
 }
 
 @media screen and (max-width: 1145px) {
@@ -217,6 +232,10 @@ body {
         .FaceSpamLogo img {
             width: 350px;
         }
+
+    .Button {
+        margin-top: -15px;
+    }
 }
 
 @media screen and (max-width: 583px) {
@@ -352,19 +371,28 @@ body {
     }
 
     .PasswordCheckbox {
-        font-size: 13px;
+        /*font-size: 13px;*/
         white-space: nowrap;
+    }
+}
+
+@media screen and (max-height: 800px) {
+    .PasswordCheckbox {
+        margin-right: 50px;
+    }
+
+    .Button {
+        margin-top: 25px;
     }
 }
 
 @media screen and (max-height: 745px) {
     .FaceSpamLogo img {
-        width: 250px;
+        width: 350px;
     }
 
     .Card {
-        max-width: 50%;
-        max-height: 370px;
+        max-width: 65%;
     }
 
     .InputInterface {
@@ -380,6 +408,11 @@ body {
 
     .Password {
         height: 45px;
+    }
+
+    #password-checkbox {
+        width: 25px;
+        height: 25px;
     }
 
     .ConfirmPassword {
@@ -416,5 +449,6 @@ body {
         line-height: 42px;
         border: none;
         transition: 0.5s;
+        margin-top: -10px;
     }
 }

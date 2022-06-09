@@ -21,6 +21,7 @@ namespace FaceSpam_social_media.Controllers
         public static SettingsModel settingsModel = new SettingsModel();
         public static AuthenticationModel authModel = new AuthenticationModel();
         public static UsersManagment usersManagment = new UsersManagment();
+        public static ErrorPageModel errorModel = new ErrorPageModel();
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -230,7 +231,11 @@ namespace FaceSpam_social_media.Controllers
                 mainFormModels.GetUserInfo(context, false, -1, login, password);
                 return View("Main", mainFormModels);
             }
-            return Content("This user is already registered.");
+            else
+            {
+                errorModel.Error = "This data is already in use";
+                return View("ErrorPage", errorModel);
+            }
         }
 
         [HttpPost]
@@ -249,11 +254,20 @@ namespace FaceSpam_social_media.Controllers
 
                 if (mainFormModels.user.IsBanned == true)
                 {
-                    return Content("Oi, you have been banned.");
+                    errorModel.Error = "Oi, you have been banned";
+                    return View("ErrorPage", errorModel);
                 }
                 return View("Main", mainFormModels);
             }
-            return Content("Wrong login or password");
+            else
+            {
+                errorModel.Error = "Wrong login or password";
+                return View("ErrorPage", errorModel);
+            }
+        }
+        public IActionResult ErrorLoginPage()
+        {
+            return View("ErrorLoginPage", errorModel);
         }
     }
 }
