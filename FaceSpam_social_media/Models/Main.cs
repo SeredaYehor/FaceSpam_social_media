@@ -96,9 +96,9 @@ namespace FaceSpam_social_media
             if (liked)
             {
                 await _repository.DeleteAsync<Like>(_repository.GetAll<Like>()
-                    .Where(x => x.UserUserId == user.Id && x.PostPostId == postId).First());
+                    .Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
                 user.Likes.Remove(user.Likes
-                    .Where(x => x.UserUserId == user.Id && x.PostPostId == postId).First());
+                    .Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
             }
             else
             {
