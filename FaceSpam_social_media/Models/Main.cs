@@ -32,15 +32,18 @@ namespace FaceSpam_social_media
         }
         public async Task<int> AddPost(string message, string reference)
         {
-            Post newPost = new Post();
-            newPost.Text = message;
-            newPost.UserUserId = user.Id;
-            newPost.DatePosting = DateTime.Now;
-            if(reference != null)
+            var newPost = await _repository.AddAsync(new Post
+            {
+                Text = message,
+                UserUserId = user.Id,
+                DatePosting = DateTime.Now
+            });
+
+            if (reference != null)
             {
                 newPost.ImageReference = reference;
             }
-            newPost = await _repository.AddAsync<Post>(newPost);
+
             user.Posts.Add(newPost);
             return newPost.Id;
         }
@@ -104,7 +107,7 @@ namespace FaceSpam_social_media
             return CountLikes(postId);
         }
 
-        public void GetUser(ref User current, int userId, string name = null, string password = null)
+        public void GetUser(ref User current, int userId, string name, string password)
         {
             if (userId != -1)
             {

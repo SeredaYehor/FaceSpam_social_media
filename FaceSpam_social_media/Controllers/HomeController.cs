@@ -199,7 +199,7 @@ namespace FaceSpam_social_media.Controllers
             return (messages.user, id);
         }
 
-        public List<Message> GetChatMessagesGetChatMessages(int chatId)
+        public List<Message> GetChatMessages(int chatId)
         {
             messages.GetChatMessages(chatId);
             return messages.chatMessages;
