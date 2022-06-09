@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using FaceSpam_social_media.Infrastructure.Data;
+using System.Collections.Generic;
 
 namespace FaceSpam_social_media.Infrastructure.Repository
 {
@@ -27,5 +28,7 @@ namespace FaceSpam_social_media.Infrastructure.Repository
         IQueryable<TEntity> GetAll<TEntity>() where TEntity : class, IEntity;
 
         Task<TEntity> DeleteAsync<TEntity>(TEntity entity) where TEntity : class, IEntity;
+
+        Task<int> DeleteAsyncRange<TEntity>(IEnumerable<TEntity> entity) where TEntity : class, IEntity;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using FaceSpam_social_media.Infrastructure.Data;
+using System.Collections.Generic;
 
 namespace FaceSpam_social_media.Infrastructure.Repository
 {
@@ -47,6 +48,13 @@ namespace FaceSpam_social_media.Infrastructure.Repository
         {
             return _dbContext.Set<TEntity>()
                 .Select(i => i);
+        }
+
+        public async Task<int> DeleteAsyncRange<TEntity>(IEnumerable<TEntity> entity) where TEntity : class, IEntity
+        {
+            _dbContext.Set<TEntity>().RemoveRange(entity);
+            var result = await _dbContext.SaveChangesAsync();
+            return result;
         }
     }
 }
