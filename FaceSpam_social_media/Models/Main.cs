@@ -76,7 +76,7 @@ namespace FaceSpam_social_media
 
         public void GetLikes()
         {
-            user.Likes = _repository.GetAll<Like>().Where(x => x.UserUserId == user.Id).ToList();
+            user.Likes = _repository.GetAll<Like>().Where(x => x.PostPost.UserUserId == user.Id).ToList();
         }
 
         public int CountLikes(int postId)
@@ -89,9 +89,11 @@ namespace FaceSpam_social_media
             return user.Likes.Any(x => x.UserUserId == userId && x.PostPostId == postId);
         }
 
-        public async Task<int> UpdatePostLike(int postId)
+        public async Task UpdatePostLike(int postId)
         {
-            if(CheckLike(user.Id, postId))
+            int userId = executor.Id;
+            bool liked = CheckLike(userId, postId);
+            if (liked)
             {
                 await _repository.DeleteAsync<Like>(_repository.GetAll<Like>()
                     .Where(x => x.UserUserId == user.Id && x.PostPostId == postId).First());
@@ -100,11 +102,13 @@ namespace FaceSpam_social_media
             }
             else
             {
-                Like like = new Like() { UserUserId = user.Id, PostPostId = postId };
-                like = await _repository.AddAsync<Like>(like);
+                Like like = await _repository.AddAsync(new Like
+                {
+                    UserUserId = userId,
+                    PostPostId = postId
+                });
                 user.Likes.Add(like);
             }
-            return CountLikes(postId);
         }
 
         public void GetUser(ref User current, int userId, string name, string password)

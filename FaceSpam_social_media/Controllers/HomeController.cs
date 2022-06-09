@@ -177,10 +177,11 @@ namespace FaceSpam_social_media.Controllers
             return result;
         }
 
-        public async Task<int> ChangeLike(int postId, bool friendLike)
+        public async Task<int> ChangeLike(int postId)
         {
+            int count = 0;
             await mainFormModels.UpdatePostLike(postId);
-            int count = mainFormModels.CountLikes(postId);
+            count = mainFormModels.CountLikes(postId);
             return count;
         }
 
