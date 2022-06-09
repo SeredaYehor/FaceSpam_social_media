@@ -233,10 +233,8 @@ namespace FaceSpam_social_media.Controllers
             }
             else
             {
-                //Incapsulate it inside IfError function
-                errorModel.WhereError = "Auth";
-                errorModel.IfError(errorModel.WhereError);
-                return View("ErrorLoginPage", errorModel);
+                errorModel.Error = "This data is already in use";
+                return View("ErrorPage", errorModel);
             }
         }
 
@@ -256,19 +254,15 @@ namespace FaceSpam_social_media.Controllers
 
                 if (mainFormModels.user.IsBanned == true)
                 {
-                    //Incapsulate it inside IfError function
-                    errorModel.WhereError = "Ban";
-                    errorModel.IfError(errorModel.WhereError);
-                    return View("ErrorLoginPage", errorModel);
+                    errorModel.Error = "Oi, you have been banned";
+                    return View("ErrorPage", errorModel);
                 }
                 return View("Main", mainFormModels);
             }
             else
             {
-                //Incapsulate it inside IfError function
-                errorModel.WhereError = "Login";
-                errorModel.IfError(errorModel.WhereError);
-                return View("ErrorLoginPage", errorModel);
+                errorModel.Error = "Wrong login or password";
+                return View("ErrorPage", errorModel);
             }
         }
         public IActionResult ErrorLoginPage()

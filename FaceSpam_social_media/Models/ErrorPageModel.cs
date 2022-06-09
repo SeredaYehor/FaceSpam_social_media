@@ -8,23 +8,6 @@ namespace FaceSpam_social_media.Models
 {
     public class ErrorPageModel
     {
-        public string WhereError { get; set; }
-
-        public void IfError(string Error)
-        {
-            //Reduce this multiple if 
-            if (Error == "Login")
-            {
-                WhereError = "Wrong login or password";
-            }
-            if (Error == "Auth")
-            {
-                WhereError = "This data is already in use";
-            }
-            if (Error == "Ban")
-            {
-                WhereError = "Oi, you have been banned";
-            }
-        }
+        public string Error { get; set; }
     }
 }
