@@ -71,13 +71,6 @@ namespace FaceSpam_social_media.Controllers
             int result = await messages.RemoveMessage(messageId);
             return result;
         }
-        /*[HttpPost]
-        public int RemoveMessage(int messageId)
-        {
-            int result = 0;
-            result = messages.RemoveMessage(messageId);
-            return result;
-        }*/
 
         [HttpPost]
         public async Task<int> RemovePost(int postId)
@@ -89,16 +82,6 @@ namespace FaceSpam_social_media.Controllers
             }
             return result;
         }
-        /*[HttpPost]
-        public int RemovePost(int postId)
-        {
-            int result = 0;
-            if (mainFormModels.executor.IsAdmin == true)
-            {
-                result = mainFormModels.RemovePost(context, postId);
-            }
-            return result;
-        }*/
 
 
         [HttpPost]
