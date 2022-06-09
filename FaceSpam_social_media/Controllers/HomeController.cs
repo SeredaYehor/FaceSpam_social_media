@@ -80,6 +80,10 @@ namespace FaceSpam_social_media.Controllers
             {
                 result = await mainFormModels.RemovePost(postId);
             }
+            else 
+            { 
+                result = await mainFormModels.RemovePost(postId);
+            }
             return result;
         }
 
