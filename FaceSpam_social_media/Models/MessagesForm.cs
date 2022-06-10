@@ -113,7 +113,6 @@ namespace FaceSpam_social_media.Models
 
         public Chat CreateGroup(mydbContext context, string name, string description, List<int> members, string reference)
         {
-            members.Add(user.UserId);
             Chat created = new Chat()
             {
                 ChatName = name,
@@ -124,6 +123,10 @@ namespace FaceSpam_social_media.Models
             if (reference != null)
             {
                 created.ImageReference = reference;
+            }
+            else
+            {
+                created.ImageReference = "../Images/default_group.jpg";
             }
             context.Chats.Add(created);
             context.SaveChanges();
