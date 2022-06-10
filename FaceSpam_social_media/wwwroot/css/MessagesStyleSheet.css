@@ -9,6 +9,7 @@
         margin-right: 50px;
     }
 
+/*try to improve this styles*/
 .MembersIcon {
     display: flex;
     flex-direction: row;
@@ -155,6 +156,7 @@
     transition: .5s;
     border: none;
 }
+/*^^^Try to improve this styles ^^^*/
 
 .Groups {
     width: 300px;
