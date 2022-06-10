@@ -80,6 +80,7 @@
             </div>
         </div>
 
+        <!--Try to improve this code-->
         <div>
             <div class="GroupInfo">
                 <div class="ImageNameGroup">
@@ -103,14 +104,15 @@
                 {
                     <label class="GroupDescription"></label>
                 }
-                    <div class="GroupStatus">
-                        <div class="MembersIcon">
-                            <img src="~/Images/people.png" class="MembersImage" />
-                            <label class="MembersCounter">@Model.members.Count</label>
-                        </div>
-                        <input type="submit" class="QuitGroup" value="Quit" />
+                <div class="GroupStatus">
+                    <div class="MembersIcon">
+                        <img src="~/Images/people.png" class="MembersImage" />
+                        <label class="MembersCounter">@Model.members.Count</label>
                     </div>
+                    <input type="submit" class="QuitGroup" value="Quit" />
+                </div>
             </div>
+            <!--Try to improve this code-->
 
             <div class="Groups">
                 <div class="SearchField">
@@ -139,13 +141,16 @@
             </div>
         </div>
     </div>
+
+    <!--Try to improve this code-->
     <div class="Popup">
-            <div class="PopupNavigation">
-                <img src="~/images/removeButton.png" style="margin: 5px 5px; width: 30px; height: 30px;" id="ClosePopup" />
-                <label style="color: blue; font-weight: 600; font-size: 24px; margin-left: 10px;">Chat members</label>
-                <input type="submit" class="InviteButton" value="Invite">
-            </div>
-            <div class="MembersList">
-            </div>
+        <div class="PopupNavigation">
+            <img src="~/images/removeButton.png" style="margin: 5px 5px; width: 30px; height: 30px;" id="ClosePopup" />
+            <label style="color: blue; font-weight: 600; font-size: 24px; margin-left: 10px;">Chat members</label>
+            <input type="submit" class="InviteButton" value="Invite">
+        </div>
+        <div class="MembersList">
+        </div>
     </div>
+    <!--Try to improve this code-->
 </body>
