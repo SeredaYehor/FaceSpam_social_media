@@ -46,6 +46,7 @@
     }
     
     $(".ConfirmButton").click(function () {
+        addedMembers.push(userId);
         formData.set("chatName", $("#name").val());
         formData.set("chatDescription", $("#description").val());
         formData.set("members", addedMembers);
@@ -95,7 +96,7 @@
         $(this).parent(".FriendLine").remove();
         $.ajax({
             type: "POST",
-            url: '/Home/QuitGroup',
+            url: '/Home/DeleteGroup',
             async: false,
             data: { groupId: id },
             success: function (status) {

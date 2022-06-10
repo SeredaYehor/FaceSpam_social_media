@@ -104,7 +104,7 @@
         var panel = '<div class="MemberPanel">' +
             '<img src="' + image + '" class="Ellipse" />' +
             '<label class="GroupName" id="' + id + '">' + name + '</label>';
-        if (userId == chatAdmin || value != "Remove") {
+        if ((userId == chatAdmin || value != "Remove") && userId != id) {
             panel += '<input type="submit" class="RemoveMember" id="' + id + '" value="' + value + '" />';
         }
         panel += '</div>';
@@ -133,6 +133,7 @@
 
         $(".GroupPanel").click(function () {
             $(".MessageArea").show();
+            $(".Popup").hide();
             var value = $(this).children(".GroupName").attr("id"); //get value of attribute 'id'
             selectedChat = value;
             $(".ChatMessages").empty(); //clear text from textbox
