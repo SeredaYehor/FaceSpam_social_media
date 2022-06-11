@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FaceSpam_social_media.DbModels
+namespace FaceSpam_social_media.Infrastructure.Data
 {
-    public partial class Message
+    public partial class Message : IEntity
     {
         public Message()
         {
             Likes = new HashSet<Like>();
         }
 
-        public int MessageId { get; set; }
+        public int Id { get; set; }
         public string Text { get; set; }
         public DateTime DateSending { get; set; }
         public int UserUserId { get; set; }

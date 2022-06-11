@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FaceSpam_social_media.Infrastructure.Data;
 using System.Threading.Tasks;
-using FaceSpam_social_media.DbModels;
+using FaceSpam_social_media.Infrastructure.Repository;
 
 namespace FaceSpam_social_media.Models
 {
@@ -11,41 +12,49 @@ namespace FaceSpam_social_media.Models
         public User user = new User();
         public Post post = new Post();
         public List<User> users = new List<User>();
-
+        public List<Message> chatMessages = new List<Message>();
         public int mainUserId;
-        public void GetComments(mydbContext context, int postId)
+        
+        public IRepository _repository;
+
+        public PostCommentsModel()
         {
-            post = context.Posts.Where(x => x.PostId == postId).FirstOrDefault();
-            post.Messages = context.Messages.Where(x => x.PostPostId == post.PostId).ToList();
-            post.UserUser = context.Users.Where(x=>x.UserId == post.UserUserId).FirstOrDefault();
+        }
+
+
+        public void GetComments(int id)
+        {
+            post = _repository.GetAll<Post>().Where(x => x.Id == id).FirstOrDefault();
+            post.Messages = _repository.GetAll<Message>().Where(x => x.PostPostId == post.Id/*PostId*/).ToList();
+            post.UserUser = _repository.GetAll<User>().Where(x=>x.Id == post.UserUserId).FirstOrDefault();
 
             foreach (var comment in post.Messages)
             {
-                users.Add(context.Users.Where(x => x.UserId == comment.UserUserId).FirstOrDefault());
+                users.Add(_repository.GetAll<User>().Where(x => x.Id == comment.UserUserId).FirstOrDefault());
             }
         }
 
-        public int RemoveComment(mydbContext context, int commentId)
+        public async Task<int> RemoveComment(int commentId)
         {
-            int result = -1;
-            Message remove = context.Messages.Where(x => x.MessageId == commentId).First();
-            context.Messages.Remove(remove);
-            result = context.SaveChanges();
+            Message remove = _repository.GetAll<Message>().Where(x => x.Id == commentId).First();
+            await _repository.DeleteAsync(remove);
+            chatMessages.Remove(remove);
             user.Messages.Remove(remove);
-            return result;
+            return remove.Id;
         }
 
-        public int AddComment(mydbContext context, string message)
+        public async Task<int> AddComment(string message)
         {
-            Message newMessage = new Message();
-            newMessage.PostPostId = post.PostId;
-            newMessage.UserUserId = user.UserId;
-            newMessage.Text = message;
-            newMessage.DateSending = DateTime.Now;
+            var newComment = await _repository.AddAsync(new Message
+            {
+                PostPostId = post.Id,
+                UserUserId = user.Id,
+                Text = message,
+                DateSending = DateTime.Now
+            });
 
-            context.Messages.Add(newMessage);
-            context.SaveChanges();
-            return newMessage.MessageId;
+            post.Messages.Add(newComment);
+            return newComment.Id;
         }
     }
 }

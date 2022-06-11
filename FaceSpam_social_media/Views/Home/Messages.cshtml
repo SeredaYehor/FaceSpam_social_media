@@ -9,6 +9,9 @@
 <!--Kakaya shlyapa-->
 <!--8 realtime hours wasted for adding this functionality-->
 <script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" asp-append-version="true">
+    var jsUser = @Html.Raw(Json.Serialize(Model.user));
+</script>
 <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
 
 <body>
@@ -56,7 +59,7 @@
                     <img src="~/images/W1ld 3lf.jpg" class="UserImage" />
                 </div>
                 @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "MessageTextBox" })
-                <input type="submit" class="ButtonSend" formaction="/Home/SendMessage" value="Send" />
+                <input type="submit" class="ButtonSend" value="Send" />
             </div>
         </div>
 
@@ -66,11 +69,11 @@
                 <img src="~/images/searchImg.png" class="SearchImage" />
             </div>
             <div class="GroupsList" id="groups">
-                @foreach (FaceSpam_social_media.DbModels.Chat chat in Model.chats)
+                @foreach (FaceSpam_social_media.Infrastructure.Data.Chat chat in Model.chats)
                 {
                     <div class="GroupPanel" id="@chat.ChatName">
                         <img src="@chat.ImageReference" class="Ellipse" />
-                        <label class="GroupName" id="@chat.ChatId">@chat.ChatName</label>
+                        <label class="GroupName" id="@chat.Id">@chat.ChatName</label>
                     </div>
                 }
             </div>

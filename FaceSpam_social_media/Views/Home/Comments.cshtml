@@ -70,12 +70,12 @@
                     {
                         <div>
                             <div style="display: flex; align-items: center; flex-direction: row">
-                                <img src="@Model.users.First(x=>x.UserId == comment.UserUserId).ImageReference" class="UserImage" />
-                                <label class="UserName"> @Model.users.First(x => x.UserId == comment.UserUserId).Name </label>
+                                <img src="@Model.users.First(x=>x.Id == comment.UserUserId).ImageReference" class="UserImage" />
+                                <label class="UserName"> @Model.users.First(x => x.Id == comment.UserUserId).Name </label>
                                 <label class="Time"> @comment.DateSending.ToString("dd.MM.y HH:mm") </label>
-                                @if (Model.user.UserId == comment.UserUserId || Model.user.IsAdmin == true)
+                                @if (Model.user.Id == comment.UserUserId || Model.user.IsAdmin == true)
                                 {
-                                    <img src="~/images/removeButton.png" class="CommentRemove" id="@comment.MessageId" />
+                                    <img src="~/images/removeButton.png" class="CommentRemove" id="@comment.Id" />
                                 }
                             </div>
 

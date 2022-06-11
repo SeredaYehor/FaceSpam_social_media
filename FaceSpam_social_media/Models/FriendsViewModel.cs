@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FaceSpam_social_media.DbModels;
+using FaceSpam_social_media.Infrastructure.Data;
+using FaceSpam_social_media.Infrastructure.Repository;
 
 namespace FaceSpam_social_media.Models
 {
@@ -15,41 +16,46 @@ namespace FaceSpam_social_media.Models
 
         public bool friendPage;
 
-        public void GetUserById(mydbContext context, int id)
-        {
-            user = context.Users.Where(x => x.UserId == id).FirstOrDefault();
+        public IRepository _repository;
 
-            friends = context.Friends.Where(x => x.UserUserId == user.UserId)
+        public FriendsViewModel()
+        {
+        }
+
+        public void GetUserById(int id)
+        {
+            user = _repository.GetAll<User>().Where(x => x.Id == id).FirstOrDefault();
+
+            friends = _repository.GetAll<Friend>().Where(x => x.UserUserId == user.Id)
                 .Select(x => x.FriendNavigation).ToList();
         }
 
-        public void GetAllUsers(mydbContext context)
+        public void GetAllUsers()
         {
-            allUsers = context.Users.Where(x=>x.UserId != mainUserId).ToList();
+            allUsers = _repository.GetAll<User>().Where(x=>x.Id != mainUserId).ToList();
         }
 
-        public void DeleteFriend(mydbContext context, int id)
+        public async Task<int> DeleteFriend(int id)
         {
-            Friend friend = new Friend();
-            friend = context.Friends
-                .Where(x=>x.FriendId == id && x.UserUserId==mainUserId).FirstOrDefault();
+            var friend = new Friend();
+            friend = _repository.GetAll<Friend>()
+                .Where(x => x.FriendId == id && x.UserUserId == user.Id).FirstOrDefault();
 
-            context.Friends.Remove(friend);
-            context.SaveChanges();
-            friends.Remove(friends.Where(x => x.UserId == id).FirstOrDefault());
+            await _repository.DeleteAsync(friend);
+            friends.Remove(friends.Where(x => x.Id == id).FirstOrDefault());
+            return friend.Id;
         }
 
-        public void AddFriend(mydbContext context, int id)
+        public async Task<int> AddFriend(int id)
         {
-            Friend newFriend = new Friend();
-            newFriend.UserUserId = mainUserId;
-            newFriend.FriendId = id;
+            var newFriend = await _repository.AddAsync(new Friend
+            {
+                UserUserId = mainUserId,
+                FriendId = id
+            });
 
-            context.Friends.Add(newFriend);
-            context.SaveChanges();
-
-            friends.Add(context.Users.Where(x => x.UserId == id).FirstOrDefault());
-
+            friends.Add(_repository.GetAll<User>().Where(x => x.Id == id).FirstOrDefault());
+            return newFriend.Id;
         }
 
         public string IsFriend(int userId)
@@ -57,7 +63,7 @@ namespace FaceSpam_social_media.Models
             string result = "Pal up";
             foreach(var user in friends)
             {
-                if(user.UserId == userId)
+                if(user.Id == userId)
                 {
                     result = "Remove";
                     break;
@@ -70,7 +76,7 @@ namespace FaceSpam_social_media.Models
         public void GetMainFormData(Main mainModel)
         {
             friends = mainModel.friends;
-            mainUserId = mainModel.executor.UserId;
+            mainUserId = mainModel.executor.Id;
         }
     }
 }

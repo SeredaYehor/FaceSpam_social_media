@@ -71,29 +71,37 @@
 
                 <div class="Line"></div>
 
+
                 <div class="FriendZone">
                     <div>
                         @foreach (var user in Model.friendPage ? Model.friends : Model.allUsers)
                         {
                         <div id="@user.Name" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
                             <form method="post" action="/Home/UserProfile">
-                                <button class="EnterUserProfile" type="submit" name="id" value="@user.UserId">
+                                <button class="EnterUserProfile" type="submit" name="id" value="@user.Id">
                                     <img class="UserImage" src="@user.ImageReference" />
                                     <label class="Names"> @user.Name </label>
                                 </button>
                             </form>
 
                             <input type="submit" class="FriendButton" value="Write" />
-                            &nbsp;
-                            @if (Model.mainUserId == Model.user.UserId)
+                            @if (Model.mainUserId == Model.user.Id)
                             {
+                                /*
+                                    @if(Model.mainUserId == Model.user.Id) 
+                                        {
+                                            <input id="@user.Id" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this)" />
+                                        }
+                                        @*Write button does not work. When all formls will be ready it will get the link*@
+                                        <input type="submit" class="FriendButton" value="Write" />
+                                */
                                 @if (Model.friendPage)
                                 {
-                                    <input id="@user.UserId" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this, true)" />
+                                    <input id="@user.Id" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this, true)" />
                                 }
                                 else
                                 {
-                                    <input id="@user.UserId" type="submit" class="FriendButton" value="@Model.IsFriend(user.UserId)" onclick="CheckAction(this)" />
+                                    <input id="@user.Id" type="submit" class="FriendButton" value="@Model.IsFriend(user.Id)" onclick="CheckAction(this)" />
                                 }
                             }
                         </div>
