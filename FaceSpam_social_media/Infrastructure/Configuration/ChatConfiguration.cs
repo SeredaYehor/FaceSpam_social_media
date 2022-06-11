@@ -10,7 +10,7 @@ namespace FaceSpam_social_media.Infrastructure.Configuration
         {
             builder.ToTable("chat");
 
-            builder.Property(e => e.Id/*ChatId*/).HasColumnName("chat_id");
+            builder.Property(e => e.Id).HasColumnName("chat_id");
 
             builder.Property(e => e.ChatName)
                 .IsRequired()
