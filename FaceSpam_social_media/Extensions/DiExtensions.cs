@@ -17,8 +17,6 @@ namespace FaceSpam_social_media.Extensions
                         b => b.MigrationsAssembly(typeof(MVCDBContext).Assembly.FullName))
                     /*.UseLazyLoadingProxies()*/;
 
-//                optionsBuilder.UseMySql("server=127.0.0.1;user=root;password=pswrd;database=mydb", ServerVersion.Parse("8.0.25-mysql"));
-
             }
             );
         }
