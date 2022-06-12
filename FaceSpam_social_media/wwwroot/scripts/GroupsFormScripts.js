@@ -47,6 +47,11 @@
     
     $(".ConfirmButton").click(function () {
         addedMembers.push(userId);
+        if ($("#name").val() == "") {
+            alert("Error of creating group. Please, specify group name.");
+            $(".CreateGroup").hide();
+            return;
+        }
         formData.set("chatName", $("#name").val());
         formData.set("chatDescription", $("#description").val());
         formData.set("members", addedMembers);
@@ -66,7 +71,7 @@
     })
 
     function AddUserPanel(id, name, image) {
-        var panel = '<div class="UserPanel">' +
+        var panel = '<div class="UserPanel" id="' + name +'">' +
             '<img src="' + image + '" class="UserPanelImage" />' +
             '<label>' + name + '</label>' +
             '<input type="submit" class="MemberActionButton" value="Add" id="' + id + '"/>' +
@@ -102,5 +107,15 @@
             success: function (status) {
             }
         });
+    });
+
+    $(".SearchBox").keyup(function () {
+        var search = this.value;
+        if (search.trim() == '') {
+            $(".UserPanel").show();
+        }
+        else {
+            $(".UserPanel").hide().filter('[id^=' + search + ']').show();
+        }
     });
 })
