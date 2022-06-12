@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FaceSpam_social_media.DbModels
+namespace FaceSpam_social_media.Infrastructure.Data
 {
-    public partial class Chat
+    public partial class Chat : IEntity
     {
         public Chat()
         {
@@ -13,7 +13,7 @@ namespace FaceSpam_social_media.DbModels
             Messages = new HashSet<Message>();
         }
 
-        public int ChatId { get; set; }
+        public int Id { get; set; }
         public string Description { get; set; }
         public string ChatName { get; set; }
         public int Admin { get; set; }

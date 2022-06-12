@@ -19,7 +19,7 @@ function DeleteFriend(obj) {
         url: "/Home/UpdateUserStatus",
         async: false,
         data: { userId: user, },
-        success: function () {
+        success: function (data) {
             if (obj.value == "Ban") {
                 obj.value = "Unban";
             }

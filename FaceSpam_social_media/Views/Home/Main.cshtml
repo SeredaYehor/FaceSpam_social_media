@@ -1,4 +1,3 @@
-
 <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
 <link href="~/css/MainFormStyleSheet.css" rel="stylesheet" asp-append-version="true" />
 <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
@@ -7,6 +6,7 @@
 <script type="text/javascript">
 </script>
 <script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/scripts/FriendsFormScripts.js" asp-append-version="true"></script>
 
 @model Main
 @{
@@ -15,11 +15,10 @@
     string description = Model.user.Description;
 }
 
-
 <body class="Background">
-<div class="bg"></div>
-<div class="bg bg2"></div>
-<div class="bg bg3"></div>
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
     <div class="Wrapper">
         <div class="Navigation">
             @foreach (string controller in controllers)
@@ -51,27 +50,35 @@
         <div class="AvatarAndFriends">
             <div class="UserImage">
                 <img src="@Model.user.ImageReference" />
-                @using (Html.BeginForm("Settings", "Home", FormMethod.Post))
+                @if (Model.executor.Id == Model.user.Id)
                 {
-                    <input type="submit" class="EditProfile" value="Edit profile" />
+                    @using (Html.BeginForm("Settings", "Home", FormMethod.Post))
+                    {
+                        <input type="submit" class="EditProfile" value="Edit profile" />
+                    }
+                }
+                else
+                {
+                    <input type="submit" class="EditProfile" id="@Model.user.Id" value="@(Model.isFriend 
+                        ? "Remove" : "Pal up")" onclick="CheckAction(this)"/>
                 }
             </div>
 
             <div class="Friends">
                 <label style="font-size: 18px; margin: 4px 16px; color: white;">Friends</label>
                 <div class="FriendList" style="margin-left: 2px; width: 166px; height: 167px; overflow-y: hidden; display: flex">
-                    @foreach (FaceSpam_social_media.DbModels.User friend in Model.friends)
+                    @foreach (FaceSpam_social_media.Infrastructure.Data.User friend in Model.friends)
                     {
                         <form method="post" action="/Home/UserProfile">
-                            <button type="submit" name="id" value="@friend.UserId" class="UserProfileButton">
+                            <button type="submit" name="id" value="@friend.Id" class="UserProfileButton">
                                 <img src="@friend.ImageReference" class="PostEllipse" style="width: 49px; height: 49px;" />
                             </button>
                         </form>
-                    }
+                        }
                 </div>
                 @using (Html.BeginForm("Friends", "Home", FormMethod.Post))
                 {
-                    <button type="submit" class="Button" style="padding: 5px 20px;" name="id" value="@Model.user.UserId">more...</button>
+                    <button type="submit" class="Button" style="padding: 5px 20px;" name="id" value="@Model.user.Id">more...</button>
                 }
             </div>
         </div>
@@ -85,7 +92,7 @@
             <div class="Dashboard">
                 @*Now textbox can send input data to controller and then clear it on widget*@
 
-                @if (Model.user.UserId == Model.executor.UserId)
+                @if (Model.user.Id == Model.executor.Id)
                 {
                     @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "Post" })
                     <div style="vertical-align: 10px; margin-bottom: 15px; display: inline-block; width: 17%;">
@@ -97,14 +104,14 @@
                 }
 
                 <div class="DashboardList">
-                    @foreach (FaceSpam_social_media.DbModels.Post post in Model.user.Posts)
+                    @foreach (FaceSpam_social_media.Infrastructure.Data.Post post in Model.user.Posts)
                     {
                         <div class="PostMessage">
                             <img src="@Model.user.ImageReference" class="PostEllipse" />
                             <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
-                            @if (Model.executor.UserId == Model.user.UserId || Model.executor.IsAdmin == true)
+                            @if (Model.executor.Id == Model.user.Id || Model.executor.IsAdmin == true)
                             {
-                                <img src="~/images/removeButton.png" class="RemovePost" id="@post.PostId" />
+                                <img src="~/images/removeButton.png" class="RemovePost" id="@post.Id" />
                             }
                             <br />
                             <label class="PostText">@post.Text</label>
@@ -118,17 +125,17 @@
                                 <div class="Likes" style="display: inline-block;">
 
                                     <form method="post" action="/Home/Comments">
-                                        @if (Model.CheckLike(Model.executor.UserId, post.PostId))
+                                        @if (Model.CheckLike(Model.executor.Id, post.Id))
                                         {
-                                            <img src="~/images/heartRed.svg" class="HeartImage" id="@post.PostId" />
+                                            <img src="~/images/heartRed.svg" class="HeartImage" id="@post.Id" />
                                         }
                                         else
                                         {
-                                            <img src="~/images/heart.svg" class="HeartImage" id="@post.PostId" />
+                                            <img src="~/images/heart.svg" class="HeartImage" id="@post.Id" />
                                         }
-                                        <label class="LikeLabel">@Model.CountLikes(post.PostId)</label>
+                                        <label class="LikeLabel">@Model.CountLikes(post.Id)</label>
                                         <img src="~/images/pencil.svg" />
-                                        <button class="CommentButton" name="id" value="@post.PostId" type="submit">comments</button>
+                                        <button class="CommentButton" name="id" value="@post.Id" type="submit">comments</button>
                                         <label class="Date">@post.DatePosting.ToString("dd.MM.yy")</label>
                                     </form>
                                 </div>

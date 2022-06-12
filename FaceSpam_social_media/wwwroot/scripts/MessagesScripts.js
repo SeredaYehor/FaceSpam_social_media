@@ -165,9 +165,9 @@
                 data: { chatId: id },
                 success: function (messages) { //get array object of Message models
                     SetGroupPanel(messages["item2"], messages["item3"]);
-                    for (var index = 0; index < messages["item1"].length; index++) { //adding all messages for this chat
-                        var messageId = messages["item1"][index]["messageId"].toString();
-                        var dt = new Date(messages["item1"][index]["dateSending"]);
+                    for (var index = 0; index < messages.length; index++) { //adding all messages for this chat
+                        var messageId = messages[index]["id"].toString();                      
+                        var dt = new Date(messages[index]["dateSending"]);
                         var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                         var text = messages["item1"][index]["text"].toString();
                         var userName = messages["item1"][index]["userUser"]["name"].toString();

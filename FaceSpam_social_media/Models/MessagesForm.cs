@@ -1,27 +1,37 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using FaceSpam_social_media.DbModels;
+using FaceSpam_social_media.Infrastructure.Data;
+using FaceSpam_social_media.Infrastructure.Repository;
 
 namespace FaceSpam_social_media.Models
 {
     public class MessagesForm
     {
+
+        public IRepository _repository;
+
+        public MessagesForm()
+        {
+        }
+
         public User user = new User();
         public List<Chat> chats = new List<Chat>();
         public List<User> members = new List<User>();
         public List<Message> chatMessages = new List<Message>();
         public Chat selectedChat = new Chat();
-
+        
         public string message { get; set; }
         public int currentChat { get; set; }
-        public Chat GetChatMessages(mydbContext context, int chatId)
+
+        public void GetChatMessages(int chatId)
         {
             if (chatId != 0)
             {
                 currentChat = chatId;
-                chatMessages = context.Messages.Where(x => x.ChatChatId == currentChat)
+                chatMessages = _repository.GetAll<Message>().Where(x => x.ChatChatId == currentChat)
                     .Include(x => x.UserUser).ToList();
                 selectedChat = chats.Where(x => x.ChatId == chatId).First();
                 members = context.ChatMembers.Where(x => x.ChatChatId == currentChat).Select(y => y.UserUser).ToList();
@@ -30,98 +40,70 @@ namespace FaceSpam_social_media.Models
             return new Chat();
         }
 
-        public int AddMember(mydbContext context, int memberId)
+        public async Task<int> RemoveMessage(int messageId)
         {
-            ChatMember newMember = new ChatMember
+            Message remove = _repository.GetAll<Message>().Where(x => x.Id == messageId)
+                .First();
+            await _repository.DeleteAsync(remove);
+            chatMessages.Remove(chatMessages.Where(x => x.Id == messageId && x.UserUserId == user.Id).First());
+            return remove.Id;
+        }
+
+        public async Task<int> SendMessage(string inputMessage)
+        {
+            var newMessage = await _repository.AddAsync(new Message
             {
-                ChatChatId = selectedChat.ChatId,
-                UserUserId = memberId
-            };
-            context.Add(newMember);
-            context.SaveChanges();
-            members.Add(context.Users.Where(x => x.UserId == memberId).First());
-            return members.Count;
+                Text = inputMessage,
+                ChatChatId = currentChat,
+                DateSending = DateTime.Now,
+                UserUserId = user.Id
+            });
+            chatMessages.Add(newMessage);
+            return newMessage.Id;
         }
 
-        public int RemoveChatMember(mydbContext context, int memberId)
+        public void GetChats()
         {
-            User member = members.Where(x => x.UserId == memberId).First();
-            ChatMember remove = context.ChatMembers.Where(x => x.UserUserId == memberId 
-            && x.ChatChatId == selectedChat.ChatId).First();
-            context.ChatMembers.Remove(remove);
-            context.SaveChanges();
-            members.Remove(member);
-            return members.Count;
-        }
-
-        public int RemoveMessage(mydbContext context, int messageId)
-        {
-            int entries = 1;
-            Message remove = context.Messages.Where(x => x.MessageId == messageId).First();
-            context.Messages.Remove(remove);
-            entries = context.SaveChanges();
-            chatMessages.Remove(chatMessages.Where(x => x.MessageId == messageId).First());
-            return entries;
-        }
-
-        public int SendMessage(mydbContext context, string inputMessage)
-        {
-            Message send = new Message();
-            send.Text = inputMessage;
-            send.ChatChatId = currentChat;
-            send.DateSending = DateTime.Now;
-            send.UserUserId = user.UserId;
-            context.Messages.Add(send);
-            context.SaveChanges();
-            chatMessages.Add(send);
-            return send.MessageId;
-        }
-
-        public void GetChats(mydbContext context)
-        {
-            chats = context.ChatMembers.Where(x => x.UserUserId == user.UserId)
+            chats = _repository.GetAll<ChatMember>().Where(x => x.UserUserId == user.Id)
                 .Select(x => x.ChatChat).ToList();
         }
-
-        public void QuitGroup(mydbContext context)
+      
+         public async void QuitGroup()
         {
-            ChatMember chatMember = context.ChatMembers
-                .Where(x => x.ChatChatId == selectedChat.ChatId && x.UserUserId == user.UserId).First();
-            context.Remove(chatMember);
-            context.SaveChanges();
+            ChatMember chatMember = _repository.GetAll<ChatMember>()
+                .Where(x => x.ChatChatId == selectedChat.ChatId && x.UserUserId == user.Id).First();
+            await _repository.DeleteAsync(chatMember);
         }
 
-        public void DeleteGroup(mydbContext context, int Id)
+        public async void DeleteGroup(int Id)
         {
-            List<Message> remove_messages = context.Messages.Where(x => x.ChatChatId == Id).ToList();
-            context.Messages.RemoveRange(remove_messages);
-            context.SaveChanges();
-            Chat remove = context.Chats.Where(x => x.ChatId == Id).FirstOrDefault();
-            context.Chats.Remove(remove);
-            context.SaveChanges();
+            List<Message> remove_messages = _repository.GetAll<Message>().Where(x => x.ChatChatId == Id).ToList();
+            await _repository.DeleteAsyncRange(remove_messages);
+            Chat remove =  _repository.GetAll<Chat>().Where(x => x.ChatId == Id).FirstOrDefault();
+            await _repository.DeleteAsync(remove);
             chats.Remove(remove);
         }
 
-        public void SelectChat(mydbContext context, int chatId)
+        public void SelectChat(int chatId)
         {
-            selectedChat = chats.Where(x => x.ChatId == chatId).First();
+            selectedChat = chats.Where(x => x.Id == chatId).First();
             GetChatMessages(context, chatId);
         }
 
         public List<User> SelectAllUsers(mydbContext context)
         {
-            List<User> users = context.Users.Where(x => x.UserId != user.UserId).ToList();
+            List<User> users =  _repository.GetAll<User>().Where(x => x.Id != user.Id).ToList();
             return users;
         }
 
-        public Chat CreateGroup(mydbContext context, string name, string description, List<int> members, string reference)
+        public async Task<Chat> CreateGroup(string name, string description, List<int> members, string reference)
         {
             Chat created = new Chat()
             {
                 ChatName = name,
                 Description = description,
                 DateCreating = DateTime.Now,
-                Admin = user.UserId,
+                Admin = user.Id,
             };
             if (reference != null)
             {
@@ -131,9 +113,8 @@ namespace FaceSpam_social_media.Models
             {
                 created.ImageReference = "../Images/default_group.jpg";
             }
-            context.Chats.Add(created);
-            context.SaveChanges();
-            chats.Add(created);
+            var newChat = await _repository.AddAsync(created);
+            chats.Add(newChat);
             foreach (int member in members)
             {
                 ChatMember newMember = new ChatMember() 
@@ -141,10 +122,9 @@ namespace FaceSpam_social_media.Models
                     ChatChatId = created.ChatId, 
                     UserUserId = member 
                 };
-                context.Add(newMember);
+                await _repository.AddAsync(newMember);
             }
-            context.SaveChanges();
-            return created;
+            return newChat;
         }
     }
 }

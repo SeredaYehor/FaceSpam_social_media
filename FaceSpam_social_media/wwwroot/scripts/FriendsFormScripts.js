@@ -11,7 +11,7 @@
     });
 });
 
-function DeleteFriend(obj) {
+function DeleteFriend(obj, friendPage = false) {
 
     var user = obj.id;
     $.ajax({
@@ -20,8 +20,32 @@ function DeleteFriend(obj) {
         async: false,
         data: { id: user, },
         success: function () {
-            var parentDiv = $(obj).parent().parent();
-            $(parentDiv).remove();
+            if (friendPage) {
+                var parentDiv = $(obj).parent();
+                $(parentDiv).remove();
+            }
         }
     });
+}
+
+function AddFriend(obj) {
+    var user = obj.id;
+
+    $.ajax({
+        type: "GET",
+        url: "/Home/AddFriend",
+        async: false,
+        data: { id: user, },
+    });
+}
+
+function CheckAction(obj) {
+    if (obj.value == "Remove") {
+        obj.value = "Pal up";
+        DeleteFriend(obj);
+    }
+    else {
+        obj.value = "Remove";
+        AddFriend(obj);
+    }
 }

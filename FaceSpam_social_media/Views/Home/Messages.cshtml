@@ -8,11 +8,13 @@
 <!--Kakaya shlyapa-->
 <!--8 realtime hours wasted for adding this functionality-->
 <script src="/lib/jquery/dist/jquery.js"></script>
+
 <script type="text/javascript">
     var selectedChat = @Model.currentChat;
     var chatAdmin = @Model.selectedChat.Admin;
     var members = @Model.members.Count;
     var userId = @Model.user.UserId;
+    var jsUser = @Html.Raw(Json.Serialize(Model.user));
 </script>
 <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
 
@@ -76,12 +78,10 @@
                     <img src="@Model.user.ImageReference" class="UserImage" />
                 </div>
                 @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "MessageTextBox" })
-                <input type="submit" class="ButtonSend" formaction="/Home/SendMessage" value="Send" />
+                <input type="submit" class="ButtonSend" value="Send" />
             </div>
-        </div>
-
-        <!--Try to improve this code-->
-        <div>
+      </div>
+ <div>
             <div class="GroupInfo">
                 <div class="ImageNameGroup">
                     @if (Model.selectedChat != null)
@@ -111,8 +111,7 @@
                     <input type="submit" class="QuitGroup" value="Quit" />
                 </div>
             </div>
-            <!--Try to improve this code-->
-
+   
             <div class="Groups">
                 <div class="SearchField">
                     <input type="text" class="SearchTextBox" />
@@ -121,18 +120,18 @@
                 <div class="GroupsList" id="groups">
                     @foreach (FaceSpam_social_media.DbModels.Chat chat in Model.chats)
                     {
-                        if (Model.currentChat != chat.ChatId)
+                        if (Model.currentChat != chat.Id)
                         {
                             <div class="GroupPanel" id="@chat.ChatName">
                                 <img src="@chat.ImageReference" class="Ellipse" />
-                                <label class="GroupName" id="@chat.ChatId">@chat.ChatName</label>
+                                <label class="GroupName" id="@chat.Id">@chat.ChatName</label>
                             </div>
                         }
                         else
                         {
                             <div class="GroupPanel active" id="@chat.ChatName">
                                 <img src="@chat.ImageReference" class="Ellipse" />
-                                <label class="GroupName" id="@chat.ChatId">@chat.ChatName</label>
+                                <label class="GroupName" id="@chat.Id">@chat.ChatName</label>
                             </div>
                         }
                     }
@@ -141,7 +140,6 @@
         </div>
     </div>
 
-    <!--Try to improve this code-->
     <div class="Popup">
         <div class="PopupNavigation">
             <input type="submit" class="InviteButton" value="Invite">
@@ -151,5 +149,4 @@
         <div class="MembersList">
         </div>
     </div>
-    <!--Try to improve this code-->
 </body>

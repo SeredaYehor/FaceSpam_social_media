@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 #nullable disable
 
-namespace FaceSpam_social_media.DbModels
+namespace FaceSpam_social_media.Infrastructure.Data
 {
-    public partial class User
+    public partial class User : IEntity
     {
         public User()
         {
@@ -17,7 +16,7 @@ namespace FaceSpam_social_media.DbModels
             Posts = new HashSet<Post>();
         }
 
-        public int UserId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }

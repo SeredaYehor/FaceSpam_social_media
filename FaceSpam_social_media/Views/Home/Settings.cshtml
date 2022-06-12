@@ -1,4 +1,4 @@
-﻿@model SettingsModel
+﻿@model FaceSpam_social_media.Models.SettingsModel
 @{
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
 }
@@ -48,7 +48,7 @@
                             <div class="ChangeUserInfoInputs">
                                 <div asp-validation-summary="ModelOnly"></div>
                                 <div class="ChangeEmail">
-                                    <input asp-for="email" class="emailTextBox" autocomplete="off" placeholder = "@(Model.user.Email)"/>
+                                    <input asp-for="email" class="emailTextBox" autocomplete="off" placeholder = "@(Model.user.Email != null ? (@Model.user.Email) : ("Error"))"/>
                                     <div class="ValidationError">
                                         <span asp-validation-for="email"></span>
                                     </div>
@@ -56,7 +56,7 @@
                                 </div>
 
                                 <div class="ChangeUsername">
-                                    <input asp-for="name" class="NameTextBox" autocomplete="off" placeholder = "@(Model.user.Name)"/>
+                                    <input asp-for="name" class="NameTextBox" autocomplete="off" placeholder = "@(Model.user.Name != null ? (@Model.user.Name) : ("Error"))"/>
                                     <div class="ValidationError">
                                         <span asp-validation-for="name"></span>
                                     </div>
@@ -108,11 +108,6 @@
                             </div>
                         </div>
 
-                        <div class="ButtonAndText">
-                            <div>
-                                <input type="submit" value="Background"/>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="ConfirmChanges">

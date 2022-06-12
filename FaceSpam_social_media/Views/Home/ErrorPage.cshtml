@@ -1,0 +1,26 @@
+﻿@model ErrorPageModel
+<html>
+    <head>
+        <title>Settings page</title>
+        <link rel="stylesheet" href="~/css/ErrorStyles.css" asp-append-version="true">
+        <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
+    </head>
+
+    <body>
+        <div class="bg"></div>
+        <div class="bg bg2"></div>
+        <div class="bg bg3"></div>
+        <div class="Wrapper">
+           <div class="FaceSpamLogo">
+               <img src="~/Images/FaceSpamLogo.svg" />
+           </div>
+           <div class = "TextArea">
+               <div class="ErrorText">
+                   <label>
+                        @Model.Error
+                   </label>
+               </div>
+               <input type="button" class="bottomNav" onclick="history.go(-1); return false;" value="Back" />
+        </div>
+    </body>
+</html>

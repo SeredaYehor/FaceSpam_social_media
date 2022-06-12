@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FaceSpam_social_media.DbModels;
+using FaceSpam_social_media.Infrastructure.Data;
+using FaceSpam_social_media.Infrastructure.Repository;
 
 namespace FaceSpam_social_media.Models
 {
@@ -11,31 +12,35 @@ namespace FaceSpam_social_media.Models
         public User admin;
         public List<User> users;
 
-        public bool Init(mydbContext context, User user)
+        public IRepository _repository;
+        public UsersManagment()
+        {
+
+        }
+        public bool Init(User user)
         {
             bool result = false;
             if(user.IsAdmin == true)
             {
                 admin = user;
-                GetAllUsers(context);
+                GetAllUsers();
                 result = true;
             }
             return result;
         }
-        public void GetAllUsers(mydbContext context)
+
+        public void GetAllUsers()
         {
-            users = context.Users.Where(x => x.UserId != admin.UserId).ToList();
+            users = _repository.GetAll<User>().Where(x => x.Id != admin.Id).ToList();
         }
 
-        public int UpdateStatus(mydbContext context, int userId)
+        public async Task<int> UpdateStatus(int userId)
         {
-            int result = -1;
-            User target = users.Where(x => x.UserId == userId).First();
+            User target = users.Where(x => x.Id == userId).First();
             bool? status = target.IsBanned;
             target.IsBanned = !status;
-            context.Users.Update(target);
-            result = context.SaveChanges();
-            return result;
+            target = await _repository.UpdateAsync(target);
+            return target.Id;
         }
     }
 }

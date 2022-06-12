@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FaceSpam_social_media.DbModels;
+using System.Threading.Tasks;
+using FaceSpam_social_media.Infrastructure.Data;
+using FaceSpam_social_media.Infrastructure.Repository;
 
 namespace FaceSpam_social_media
 {
@@ -12,52 +14,70 @@ namespace FaceSpam_social_media
         public List<User> friends;
         public string message { get; set; }
 
-        public int AddPost(mydbContext context, string message, string reference)
+        public IRepository _repository;
+
+        public Main()
         {
-            Post newPost = new Post();
-            newPost.Text = message;
-            newPost.UserUserId = user.UserId;
-            newPost.DatePosting = DateTime.Now;
-            if(reference != null)
+        }
+
+        // this field will be used to chech the opened user page
+        // as a result view will be changed, if mainUserId is eqhal to user.UserID 
+        public int mainUserId;
+
+        public void UpdateUserInfo(string name, string email, string description)
+        {
+            if (name != null) { user.Name = name; }
+            if (email != null) { user.Email = email; }
+            if (description != null) { user.Description = description; }
+        }
+
+        public async Task<int> AddPost(string message, string reference)
+        {
+            var newPost = await _repository.AddAsync(new Post
+            {
+                Text = message,
+                UserUserId = user.Id,
+                DatePosting = DateTime.Now
+            });
+
+            if (reference != null)
             {
                 newPost.ImageReference = reference;
             }
-            context.Posts.Add(newPost);
-            context.SaveChanges();
+
             user.Posts.Add(newPost);
-            return newPost.PostId;
+            return newPost.Id;
         }
 
-        private void RemoveChildRows(mydbContext context, int postId, bool removeLikes)
+
+        private async Task RemoveChildRows(int postId, bool removeLikes)
         {
-            if(removeLikes)
+            if (removeLikes)
             {
-                List<Like> likesRemove = context.Likes.Where(x => x.PostPostId == postId).ToList();
-                context.Likes.RemoveRange(likesRemove);
+                IEnumerable<Like> likesRemove = _repository.GetAll<Like>().Where(x => x.PostPostId == postId);
+                await _repository.DeleteAsyncRange(likesRemove);
             }
             else
             {
-                List<Message> messagesRemove = context.Messages.Where(x => x.PostPostId == postId).ToList();
-                context.Messages.RemoveRange(messagesRemove);
+                List<Message> messagesRemove = _repository.GetAll<Message>().Where(x => x.PostPostId == postId).ToList();
+                await _repository.DeleteAsyncRange(messagesRemove);
             }
-            context.SaveChanges();
-        }
-        public int RemovePost(mydbContext context, int postId)
-        {
-            int entries = 1;
-            RemoveChildRows(context, postId, false);
-            RemoveChildRows(context, postId, true);
-            Post remove = context.Posts.Where(x => x.PostId == postId && x.UserUserId == user.UserId)
-                .First();
-            context.Posts.Remove(remove);
-            entries = context.SaveChanges();
-            user.Posts.Remove(user.Posts.Where(x => x.PostId == postId && x.UserUserId == user.UserId).First());
-            return entries;
         }
 
-        public void GetLikes(mydbContext context)
+        public async Task<int> RemovePost(int postId)
         {
-            user.Likes = context.Likes.Where(x => x.PostPost.UserUserId == user.UserId).ToList();
+            user.Posts.Remove(user.Posts.Where(x => x.Id == postId && x.UserUserId == user.Id).First());
+            await RemoveChildRows(postId, false);
+            await RemoveChildRows(postId, true);
+            Post remove = _repository.GetAll<Post>().Where(x => x.Id == postId && x.UserUserId == user.Id)
+                .First();
+            await _repository.DeleteAsync(remove);
+            return remove.Id;
+        }
+
+        public void GetLikes()
+        {
+            user.Likes = _repository.GetAll<Like>().Where(x => x.PostPost.UserUserId == user.Id).ToList();
         }
 
         public int CountLikes(int postId)
@@ -70,62 +90,63 @@ namespace FaceSpam_social_media
             return user.Likes.Any(x => x.UserUserId == userId && x.PostPostId == postId);
         }
 
-        public void UpdatePostLike(mydbContext context, int postId)
+        public async Task UpdatePostLike(int postId)
         {
-            int userId = executor.UserId;
+            int userId = executor.Id;
             bool liked = CheckLike(userId, postId);
             if (liked)
             {
-                context.Likes.Remove(context.Likes
+                await _repository.DeleteAsync<Like>(_repository.GetAll<Like>()
                     .Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
-                context.SaveChanges();
-                user.Likes.Remove(user.Likes
-                    .Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
+                user.Likes.Remove(user.Likes.Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
             }
             else
             {
-                Like like = new Like() { UserUserId = userId, PostPostId = postId };
-                context.Likes.Add(like);
-                context.SaveChanges();
+                Like like = await _repository.AddAsync(new Like
+                {
+                    UserUserId = userId,
+                    PostPostId = postId
+                });
                 user.Likes.Add(like);
             }
         }
 
-        public void GetUser(mydbContext context, ref User current, int userId, string name = null, string password = null)
+        public void GetUser(ref User current, int userId, string name, string password)
         {
             if (userId != -1)
             {
-                current = context.Users.Where(x => x.UserId == userId).FirstOrDefault();
+                current = _repository.GetAll<User>().Where(x => x.Id == userId).FirstOrDefault();
             }
             else
             {
-                current = context.Users.Where(x => x.Name == name && x.Password == password)
+                current = _repository.GetAll<User>().Where(x => x.Name == name && x.Password == password)
                 .FirstOrDefault();
             }
             current.Password = "Nice try, stupid litle dum-dummy";
         }
 
-        public void GetPosts(mydbContext context)
+
+        public void GetPosts()
         {
-            user.Posts = context.Posts.Where(x => x.UserUser == user).ToList();
+            user.Posts = _repository.GetAll<Post>().Where(x => x.UserUser == user).ToList();
         }
 
-        public void GetFriends(mydbContext context)
+        public void GetFriends()
         {
-            friends = context.Friends.Where(x => x.UserUserId == user.UserId)
+            friends = _repository.GetAll<Friend>().Where(x => x.UserUserId == user.Id)
                 .Select(x => x.FriendNavigation).ToList();
         }
 
-        public void GetUserInfo(mydbContext context, bool friendDashboard, int userId, string name = null, string password = null)
+        public void GetUserInfo(bool friendDashboard, int userId, string name = null, string password = null)
         {
-            GetUser(context, ref user, userId, name, password);
+            GetUser(ref user, userId, name, password);
             if (!friendDashboard)
             {
                 executor = user;
             }
-            GetPosts(context);
-            GetFriends(context);
-            GetLikes(context);
+            GetPosts();
+            GetFriends();
+            GetLikes();
         }
 
         public void UpdateData(User change)
@@ -134,5 +155,40 @@ namespace FaceSpam_social_media
             executor.Description = change.Description;
             executor.Email = change.Email;
         }
+
+        public void GetMainUserInfo(string name, string password)
+        {
+            user = _repository.GetAll<User>().Where(x => x.Name == name && x.Password == password)
+                .FirstOrDefault();
+            GetPosts();
+            GetFriends();
+            GetLikes();
+        }
+
+        // this function gets user info by id
+        // password is cleaned
+        public void GetUserInfo(int id)
+        {
+            user = _repository.GetAll<User>().Where(x => x.Id == id).FirstOrDefault();
+            GetPosts();
+            GetFriends();
+            GetLikes();
+        }
+        // function is used to learn is friend chosen person or not
+
+        public bool isFriend;
+
+        public bool IsFriend(int id)
+        {
+            foreach (var user in friends)
+            {
+                if (user.Id == id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 }

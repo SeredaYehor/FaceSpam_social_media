@@ -4,17 +4,21 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using FaceSpam_social_media.DbModels;
-using System.Linq;
+using Microsoft.AspNetCore.Hosting;
+using FaceSpam_social_media.Infrastructure.Data;
+using FaceSpam_social_media.Services;
+using FaceSpam_social_media.Infrastructure.Repository;
+using System.Threading.Tasks;
 
 namespace FaceSpam_social_media.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUserService _userService;
 
         public static Main mainFormModels = new Main();
-        public mydbContext context = new mydbContext();
+        public static Main userProfileModel = new Main();
         public static MessagesForm messages = new MessagesForm();
         public static FriendsViewModel friendsModel = new FriendsViewModel();
         public static PostCommentsModel commentsModel = new PostCommentsModel();
@@ -22,9 +26,23 @@ namespace FaceSpam_social_media.Controllers
         public static SettingsModel settingsModel = new SettingsModel();
         public static AuthenticationModel authModel = new AuthenticationModel();
         public static UsersManagment usersManagment = new UsersManagment();
-        public HomeController(ILogger<HomeController> logger)
+        public static ErrorPageModel errorModel = new ErrorPageModel();
+
+        public HomeController(ILogger<HomeController> logger, IUserService userService, IPostService postService,
+            IRepository repository)
         {
             _logger = logger;
+            _userService = userService;
+
+            mainFormModels._repository = repository;
+            userProfileModel._repository = repository;
+            messages._repository = repository;
+            friendsModel._repository = repository;
+            commentsModel._repository = repository;
+            loginModel._repository = repository;
+            settingsModel._repository = repository; 
+            authModel._repository = repository;
+            usersManagment._repository = repository;
         }
 
         public IActionResult Index()
@@ -32,16 +50,9 @@ namespace FaceSpam_social_media.Controllers
             return View();
         }
 
-        [HttpPost]
-        public List<User> SelectUsers()
-        {
-            List<User> users = messages.SelectAllUsers(context);
-            return users;
-        }
-
         public IActionResult Admin()
         {
-            if(usersManagment.Init(context, mainFormModels.executor))
+            if (usersManagment.Init(mainFormModels.executor))
             {
                 return View(usersManagment);
             }
@@ -49,39 +60,38 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
-        public int UpdateUserStatus(int userId)
+        public async Task<int> UpdateUserStatus(int userId)
         {
-            int result = usersManagment.UpdateStatus(context, userId);
+            int result = await usersManagment.UpdateStatus(userId);
             return result;
         }
 
         [HttpPost]
-        public int RemoveMessage(int messageId)
+        public async Task<int> RemoveMessage(int messageId)
         {
-            int result = 0;
-            result = messages.RemoveMessage(context, messageId);
+            int result = await messages.RemoveMessage(messageId);
             return result;
         }
 
         [HttpPost]
-        public int RemovePost(int postId)
+        public async Task<int> RemovePost(int postId)
         {
             int result = 0;
-            if(mainFormModels.executor.IsAdmin == true)
+            if (mainFormModels.executor.IsAdmin == true)
             {
-                result = mainFormModels.RemovePost(context, postId);
+                result = await mainFormModels.RemovePost(postId);
             }
             return result;
         }
 
 
         [HttpPost]
-        public int AdminRemovePost(int postId)
+        public async Task<int> AdminRemovePost(int postId)
         {
             int result = 0;
-            if(mainFormModels.executor.IsAdmin == true)
+            if (mainFormModels.executor.IsAdmin == true)
             {
-                result = mainFormModels.RemovePost(context, postId);
+                result = await mainFormModels.RemovePost(postId);
             }
             return result;
         }
@@ -90,26 +100,26 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Comments(int id)
         {
             commentsModel.user = mainFormModels.executor;
-            commentsModel.GetComments(context, id);
+            commentsModel.GetComments(id);
             return View("Comments", commentsModel);
         }
 
         [HttpPost]
-        public int AddComment(string message)
+        public async Task<int> AddComment(string message)
         {
-            int result = commentsModel.AddComment(context, message);
+            int result = await commentsModel.AddComment(message);
             return result;
         }
 
         [HttpPost]
-        public int RemoveComment(int commentId)
+        public async Task<int> RemoveComment(int commentId)
         {
-            int result = commentsModel.RemoveComment(context, commentId);
+            int result = await commentsModel.RemoveComment(commentId);
             return result;
         }
 
-        public User GetUser() {
-
+        public User GetUser()
+        {
             return mainFormModels.executor;
         }
 
@@ -117,125 +127,146 @@ namespace FaceSpam_social_media.Controllers
         {
             messages.user = mainFormModels.executor;
             messages.GetChatMessages(context, current);
-            messages.GetChats(context);
+            messages.GetChats();
             return View(messages);
         }
-
+        
         [HttpPost]
-        public int RemoveChatMember(int memberId)
+        public async Task<int> RemoveChatMember(int memberId)
         {
-            int members = messages.RemoveChatMember(context, memberId);
+            int members =  await messages.RemoveChatMember(memberId);
             return members;
         }
-
+        
         [HttpPost]
-        public int AddMember(int memberId)
+        public async Task<int> AddMember(int memberId)
         {
-            int members = messages.AddMember(context, memberId);
+            int members = await messages.AddMember(memberId);
             return members;
         }
-
+        
         public IActionResult GetChat(int chatId)
         {
             messages.user = mainFormModels.executor;
             messages.SelectChat(context, chatId);
             return View(messages);
         }
-
+        
         [HttpPost]
         public IActionResult Main()
         {
             mainFormModels.user = mainFormModels.executor;
-            mainFormModels.GetFriends(context);
+            mainFormModels.GetFriends();
+            friendsModel.GetMainFormData(mainFormModels);
+
             return View(mainFormModels);
         }
 
         [HttpPost]
-        public IActionResult UserProfile(int id) 
+        public IActionResult UserProfile(int id)
         {
-            mainFormModels.GetUserInfo(context, true, id);
+            mainFormModels.GetUserInfo(true, id);
             return View("Main", mainFormModels);
         }
 
         public IActionResult Friends(int id)
         {
-            friendsModel.GetUserById(context, id);
-            friendsModel.mainUserId = mainFormModels.executor.UserId;
+            friendsModel.GetUserById(id);
+            friendsModel.allUsers.Clear();
+            friendsModel.friendPage = true;
+
             return View(friendsModel);
         }
 
-        public void DeleteFriend(int id)
+        public IActionResult UserList()
         {
-            friendsModel.DeleteFriend(context, id);
-        }
+            friendsModel.GetAllUsers();
+            friendsModel.friendPage = false;
 
-        public int ChangeLike(int postId, bool friendLike)
-        {
-            int count = 0;
-            mainFormModels.UpdatePostLike(context, postId);
-            count = mainFormModels.CountLikes(postId);
-            return count;
+            return View("Friends", friendsModel);
         }
-
-        [HttpPost]
-        public Chat CreateGroup(string chatName, string chatDescription, string members, IFormFile file)
+        
+        public async Task<int> DeleteFriend(int id)
         {
-            List<int> listMembers = members.Split(',').Select(int.Parse).ToList();
-            string reference = FileManager.UploadImage(file);
-            Chat result = messages.CreateGroup(context, chatName, chatDescription, listMembers, reference);
+            int result = await friendsModel.DeleteFriend(id);
+            mainFormModels.GetFriends();
             return result;
         }
 
-        public void QuitGroup()
+        public async Task<int> AddFriend(int id)
         {
-            messages.QuitGroup(context);
+            int result = await friendsModel.AddFriend(id);
+            mainFormModels.GetFriends();
+            return result;
+        }
+
+        public async Task<int> ChangeLike(int postId)
+        {
+            int count = 0;
+            await mainFormModels.UpdatePostLike(postId);
+            count = mainFormModels.CountLikes(postId);
+            return count;
+        }
+        
+        [HttpPost]
+        public async Task<Chat> CreateGroup(string chatName, string chatDescription, string members, IFormFile file)
+        {
+            List<int> listMembers = members.Split(',').Select(int.Parse).ToList();
+            string reference = FileManager.UploadImage(file);
+            Chat result = await messages.CreateGroup(chatName, chatDescription, listMembers, reference);
+            return result;
+        }
+
+        public async void QuitGroup()
+        {
+            await messages.QuitGroup();
         }
 
         [HttpPost]
-        public void DeleteGroup(int groupId)
+        public async void DeleteGroup(int groupId)
         {
-            messages.DeleteGroup(context, groupId);
+            await messages.DeleteGroup(context, groupId);
         }
-
+        
         [HttpPost]
-        public (User, int) AddPost(IFormFile file, string text)
+        public async Task<(User, int)> AddPost(IFormFile file, string text)
         {
             int lastPostId = -1;
             string reference = FileManager.UploadImage(file);
-            lastPostId = mainFormModels.AddPost(context, text, reference);
+            lastPostId = await mainFormModels.AddPost(text, reference);
             return (mainFormModels.user, lastPostId);
         }
 
-        public (User, int) SendMessage(string textboxMessage)
+        public async Task<(User, int)> SendMessage(string textboxMessage)
         {
-            int id = messages.SendMessage(context, textboxMessage);
+            int id = await messages.SendMessage(textboxMessage);
             return (messages.user, id);
         }
 
-        public (List<Message>, Chat, int) GetChatMessages(int chatId)
+        public List<Message> GetChatMessages(int chatId)
         {
-            Chat chat = messages.GetChatMessages(context, chatId);
-            return (messages.chatMessages, chat, messages.members.Count);
+            messages.GetChatMessages(chatId);
+            return messages.chatMessages;
         }
         
         public List<User> GetChatUsers()
         {
             return messages.members;
         }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        
+
         public IActionResult Groups()
         {
             messages.user = mainFormModels.executor;
-            messages.GetChats(context);
+            messages.GetChats();
             return View(messages);
         }
-
+        
         public IActionResult Login()
         {
             return View();
@@ -247,32 +278,40 @@ namespace FaceSpam_social_media.Controllers
             return View(settingsModel);
         }
 
-        public IActionResult ChangeUserInfo(string email, string name, string description)
+        public async Task<IActionResult> ChangeUserInfo(string email, string name, string description)
         {
-            settingsModel.ChangeUserInfo(context, email, name, description);
+            await _userService.UpdateUser(mainFormModels.user.Id, name, email, description);
+
+            mainFormModels.UpdateUserInfo(name, email, description);
             mainFormModels.UpdateData(settingsModel.user);
+            commentsModel.user = mainFormModels.user;
+            friendsModel.user = mainFormModels.user;
+
             return View("Main", mainFormModels);
         }
-        
+
         public IActionResult Authentication()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult VerifyUserAuthentication(string login, string password, string email)
+        public async Task<IActionResult> VerifyUserAuthentication(string login, string password, string email)
         {
-            authModel.Login = login;
-            authModel.Password = password;
-            authModel.Email = email;
-            bool repeatCheck = authModel.Verify(context);
-            if (!repeatCheck)
+            bool repeatCheck = authModel.Verify(login, email);
+            if (repeatCheck)
             {
-                authModel.CreateUser(login, password, email, context);
-                mainFormModels.GetUserInfo(context, false, -1, login, password);
+                string imageReference = "../Images/DefaultUserImage.png";
+                await _userService.AddUser(login, password, email, imageReference);
+
+                mainFormModels.GetMainUserInfo(login, password);
                 return View("Main", mainFormModels);
             }
-            return Content("This user is already registered.");
+            else
+            {
+                errorModel.Error = "This data is already in use";
+                return View("ErrorPage", errorModel);
+            }
         }
 
         [HttpPost]
@@ -281,17 +320,31 @@ namespace FaceSpam_social_media.Controllers
             loginModel.Login = login;
             loginModel.Password = password;
 
-            bool verifyResult = loginModel.Verify(context);
+            bool verifyResult = loginModel.Verify(login, password);
             if (verifyResult)
             {
-                mainFormModels.GetUserInfo(context, false, -1, login, password);
+                mainFormModels.GetUserInfo( false, -1, login, password);
+                mainFormModels.user = mainFormModels.executor;
+                mainFormModels.GetFriends();
+                friendsModel.GetMainFormData(mainFormModels);
+
                 if (mainFormModels.user.IsBanned == true)
                 {
-                    return Content("Oi, you have been banned.");
+                    errorModel.Error = "Oi, you have been banned";
+                    return View("ErrorPage", errorModel);
                 }
                 return View("Main", mainFormModels);
             }
-            return Content("Wrong login or password");
+            else
+            {
+                errorModel.Error = "Wrong login or password";
+                return View("ErrorPage", errorModel);
+            }
         }
+        public IActionResult ErrorLoginPage()
+        {
+            return View("ErrorLoginPage", errorModel);
+        }
+
     }
 }
