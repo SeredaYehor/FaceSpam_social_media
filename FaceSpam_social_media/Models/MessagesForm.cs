@@ -93,6 +93,9 @@ namespace FaceSpam_social_media.Models
 
         public void DeleteGroup(mydbContext context, int Id)
         {
+            List<Message> remove_messages = context.Messages.Where(x => x.ChatChatId == Id).ToList();
+            context.Messages.RemoveRange(remove_messages);
+            context.SaveChanges();
             Chat remove = context.Chats.Where(x => x.ChatId == Id).FirstOrDefault();
             context.Chats.Remove(remove);
             context.SaveChanges();
