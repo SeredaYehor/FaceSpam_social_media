@@ -1,4 +1,20 @@
-﻿.Wrapper {
+﻿* {
+    box-sizing: border-box;
+}
+
+@-webkit-keyframes animateright {
+    from {
+        right: -300px;
+        opacity: 0
+    }
+
+    to {
+        right: 0;
+        opacity: 1
+    }
+}
+
+.Wrapper {
     display: flex;
     margin-top: 10%;
     width: 100%;
@@ -9,11 +25,187 @@
         margin-right: 50px;
     }
 
+/*try to improve this styles*/
+.Popup {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    background: rgba(152, 191, 250, 1);
+    width: 300px;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    animation-name: animateright;
+    animation-duration: 1s;
+}
+
+.RemoveMember {
+    width: 70px;
+    height: 30px;
+    color: #3485FF;
+    background: white;
+    border-radius: 15px;
+    border: none;
+    display: block;
+    margin-left: auto;
+    margin-right: 0;
+    margin-top: 20px;
+    box-shadow: inset 5px 3px 3px rgba(0, 0, 0, 0.15);
+}
+
+    .RemoveMember:hover {
+        box-shadow: inset 0px 3px 3px rgba(0, 0, 0, 0.35);
+    }
+
+.InviteButton {
+    text-decoration: none;
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    border-radius: 0px 0px 10px 0px;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: black;
+    background: #3485FF;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+    transition: .5s;
+    border: none;
+}
+
+.PopupNavigation {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    background: rgba(152, 191, 250, 1);
+}
+
+    .PopupNavigation label {
+        color: #3485FF;
+    }
+
+.MembersList {
+    width: 100%;
+    height: calc(100% - 50px);
+    background: rgba(152, 191, 250, 1);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
+}
+
+.MemberPanel {
+    width: 100%;
+    height: 70px;
+    border-radius: 5px;
+    background: #3485FF;
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    padding-right: 5px;
+}
+
+.ImageNameGroup {
+    display: flex;
+    width: 100%;
+    height: 50%
+}
+
+    .ImageNameGroup img {
+        width: 150px;
+        height: 150px;
+    }
+
+.GroupPanelName {
+    text-align: center;
+    letter-spacing: 1px;
+    font-weight: 600;
+    color: black;
+    align-items: center;
+    font-size: 18px;
+    color: white;
+    display: flex;
+    margin-left: 10px;
+}
+
+.MembersImage {
+    margin-left: 5px;
+    width: 50px;
+    height: 50px;
+}
+
+.GroupDescription {
+    letter-spacing: 1px;
+    font-weight: 600;
+    overflow: hidden;
+    word-wrap: break-word;
+    height: 70px;
+    width: 90%;
+    margin-left: 5px;
+    font-size: 14px;
+    color: black;
+}
+
+.GroupStatus {
+    display: flex;
+    justify-content: space-between;
+    height: 20%;
+    width: 300px;
+}
+
+.QuitGroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    width: 150px;
+    height: 50px;
+    line-height: 45px;
+    border-radius: 45px;
+    font-size: 15px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 1px;
+    font-weight: 600;
+    color: black;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+    transition: .5s;
+    border: none;
+    background: white;
+    margin: 0px 15px 0px 0px;
+}
+
+.MembersIcon {
+    display: flex;
+    align-items: center;
+    width: 55px;
+    margin: 0px;
+    margin-left: 25px;
+}
+
+.MembersImage {
+    margin: 0px;
+    transition: .5s;
+}
+
+    .MembersImage:hover {
+        filter: invert(1);
+    }
+
+.MembersCounter {
+    font-size: 20px;
+    color: black;
+    margin-left: 5px;
+}
+/*^^^Try to improve this styles ^^^*/
+
 .Groups {
     width: 300px;
     height: 650px;
     background: #3485FF;
     border-radius: 5px;
+    margin-top: 10px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
@@ -34,6 +226,23 @@
     border-radius: 5px;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.GroupInfo {
+    width: 300px;
+    height: 300px;
+    background: #3485FF;
+    border-radius: 5px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.GroupImage {
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    margin: 5px 5px;
 }
 
 .GroupPanel {

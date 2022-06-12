@@ -1,0 +1,247 @@
+﻿
+/*Try to improve this file*/
+
+.FriendsLabel {
+}
+
+.CreateGroupButton {
+    border-radius: 10px;
+    border-style: none;
+    background: white;
+    color: #3485FF;
+    width: 85px;
+    height: 45px;
+    margin: 45px 10px 0px 10%;
+    transition: .5s;
+    box-shadow: inset 5px 3px 3px rgba(0, 0, 0, 0.15);
+}
+
+    .CreateGroupButton:hover {
+        box-shadow: inset 0px 3px 3px rgba(0, 0, 0, 0.35);
+    }
+
+.SearchZone {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.SearchInput {
+    position: relative;
+}
+
+.GroupWriteButton {
+    outline: none;
+    border: none;
+    background: #FFFFFF;
+    transition: 0.5s;
+    border-radius: 15px;
+    height: 24px;
+    width: 72px;
+    color: #0066FF;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    box-shadow: inset 5px 3px 3px rgba(0, 0, 0, 0.15);
+}
+
+    .GroupWriteButton:hover {
+        box-shadow: inset 0px 3px 3px rgba(0, 0, 0, 0.35);
+    }
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -400px;
+        opacity: 0
+    }
+
+    to {
+        top: 100px;
+        opacity: 1
+    }
+}
+
+.CreateGroup {
+    width: 600px;
+    height: 400px;
+    position: absolute;
+    top: 100px;
+    left: 40vw;
+    border-radius: 5px;
+    background: rgba(152, 191, 250, 1);
+    animation-name: animatetop;
+    animation-duration: 1s;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .2);
+    display: none;
+}
+
+.GroupImage {
+    width: 100%;
+    height: 150px;
+    background: black;
+    margin-top: 5px;
+}
+
+    .GroupImage img {
+        width: 100%;
+        height: 150px;
+    }
+
+.Upload {
+    text-decoration: none;
+    display: inline-block;
+    width: 165px;
+    height: 30px;
+    border-radius: 0px 0px 10px 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: black;
+    background: #3485FF;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+    transition: .5s;
+    border: none;
+}
+
+.ImageArea {
+    width: 20%;
+    margin-left: 10px;
+}
+
+.HeadPanel {
+    display: flex;
+    justify-content: center;
+}
+
+.NameAndDescriptionArea {
+    margin: 10px 10px;
+}
+
+.NameArea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+    .NameArea input {
+        height: 40px;
+    }
+
+.DescriptionArea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.GroupLabel {
+    width: 130px;
+    font-size: 24px;
+    color: #3485FF;
+    font-weight: 400;
+}
+
+.InputInterface {
+    width: 250px;
+    height: 40px;
+    background: #f2f2f2;
+    box-sizing: border-box;
+    border-radius: 15px;
+    border: 0px;
+    font-size: 18px;
+    outline: none;
+    margin-left: 10px;
+    height: 80px;
+    resize: none;
+}
+
+.UsersList {
+    margin: 0px 15px;
+    background: #3485FF;
+    width: 300px;
+    height: 200px;
+    border-radius: 5px;
+}
+
+.List {
+    overflow-y: auto;
+    width: 100%;
+    height: 80%;
+    background: #3485FF;
+}
+
+.SearchBox {
+    width: 100%;
+    height: 15%;
+    margin-bottom: 5px;
+    background: #f2f2f2;
+    border-radius: 5px;
+}
+
+.SecondPanel {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.ConfirmButton {
+    text-decoration: none;
+    display: inline-block;
+    width: 250px;
+    height: 70px;
+    line-height: 45px;
+    border-radius: 45px;
+    margin: 55px 20px;
+    font-size: 15px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: black;
+    background: #3485FF;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+    transition: .5s;
+    border: none;
+}
+
+    .ConfirmButton:hover {
+        background: #0071c7;
+        box-shadow: 0 15px 20px rgba(106, 121, 247, .4);
+        color: white;
+        transform: translateY(-7px);
+    }
+
+.UserPanel {
+    background: white;
+    border-radius: 100px;
+    width: 95%;
+    margin-left: 5px;
+    margin-bottom: 1px;
+    height: 20%;
+}
+
+    .UserPanel label {
+        margin-left: 10px;
+    }
+
+.UserPanelImage {
+    margin-left: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.MemberActionButton {
+    float: right;
+    background: #3485FF;
+    border: 0px;
+    height: 25px;
+    color: white;
+    font-size: 14px;
+    margin-right: 5px;
+    margin-top: 3px;
+    border-radius: 5px;
+}

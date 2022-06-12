@@ -19,7 +19,6 @@ namespace FaceSpam_social_media.Controllers
 
         public static Main mainFormModels = new Main();
         public static Main userProfileModel = new Main();
-        public MVCDBContext context = new MVCDBContext();
         public static MessagesForm messages = new MessagesForm();
         public static FriendsViewModel friendsModel = new FriendsViewModel();
         public static PostCommentsModel commentsModel = new PostCommentsModel();
@@ -124,13 +123,35 @@ namespace FaceSpam_social_media.Controllers
             return mainFormModels.executor;
         }
 
-        public IActionResult Messages()
+        public IActionResult Messages(int current = 0)
         {
             messages.user = mainFormModels.executor;
+            messages.GetChatMessages(context, current);
             messages.GetChats();
             return View(messages);
         }
-
+        
+        [HttpPost]
+        public async Task<int> RemoveChatMember(int memberId)
+        {
+            int members =  await messages.RemoveChatMember(memberId);
+            return members;
+        }
+        
+        [HttpPost]
+        public async Task<int> AddMember(int memberId)
+        {
+            int members = await messages.AddMember(memberId);
+            return members;
+        }
+        
+        public IActionResult GetChat(int chatId)
+        {
+            messages.user = mainFormModels.executor;
+            messages.SelectChat(context, chatId);
+            return View(messages);
+        }
+        
         [HttpPost]
         public IActionResult Main()
         {
@@ -164,6 +185,7 @@ namespace FaceSpam_social_media.Controllers
 
             return View("Friends", friendsModel);
         }
+        
         public async Task<int> DeleteFriend(int id)
         {
             int result = await friendsModel.DeleteFriend(id);
@@ -185,7 +207,27 @@ namespace FaceSpam_social_media.Controllers
             count = mainFormModels.CountLikes(postId);
             return count;
         }
+        
+        [HttpPost]
+        public async Task<Chat> CreateGroup(string chatName, string chatDescription, string members, IFormFile file)
+        {
+            List<int> listMembers = members.Split(',').Select(int.Parse).ToList();
+            string reference = FileManager.UploadImage(file);
+            Chat result = await messages.CreateGroup(chatName, chatDescription, listMembers, reference);
+            return result;
+        }
 
+        public async void QuitGroup()
+        {
+            await messages.QuitGroup();
+        }
+
+        [HttpPost]
+        public async void DeleteGroup(int groupId)
+        {
+            await messages.DeleteGroup(context, groupId);
+        }
+        
         [HttpPost]
         public async Task<(User, int)> AddPost(IFormFile file, string text)
         {
@@ -206,13 +248,25 @@ namespace FaceSpam_social_media.Controllers
             messages.GetChatMessages(chatId);
             return messages.chatMessages;
         }
-
+        
+        public List<User> GetChatUsers()
+        {
+            return messages.members;
+        }
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        public IActionResult Groups()
+        {
+            messages.user = mainFormModels.executor;
+            messages.GetChats();
+            return View(messages);
+        }
+        
         public IActionResult Login()
         {
             return View();

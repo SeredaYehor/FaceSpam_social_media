@@ -1,7 +1,6 @@
 ﻿@model MessagesForm
 @{
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
-    string a = "";
 }
 
 <!--HEHE BOI (~w~)-->
@@ -9,7 +8,12 @@
 <!--Kakaya shlyapa-->
 <!--8 realtime hours wasted for adding this functionality-->
 <script src="/lib/jquery/dist/jquery.js"></script>
-<script type="text/javascript" asp-append-version="true">
+
+<script type="text/javascript">
+    var selectedChat = @Model.currentChat;
+    var chatAdmin = @Model.selectedChat.Admin;
+    var members = @Model.members.Count;
+    var userId = @Model.user.UserId;
     var jsUser = @Html.Raw(Json.Serialize(Model.user));
 </script>
 <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
@@ -51,32 +55,98 @@
 
         <div class="Chat">
             <div class="ChatMessages" id="Chat">
-                <label style="margin-top: 50%; margin-left: 30%; color: dimgrey;">Select chat to write messages</label>
+                @if (Model.currentChat != 0)
+                {
+                    @foreach (var message in Model.chatMessages)
+                    {
+                        <div class="MessageBody">
+                            <img src="@message.UserUser.ImageReference" class="Ellipse" style="width: 50px; height: 50px;" />
+                            <label class="MessageNickName">@message.UserUser.Name<label class="MessageDate">@message.DateSending.ToString("H:mm:ss")</label></label>
+                            <img src="../images/removeButton.png" class="RemoveMessage" id="@message.MessageId" />
+                            <br /><label class="MessageText">@message.Text</label>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <label style="margin-top: 50%; margin-left: 30%; color: dimgrey;">Select chat to write messages</label>
+                }
             </div>
             <hr class="Line" />
             <div class="MessageArea">
                 <div class="UserImageDiv">
-                    <img src="~/images/W1ld 3lf.jpg" class="UserImage" />
+                    <img src="@Model.user.ImageReference" class="UserImage" />
                 </div>
                 @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "MessageTextBox" })
                 <input type="submit" class="ButtonSend" value="Send" />
             </div>
-        </div>
-
-        <div class="Groups">
-            <div class="SearchField">
-                <input type="text" class="SearchTextBox" />
-                <img src="~/images/searchImg.png" class="SearchImage" />
-            </div>
-            <div class="GroupsList" id="groups">
-                @foreach (FaceSpam_social_media.Infrastructure.Data.Chat chat in Model.chats)
+      </div>
+ <div>
+            <div class="GroupInfo">
+                <div class="ImageNameGroup">
+                    @if (Model.selectedChat != null)
+                    {
+                        <div class="GroupImage" style="background-image: url('@Model.selectedChat.ImageReference')"></div>
+                        <label class="GroupPanelName">@Model.selectedChat.ChatName</label>
+                    }
+                    else
+                    {
+                        <div class="GroupImage"></div>
+                        <label class="GroupPanelName"></label>
+                    }
+                </div>
+                @if (Model.selectedChat != null)
                 {
-                    <div class="GroupPanel" id="@chat.ChatName">
-                        <img src="@chat.ImageReference" class="Ellipse" />
-                        <label class="GroupName" id="@chat.Id">@chat.ChatName</label>
-                    </div>
+                    <label class="GroupDescription">@Model.selectedChat.Description</label>
                 }
+                else
+                {
+                    <label class="GroupDescription"></label>
+                }
+                <div class="GroupStatus">
+                    <div class="MembersIcon">
+                        <img src="~/Images/people.svg" class="MembersImage" />
+                        <div class="MembersCounter">@Model.members.Count</div>
+                    </div>
+                    <input type="submit" class="QuitGroup" value="Quit" />
+                </div>
             </div>
+   
+            <div class="Groups">
+                <div class="SearchField">
+                    <input type="text" class="SearchTextBox" />
+                    <img src="~/images/searchImg.png" class="SearchImage" />
+                </div>
+                <div class="GroupsList" id="groups">
+                    @foreach (FaceSpam_social_media.DbModels.Chat chat in Model.chats)
+                    {
+                        if (Model.currentChat != chat.Id)
+                        {
+                            <div class="GroupPanel" id="@chat.ChatName">
+                                <img src="@chat.ImageReference" class="Ellipse" />
+                                <label class="GroupName" id="@chat.Id">@chat.ChatName</label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="GroupPanel active" id="@chat.ChatName">
+                                <img src="@chat.ImageReference" class="Ellipse" />
+                                <label class="GroupName" id="@chat.Id">@chat.ChatName</label>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="Popup">
+        <div class="PopupNavigation">
+            <input type="submit" class="InviteButton" value="Invite">
+            <label style="color: #3485FF;; font-weight: 600; font-size: 24px; margin-left: 10px;">Chat members</label>
+            <img src="~/images/removeButton.png" style="margin: 5px 5px; width: 30px; height: 30px;" id="ClosePopup" />
+        </div>
+        <div class="MembersList">
         </div>
     </div>
 </body>

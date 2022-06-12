@@ -1,0 +1,121 @@
+﻿@model MessagesForm
+
+@{
+    ViewData["Title"] = "Friends page";
+
+    string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
+}
+
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    var userId = @Model.user.UserId;
+</script>
+<script type="text/javascript" src="~/scripts/FriendsFormScripts.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/scripts/GroupsFormScripts.js" asp-append-version="true"></script>
+
+<body>
+    <link rel="stylesheet" href="~/css/FriendsViewStyleSheet.css" asp-append-version="true" />
+    <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/GroupsViewStyleSheet.css" rel="stylesheet" asp-append-version="true" />
+
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
+    <div class="Wrapper">
+        <div class="Navigation">
+            @foreach (string controller in controllers)
+            {
+                @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value=@controller />
+                }
+            }
+            @if (Model.user.IsAdmin == true)
+            {
+                @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
+                {
+                    <input type="submit" class="Button" value="Admin" />
+                }
+            }
+            <div class="AdvertisementText">
+                Advertisement
+            </div>
+
+            <div>
+                <div class="AdvertisementImage">
+                    <img src="~/Images/AdvertisementTest.png" />
+                </div>
+            </div>
+        </div>
+
+        <div class="Board">
+            <div>
+                <div class="SearchZone">
+                    <div class="FriendsLabel">Groups: </div>
+
+                    <input type="submit" class="CreateGroupButton" value="Create" />
+                    <form action="SearchFriend">
+                        <div class="SearchInput">
+                            <input type="text" name="name" class="Search" placeholder="Search" />
+                            <img src="~/Images/glass-icon.png" class="SearchImage" />
+                        </div>
+                    </form>
+
+                </div>
+
+                <div class="Line"></div>
+
+                <div class="FriendZone">
+                    <div class="GroupsPanels" id="ass">
+                        @foreach (var chat in Model.chats)
+                        {
+                            <div id="@chat.ChatName" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
+                                <img class="UserImage" src="@chat.ImageReference" />
+                                <label class="Names"> @chat.ChatName </label>
+                                @if (Model.user.UserId == chat.Admin)
+                                {
+                                    <input id="@chat.ChatId" type="submit" class="FriendButton" value="Quit" onclick="DeleteChat(this)" />
+                                }
+                                &nbsp;
+                                @using (Html.BeginForm("Messages", "Home", new { current = chat.ChatId },
+                                   FormMethod.Post))
+                                {
+                                    <input type="submit" class="GroupWriteButton" value="Write" />
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="CreateGroup">
+            <div class="HeadPanel">
+                <div class="ImageArea">
+                    <div class="GroupImage"></div>
+                    <input type="file" accept="image/*" id="myFile" style="display: none;" />
+                    <input type="button" class="Upload" value="Upload image" style="width: 100%;" />
+                </div>
+                <div class="NameAndDescriptionArea">
+                    <div class="NameArea">
+                        <div class="GroupLabel">Name:</div>
+                        <input type="text" id="name" class="InputInterface" style="margin-left: 60px;" />
+                    </div>
+                    <div class="DescriptionArea">
+                        <div class="GroupLabel">Description:</div>
+                        <textarea id="description" class="InputInterface"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="SecondPanel">
+                <input type="submit" value="Create chat" class="ConfirmButton" />
+                <div class="UsersList">
+                    <input type="text" class="SearchBox" />
+                    <div class="List">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
