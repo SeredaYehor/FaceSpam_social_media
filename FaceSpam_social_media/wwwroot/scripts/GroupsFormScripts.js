@@ -35,13 +35,16 @@
     })
 
     function GenerateGroupPanel(id, image, name) {
-        var panel = '<div id="' + id + '" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">' +
+        var panel = '<div id="' + id + '" class="FriendLine" style="display: flex; align-items: center;">' +
+            '<div class="ImageAndName">' +
             '<img class="UserImage" src="' + image + '" />' +
             '<label class="Names">' + name + '</label>' +
-            '<input id="' + id + '" type="submit" class="FriendButton" value="Quit" onclick="DeleteChat(this)" />' +
+            '</div>' +
+            '<div class="FriendButtons">' +
+            '<input id="' + id + '" type="submit" class="GroupQuitButton" value="Quit" onclick="DeleteChat(this)" />&nbsp;' +
             '<form action="/Home/Messages?current=' + id + '" method="post">' +
             '<input type="submit" class="GroupWriteButton" value="Write" />' +
-            '</form></div>';
+            '</form></div></div>';
         $(".GroupsPanels").append(panel);
     }
     
@@ -64,7 +67,7 @@
             contentType: false,
             processData: false,
             success: function (group) {
-                GenerateGroupPanel(group["chatId"], group["imageReference"],
+                GenerateGroupPanel(group["id"], group["imageReference"],
                     group["chatName"]);
             }
         });
@@ -87,7 +90,7 @@
             async: false,
             success: function (list) {
                 for (var i = 0; i < list.length; i++) {
-                    var id = list[i]["userId"].toString();
+                    var id = list[i]["id"].toString();
                     var name = list[i]["name"].toString();
                     var image = list[i]["imageReference"].toString();
                     AddUserPanel(id, name, image);
@@ -96,13 +99,13 @@
         });
     });
 
-    $(".GroupsPanels").on('click', ".FriendButton", function () {
+    $(".GroupsPanels").on('click', ".GroupQuitButton", function () {
         var id = $(this).attr("id");
-        $(this).parent(".FriendLine").remove();
+        $(this).parent(".FriendButtons").parent(".FriendLine").remove();
         $.ajax({
             type: "POST",
             url: '/Home/DeleteGroup',
-            async: false,
+            async: true,
             data: { groupId: id },
             success: function (status) {
             }

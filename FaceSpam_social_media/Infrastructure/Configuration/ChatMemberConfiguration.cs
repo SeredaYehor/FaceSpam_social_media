@@ -8,6 +8,11 @@ namespace FaceSpam_social_media.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<ChatMember> builder)
         {
+            builder.HasIndex(e => e.Id, "id_UNIQUE")
+                .IsUnique();
+
+            builder.Property(e => e.Id).HasColumnName("id");
+
             builder.HasKey(e => new { e.UserUserId, e.ChatChatId })
                     .HasName("PRIMARY")
                     .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });

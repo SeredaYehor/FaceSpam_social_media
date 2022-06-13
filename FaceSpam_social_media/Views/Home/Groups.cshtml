@@ -8,7 +8,7 @@
 
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
-    var userId = @Model.user.UserId;
+    var userId = @Model.user.Id;
 </script>
 <script type="text/javascript" src="~/scripts/FriendsFormScripts.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/scripts/GroupsFormScripts.js" asp-append-version="true"></script>
@@ -70,19 +70,23 @@
                     <div class="GroupsPanels" id="ass">
                         @foreach (var chat in Model.chats)
                         {
-                            <div id="@chat.ChatName" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
-                                <img class="UserImage" src="@chat.ImageReference" />
-                                <label class="Names"> @chat.ChatName </label>
-                                @if (Model.user.UserId == chat.Admin)
-                                {
-                                    <input id="@chat.ChatId" type="submit" class="FriendButton" value="Quit" onclick="DeleteChat(this)" />
-                                }
-                                &nbsp;
-                                @using (Html.BeginForm("Messages", "Home", new { current = chat.ChatId },
-                                   FormMethod.Post))
-                                {
-                                    <input type="submit" class="GroupWriteButton" value="Write" />
-                                }
+                            <div id="@chat.ChatName" class="FriendLine" style="display: flex; align-items: center;">
+                                <div class="ImageAndName">
+                                    <img class="UserImage" src="@chat.ImageReference" />
+                                    <label class="Names"> @chat.ChatName </label>
+                                </div>
+                                <div class="FriendButtons">
+                                    @if (Model.user.Id == chat.Admin)
+                                    {
+                                        <input id="@chat.Id" type="submit" class="GroupQuitButton" value="Quit" onclick="DeleteChat(this)" />
+                                    }
+                                    &nbsp;
+                                    @using (Html.BeginForm("Messages", "Home", new { current = chat.Id },
+                                       FormMethod.Post))
+                                    {
+                                        <input type="submit" class="GroupWriteButton" value="Write" />
+                                    }
+                                </div>
                             </div>
                         }
                     </div>

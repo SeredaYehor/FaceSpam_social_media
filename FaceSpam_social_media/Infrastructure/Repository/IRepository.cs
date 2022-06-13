@@ -30,5 +30,8 @@ namespace FaceSpam_social_media.Infrastructure.Repository
         Task<TEntity> DeleteAsync<TEntity>(TEntity entity) where TEntity : class, IEntity;
 
         Task<int> DeleteAsyncRange<TEntity>(IEnumerable<TEntity> entity) where TEntity : class, IEntity;
+
+        Task<int> AddAsyncRange<TEntity>(IEnumerable<TEntity> entity) where TEntity : class, IEntity;
+
     }
 }

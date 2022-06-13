@@ -56,5 +56,12 @@ namespace FaceSpam_social_media.Infrastructure.Repository
             var result = await _dbContext.SaveChangesAsync();
             return result;
         }
+
+        public async Task<int> AddAsyncRange<TEntity>(IEnumerable<TEntity> entity) where TEntity : class, IEntity
+        {
+            _dbContext.Set<TEntity>().AddRange(entity);
+            var result = await _dbContext.SaveChangesAsync();
+            return result;
+        }
     }
 }

@@ -26,20 +26,41 @@ namespace FaceSpam_social_media.Models
         public string message { get; set; }
         public int currentChat { get; set; }
 
-        public void GetChatMessages(int chatId)
+        public Chat GetChatMessages(int chatId)
         {
             if (chatId != 0)
             {
                 currentChat = chatId;
                 chatMessages = _repository.GetAll<Message>().Where(x => x.ChatChatId == currentChat)
                     .Include(x => x.UserUser).ToList();
-                selectedChat = chats.Where(x => x.ChatId == chatId).First();
-                members = context.ChatMembers.Where(x => x.ChatChatId == currentChat).Select(y => y.UserUser).ToList();
-                return chats.Where(x => x.ChatId == currentChat).First();
+                selectedChat = chats.Where(x => x.Id == chatId).First();
+                members = _repository.GetAll<ChatMember>().Where(x => x.ChatChatId == currentChat).Select(y => y.UserUser).ToList();
+                return chats.Where(x => x.Id == currentChat).First();
             }
             return new Chat();
         }
 
+        public async Task<int> AddMember(int memberId)
+        {
+            ChatMember newMember = new ChatMember
+            {
+                ChatChatId = selectedChat.Id,
+                UserUserId = memberId
+            };
+            await _repository.AddAsync<ChatMember>(newMember);
+            members.Add(_repository.GetAll<User>().Where(x => x.Id == memberId).First());
+            return members.Count;
+        }
+
+        public async Task<int> RemoveChatMember(int memberId)
+        {
+            User member = members.Where(x => x.Id == memberId).First();
+            ChatMember remove = _repository.GetAll<ChatMember>().Where(x => x.UserUserId == memberId
+            && x.ChatChatId == selectedChat.Id).First();
+            await _repository.DeleteAsync(remove);
+            members.Remove(member);
+            return members.Count;
+        }
         public async Task<int> RemoveMessage(int messageId)
         {
             Message remove = _repository.GetAll<Message>().Where(x => x.Id == messageId)
@@ -68,18 +89,21 @@ namespace FaceSpam_social_media.Models
                 .Select(x => x.ChatChat).ToList();
         }
       
-         public async void QuitGroup()
-        {
+         public async Task QuitGroup()
+         {
             ChatMember chatMember = _repository.GetAll<ChatMember>()
-                .Where(x => x.ChatChatId == selectedChat.ChatId && x.UserUserId == user.Id).First();
+                .Where(x => x.ChatChatId == selectedChat.Id && x.UserUserId == user.Id).First();
             await _repository.DeleteAsync(chatMember);
-        }
+         }
 
-        public async void DeleteGroup(int Id)
+        public async Task DeleteGroup(int Id)
         {
             List<Message> remove_messages = _repository.GetAll<Message>().Where(x => x.ChatChatId == Id).ToList();
-            await _repository.DeleteAsyncRange(remove_messages);
-            Chat remove =  _repository.GetAll<Chat>().Where(x => x.ChatId == Id).FirstOrDefault();
+            if(remove_messages.Count != 0)
+            {
+                await _repository.DeleteAsyncRange(remove_messages);
+            }
+            Chat remove =  chats.Where(x => x.Id == Id).FirstOrDefault();
             await _repository.DeleteAsync(remove);
             chats.Remove(remove);
         }
@@ -87,10 +111,10 @@ namespace FaceSpam_social_media.Models
         public void SelectChat(int chatId)
         {
             selectedChat = chats.Where(x => x.Id == chatId).First();
-            GetChatMessages(context, chatId);
+            GetChatMessages(chatId);
         }
 
-        public List<User> SelectAllUsers(mydbContext context)
+        public List<User> SelectAllUsers()
         {
             List<User> users =  _repository.GetAll<User>().Where(x => x.Id != user.Id).ToList();
             return users;
@@ -115,15 +139,17 @@ namespace FaceSpam_social_media.Models
             }
             var newChat = await _repository.AddAsync(created);
             chats.Add(newChat);
+            List<ChatMember> newMembers = new List<ChatMember>();
             foreach (int member in members)
             {
                 ChatMember newMember = new ChatMember() 
                 { 
-                    ChatChatId = created.ChatId, 
+                    ChatChatId = created.Id, 
                     UserUserId = member 
                 };
-                await _repository.AddAsync(newMember);
+                newMembers.Add(newMember);
             }
+            await _repository.AddAsyncRange(newMembers);
             return newChat;
         }
     }
