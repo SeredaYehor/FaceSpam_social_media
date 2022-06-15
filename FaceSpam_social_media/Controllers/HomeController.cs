@@ -9,6 +9,7 @@ using FaceSpam_social_media.Infrastructure.Data;
 using FaceSpam_social_media.Services;
 using FaceSpam_social_media.Infrastructure.Repository;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace FaceSpam_social_media.Controllers
 {
@@ -118,6 +119,13 @@ namespace FaceSpam_social_media.Controllers
             return result;
         }
 
+        [HttpPost]
+        public List<User> SelectUsers()
+        {
+            List<User> users = messages.SelectAllUsers();
+            return users;
+        }
+
         public User GetUser()
         {
             return mainFormModels.executor;
@@ -126,7 +134,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Messages(int current = 0)
         {
             messages.user = mainFormModels.executor;
-            messages.GetChatMessages(context, current);
+            messages.GetChatMessages(current);
             messages.GetChats();
             return View(messages);
         }
@@ -148,11 +156,10 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult GetChat(int chatId)
         {
             messages.user = mainFormModels.executor;
-            messages.SelectChat(context, chatId);
+            messages.SelectChat(chatId);
             return View(messages);
         }
         
-        [HttpPost]
         public IActionResult Main()
         {
             mainFormModels.user = mainFormModels.executor;
@@ -183,7 +190,7 @@ namespace FaceSpam_social_media.Controllers
             friendsModel.GetAllUsers();
             friendsModel.friendPage = false;
 
-            return View("Friends", friendsModel);
+            return RedirectToAction("Friends");
         }
         
         public async Task<int> DeleteFriend(int id)
@@ -217,15 +224,15 @@ namespace FaceSpam_social_media.Controllers
             return result;
         }
 
-        public async void QuitGroup()
+        public async Task QuitGroup()
         {
             await messages.QuitGroup();
         }
 
         [HttpPost]
-        public async void DeleteGroup(int groupId)
+        public async Task DeleteGroup(int groupId)
         {
-            await messages.DeleteGroup(context, groupId);
+            await messages.DeleteGroup(groupId);
         }
         
         [HttpPost]
@@ -243,10 +250,11 @@ namespace FaceSpam_social_media.Controllers
             return (messages.user, id);
         }
 
-        public List<Message> GetChatMessages(int chatId)
+        public (List<Message>, Chat, int) GetChatMessages(int chatId)
         {
             messages.GetChatMessages(chatId);
-            return messages.chatMessages;
+            return (messages.chatMessages, 
+                messages.selectedChat, messages.members.Count);
         }
         
         public List<User> GetChatUsers()
@@ -287,7 +295,7 @@ namespace FaceSpam_social_media.Controllers
             commentsModel.user = mainFormModels.user;
             friendsModel.user = mainFormModels.user;
 
-            return View("Main", mainFormModels);
+            return RedirectToAction("Main");
         }
 
         public IActionResult Authentication()
@@ -305,7 +313,7 @@ namespace FaceSpam_social_media.Controllers
                 await _userService.AddUser(login, password, email, imageReference);
 
                 mainFormModels.GetMainUserInfo(login, password);
-                return View("Main", mainFormModels);
+                return RedirectToAction("Main");
             }
             else
             {
@@ -333,7 +341,7 @@ namespace FaceSpam_social_media.Controllers
                     errorModel.Error = "Oi, you have been banned";
                     return View("ErrorPage", errorModel);
                 }
-                return View("Main", mainFormModels);
+                return RedirectToAction("Main");
             }
             else
             {

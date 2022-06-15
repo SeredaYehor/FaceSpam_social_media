@@ -5,7 +5,7 @@
     }
 
     $(".Popup").hide();
-    var Members;
+    var Members = new Array();
 
     $(".QuitGroup").click(function () {
         $.ajax({
@@ -16,7 +16,7 @@
                 $(".GroupInfo").hide();
                 $(".Popup").hide();
                 $(".ChatMessages").empty();
-                $(".GroupPanel#" + selectedChat).remove();
+                $(".GroupPanel.active").remove();
             }
         });
     })
@@ -24,13 +24,14 @@
     $(".MembersIcon").click(function () {
         $(".MembersList").empty();
         Members = new Array();
+        $(".InviteButton").val("Invite");
         $.ajax({
             type: "GET",
             url: '/Home/GetChatUsers',
             success: function (members) {
                 for (var i = 0; i < members.length; i++) {
-                    Members.push(members[i]["userId"]);
-                    DisplayMember(members[i]["userId"], members[i]["name"], members[i]["imageReference"], "Remove");
+                    Members.push(members[i]["id"]);
+                    DisplayMember(members[i]["id"], members[i]["name"], members[i]["imageReference"], "Remove");
                 }
             }
         });
@@ -45,8 +46,8 @@
                 url: '/Home/SelectUsers',
                 success: function (members) {
                     for (var i = 0; i < members.length; i++) {
-                        if (Members.indexOf(members[i]["userId"]) < 0) {
-                            DisplayMember(members[i]["userId"], members[i]["name"], members[i]["imageReference"], "Add");
+                        if (Members.indexOf(members[i]["id"]) < 0) {
+                            DisplayMember(members[i]["id"], members[i]["name"], members[i]["imageReference"], "Add");
                         }
                     }
                 }
@@ -60,8 +61,8 @@
                 url: '/Home/GetChatUsers',
                 success: function (members) {
                     for (var i = 0; i < members.length; i++) {
-                        Members.push(members[i]["userId"]);
-                        DisplayMember(members[i]["userId"], members[i]["name"], members[i]["imageReference"], "Remove");
+                        Members.push(members[i]["id"]);
+                        DisplayMember(members[i]["id"], members[i]["name"], members[i]["imageReference"], "Remove");
                     }
                 }
             });
@@ -81,6 +82,7 @@
                 url: '/Home/RemoveChatMember',
                 data: { memberId: id, },
                 success: function (counter) {
+                    Members.pop(id);
                     $(".MembersCounter").text(counter);
                 }
             });
@@ -149,11 +151,13 @@
         });
 
          function GetMessageObj(messageId, name, image, time, text) {
-            messageObject = '<div class="MessageBody">' +
-                '<img src="' + image + '" class="Ellipse" style="width: 50px; height: 50px;"/>' +
-                 '<label class="MessageNickName" >' + name + '<label class="MessageDate">' + time + '</label ></label>' +
-                 '<img src="../images/removeButton.png" class="RemoveMessage" id="' + messageId + '" />' +
-                 '<br /><label class="MessageText">' + text + '</label ></div>';
+             messageObject = '<div class="MessageBody">' +
+                 '<img src="' + image + '" class="Ellipse" style="width: 50px; height: 50px;"/>' +
+                 '<label class="MessageNickName" >' + name + '<label class="MessageDate">' + time + '</label ></label>';
+             if (jsUser["name"] == name) {
+                 messageObject += '<img src="../images/removeButton.png" class="RemoveMessage" id="' + messageId + '" />';
+             }
+             messageObject += '<br /><label class="MessageText">' + text + '</label ></div>';
              $(".ChatMessages").append(messageObject);
          }
 
@@ -165,9 +169,9 @@
                 data: { chatId: id },
                 success: function (messages) { //get array object of Message models
                     SetGroupPanel(messages["item2"], messages["item3"]);
-                    for (var index = 0; index < messages.length; index++) { //adding all messages for this chat
-                        var messageId = messages[index]["id"].toString();                      
-                        var dt = new Date(messages[index]["dateSending"]);
+                    for (var index = 0; index < messages["item1"].length; index++) { //adding all messages for this chat
+                        var messageId = messages["item1"][index]["id"].toString();
+                        var dt = new Date(messages["item1"][index]["dateSending"]);
                         var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                         var text = messages["item1"][index]["text"].toString();
                         var userName = messages["item1"][index]["userUser"]["name"].toString();
