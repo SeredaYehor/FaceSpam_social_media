@@ -160,7 +160,6 @@ namespace FaceSpam_social_media.Controllers
             return View(messages);
         }
         
-        [HttpPost]
         public IActionResult Main()
         {
             mainFormModels.user = mainFormModels.executor;
@@ -174,7 +173,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult UserProfile(int id)
         {
             mainFormModels.GetUserInfo(true, id);
-            return View("Main", mainFormModels);
+            return RedirectToAction("Main");
         }
 
         public IActionResult Friends(int id)
@@ -191,7 +190,7 @@ namespace FaceSpam_social_media.Controllers
             friendsModel.GetAllUsers();
             friendsModel.friendPage = false;
 
-            return View("Friends", friendsModel);
+            return RedirectToAction("Friends");
         }
         
         public async Task<int> DeleteFriend(int id)
@@ -296,7 +295,7 @@ namespace FaceSpam_social_media.Controllers
             commentsModel.user = mainFormModels.user;
             friendsModel.user = mainFormModels.user;
 
-            return View("Main", mainFormModels);
+            return RedirectToAction("Main");
         }
 
         public IActionResult Authentication()
@@ -314,7 +313,7 @@ namespace FaceSpam_social_media.Controllers
                 await _userService.AddUser(login, password, email, imageReference);
 
                 mainFormModels.GetMainUserInfo(login, password);
-                return View("Main", mainFormModels);
+                return RedirectToAction("Main");
             }
             else
             {
@@ -342,7 +341,7 @@ namespace FaceSpam_social_media.Controllers
                     errorModel.Error = "Oi, you have been banned";
                     return View("ErrorPage", errorModel);
                 }
-                return View("Main", mainFormModels);
+                return RedirectToAction("Main");
             }
             else
             {
