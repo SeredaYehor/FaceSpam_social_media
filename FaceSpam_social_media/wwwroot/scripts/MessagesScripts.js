@@ -5,7 +5,7 @@
     }
 
     $(".Popup").hide();
-    var Members;
+    var Members = new Array();
 
     $(".QuitGroup").click(function () {
         $.ajax({
@@ -24,6 +24,7 @@
     $(".MembersIcon").click(function () {
         $(".MembersList").empty();
         Members = new Array();
+        $(".InviteButton").val("Invite");
         $.ajax({
             type: "GET",
             url: '/Home/GetChatUsers',
@@ -81,6 +82,7 @@
                 url: '/Home/RemoveChatMember',
                 data: { memberId: id, },
                 success: function (counter) {
+                    Members.pop(id);
                     $(".MembersCounter").text(counter);
                 }
             });
@@ -149,11 +151,13 @@
         });
 
          function GetMessageObj(messageId, name, image, time, text) {
-            messageObject = '<div class="MessageBody">' +
-                '<img src="' + image + '" class="Ellipse" style="width: 50px; height: 50px;"/>' +
-                 '<label class="MessageNickName" >' + name + '<label class="MessageDate">' + time + '</label ></label>' +
-                 '<img src="../images/removeButton.png" class="RemoveMessage" id="' + messageId + '" />' +
-                 '<br /><label class="MessageText">' + text + '</label ></div>';
+             messageObject = '<div class="MessageBody">' +
+                 '<img src="' + image + '" class="Ellipse" style="width: 50px; height: 50px;"/>' +
+                 '<label class="MessageNickName" >' + name + '<label class="MessageDate">' + time + '</label ></label>';
+             if (jsUser["name"] == name) {
+                 messageObject += '<img src="../images/removeButton.png" class="RemoveMessage" id="' + messageId + '" />';
+             }
+             messageObject += '<br /><label class="MessageText">' + text + '</label ></div>';
              $(".ChatMessages").append(messageObject);
          }
 

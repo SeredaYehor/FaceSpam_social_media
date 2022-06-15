@@ -59,6 +59,11 @@
         formData.set("chatDescription", $("#description").val());
         formData.set("members", addedMembers);
         $(".CreateGroup").hide();
+        $(".List").empty();
+        $(".GroupImage").empty();
+        $("#name").val("");
+        $("#description").val("");
+        addedMembers = [];
         $.ajax({
             type: "POST",
             url: '/Home/CreateGroup',
@@ -71,6 +76,7 @@
                     group["chatName"]);
             }
         });
+        formData.set("file", "");
     })
 
     function AddUserPanel(id, name, image) {
