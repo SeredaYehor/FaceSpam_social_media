@@ -91,9 +91,16 @@ namespace FaceSpam_social_media.Models
       
          public async Task QuitGroup()
          {
+            int count = _repository.GetAll<ChatMember>()
+                .Where(x => x.ChatChatId == selectedChat.Id).ToList().Count;
             ChatMember chatMember = _repository.GetAll<ChatMember>()
-                .Where(x => x.ChatChatId == selectedChat.Id && x.UserUserId == user.Id).First();
+               .Where(x => x.ChatChatId == selectedChat.Id && x.UserUserId == user.Id).First();
             await _repository.DeleteAsync(chatMember);
+            if (count == 1)
+            {
+                Chat remove = _repository.GetAll<Chat>().Where(x => x.Id == selectedChat.Id).First();
+                await _repository.DeleteAsync(remove);
+            }
          }
 
         public async Task DeleteGroup(int Id)
