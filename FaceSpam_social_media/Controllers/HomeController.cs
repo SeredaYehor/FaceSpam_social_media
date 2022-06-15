@@ -173,7 +173,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult UserProfile(int id)
         {
             mainFormModels.GetUserInfo(true, id);
-            return RedirectToAction("Main");
+            return View("Main", mainFormModels);
         }
 
         public IActionResult Friends(int id)
