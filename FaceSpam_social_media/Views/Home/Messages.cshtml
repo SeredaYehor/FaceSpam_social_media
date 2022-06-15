@@ -62,7 +62,10 @@
                         <div class="MessageBody">
                             <img src="@message.UserUser.ImageReference" class="Ellipse" style="width: 50px; height: 50px;" />
                             <label class="MessageNickName">@message.UserUser.Name<label class="MessageDate">@message.DateSending.ToString("H:mm:ss")</label></label>
-                            <img src="../images/removeButton.png" class="RemoveMessage" id="@message.Id" />
+                            @if (message.UserUserId == Model.user.Id)
+                            {
+                                <img src="../images/removeButton.png" class="RemoveMessage" id="@message.Id" />
+                            }
                             <br /><label class="MessageText">@message.Text</label>
                         </div>
                     }
