@@ -24,11 +24,12 @@ namespace FaceSpam_social_media
         // as a result view will be changed, if mainUserId is eqhal to user.UserID 
         public int mainUserId;
 
-        public void UpdateUserInfo(string name, string email, string description)
+        public void UpdateUserInfo(string name, string email, string description, string imageReference)
         {
             if (name != null) { user.Name = name; }
             if (email != null) { user.Email = email; }
             if (description != null) { user.Description = description; }
+            if (imageReference != null) { user.ImageReference = imageReference; }
         }
 
         public async Task<int> AddPost(string message, string reference)

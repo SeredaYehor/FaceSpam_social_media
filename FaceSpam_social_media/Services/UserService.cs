@@ -33,7 +33,7 @@ namespace FaceSpam_social_media.Services
 
             return newUser.Id;
         }
-        public async Task UpdateUser(int userId, string name, string email, string description)
+        public async Task UpdateUser(int userId, string name, string email, string description, string imageReference)
         {
             var user = await _repository.GetAll<User>()
                 .FirstOrDefaultAsync(u => u.Id == userId);
@@ -41,23 +41,27 @@ namespace FaceSpam_social_media.Services
             bool repeatEmail = _repository.GetAll<User>().Any(x => x.Email == email);
             bool repeatName = _repository.GetAll<User>().Any(x => x.Name == name);
 
-            if (email != null) 
+            if (email != null)
             {
-                if(repeatEmail != true)
+                if (repeatEmail != true)
                 {
                     user.Email = email;
                 }
             }
-            if(name != null)
+            if (name != null)
             {
-                if(repeatName != true)
+                if (repeatName != true)
                 {
                     user.Name = name;
                 }
             }
-            if(description != null)
+            if (description != null)
             {
                 user.Description = description;
+            }
+            if (imageReference != null)
+            {
+                user.ImageReference = imageReference;
             }
 
             await _repository.UpdateAsync(user);

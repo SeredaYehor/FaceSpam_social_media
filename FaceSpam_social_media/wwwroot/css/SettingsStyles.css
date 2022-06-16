@@ -49,8 +49,8 @@ body {
 }
 /* Change photo */
 .ChangePhotoImage {
-    max-width: 165px;
-    max-height: 200px;
+    width: 165px;
+    height: 200px;
 }
 
     .ChangePhotoImage img {
@@ -81,6 +81,10 @@ body {
         box-shadow: 0 15px 20px rgba(106, 121, 247, .4);
         color: white;
     }
+
+#myFile {
+    display: none;
+}
 /* ---------- */
 .SettingPageButtons input {
     text-decoration: none;
@@ -130,7 +134,7 @@ body {
     justify-content: end;
 }
 
-    .ConfirmChanges input {
+    .ConfirmChanges button {
         text-decoration: none;
         display: inline-block;
         width: 240px;
@@ -150,7 +154,7 @@ body {
         border: none;
     }
 
-        .ConfirmChanges input:hover {
+        .ConfirmChanges button:hover {
             background: #0071c7;
             box-shadow: 0 15px 20px rgba(106, 121, 247, .4);
             color: white;

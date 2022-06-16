@@ -286,11 +286,17 @@ namespace FaceSpam_social_media.Controllers
             return View(settingsModel);
         }
 
+
+        public void GetPhotoUrl(IFormFile file)
+        {
+            settingsModel.imageReference = FileManager.UploadImage(file);
+        }
+        [HttpPost]
         public async Task<IActionResult> ChangeUserInfo(string email, string name, string description)
         {
-            await _userService.UpdateUser(mainFormModels.user.Id, name, email, description);
+            await _userService.UpdateUser(mainFormModels.user.Id, name, email, description, settingsModel.imageReference);
 
-            mainFormModels.UpdateUserInfo(name, email, description);
+            mainFormModels.UpdateUserInfo(name, email, description, settingsModel.imageReference);
             mainFormModels.UpdateData(settingsModel.user);
             commentsModel.user = mainFormModels.user;
             friendsModel.user = mainFormModels.user;
