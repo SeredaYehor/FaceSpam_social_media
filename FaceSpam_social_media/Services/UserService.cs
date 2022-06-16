@@ -41,6 +41,7 @@ namespace FaceSpam_social_media.Services
             bool repeatEmail = _repository.GetAll<User>().Any(x => x.Email == email);
             bool repeatName = _repository.GetAll<User>().Any(x => x.Name == name);
 
+            //Make this checks in loop
             if (email != null)
             {
                 if (repeatEmail != true)
