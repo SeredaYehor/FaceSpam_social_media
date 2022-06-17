@@ -35,7 +35,7 @@ namespace FaceSpam_social_media.Models
             allUsers = _repository.GetAll<User>().Where(x=>x.Id != mainUserId).ToList();
         }
 
-        public async Task<int> DeleteFriend(int id)
+        public async Task DeleteFriend(int id)
         {
             var friend = new Friend();
             friend = _repository.GetAll<Friend>()
@@ -43,10 +43,9 @@ namespace FaceSpam_social_media.Models
 
             await _repository.DeleteAsync(friend);
             friends.Remove(friends.Where(x => x.Id == id).FirstOrDefault());
-            return friend.Id;
         }
 
-        public async Task<int> AddFriend(int id)
+        public async Task AddFriend(int id)
         {
             var newFriend = await _repository.AddAsync(new Friend
             {
@@ -55,7 +54,6 @@ namespace FaceSpam_social_media.Models
             });
 
             friends.Add(_repository.GetAll<User>().Where(x => x.Id == id).FirstOrDefault());
-            return newFriend.Id;
         }
 
         public string IsFriend(int userId)
