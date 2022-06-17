@@ -82,7 +82,7 @@
             '<img src="../images/pencil.svg" style="display: inline-block; margin-right:8px;" />' +
             '<button class="CommentButton" name="id" value="' + postId + '" type="submit">comments</button>' +
             '<label class="Date">' + date + '</label></form></div></div>';
-        $(".DashboardList").append(postObject);
+        $(".DashboardList").prepend(postObject);
     }
 
     $("#myFile").change(function () {
