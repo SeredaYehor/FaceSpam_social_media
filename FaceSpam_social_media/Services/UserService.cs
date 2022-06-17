@@ -33,32 +33,25 @@ namespace FaceSpam_social_media.Services
 
             return newUser.Id;
         }
-        public async Task UpdateUser(int userId, string name, string email, string description)
+        public bool repeatCheck(string input)
+        {
+            bool repeatEmail = _repository.GetAll<User>().Any(x => x.Email == input);
+            bool repeatName = _repository.GetAll<User>().Any(x => x.Name == input);
+            if (repeatEmail || repeatName)
+            {
+                return false;
+            }
+            else { return true; }
+        }
+        public async Task UpdateUser(int userId, string name, string email, string description, string imageReference)
         {
             var user = await _repository.GetAll<User>()
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
-            bool repeatEmail = _repository.GetAll<User>().Any(x => x.Email == email);
-            bool repeatName = _repository.GetAll<User>().Any(x => x.Name == name);
-
-            if (email != null) 
-            {
-                if(repeatEmail != true)
-                {
-                    user.Email = email;
-                }
-            }
-            if(name != null)
-            {
-                if(repeatName != true)
-                {
-                    user.Name = name;
-                }
-            }
-            if(description != null)
-            {
-                user.Description = description;
-            }
+            if (email != null && repeatCheck(email)) { user.Email = email; }
+            if (name != null && repeatCheck(name)) { user.Name = name; }
+            if (description != null) { user.Description = description; }
+            if (imageReference != null) { user.ImageReference = imageReference; }
 
             await _repository.UpdateAsync(user);
         }

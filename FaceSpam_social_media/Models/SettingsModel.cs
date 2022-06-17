@@ -23,5 +23,7 @@ namespace FaceSpam_social_media.Models
         [StringLength(255, ErrorMessage = "The field must have between {2} and {1} characters.", MinimumLength = 4)]
         public string description { get; set; }
 
+        public string imageReference { get; set; }
+
     }
 }
