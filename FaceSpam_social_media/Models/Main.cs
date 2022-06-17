@@ -13,6 +13,7 @@ namespace FaceSpam_social_media
         public User executor;
         public List<User> friends;
         public string message { get; set; }
+        public bool isFriend;
 
         public IRepository _repository;
 
@@ -149,6 +150,7 @@ namespace FaceSpam_social_media
             GetPosts();
             GetFriends();
             GetLikes();
+            IsFriend(userId);
         }
 
         public void UpdateData(User change)
@@ -178,18 +180,20 @@ namespace FaceSpam_social_media
         }
         // function is used to learn is friend chosen person or not
 
-        public bool isFriend;
-
-        public bool IsFriend(int id)
+        public void IsFriend(int id)
         {
-            foreach (var user in friends)
+            List<User> executorFriends = _repository.GetAll<Friend>().Where(x => x.UserUserId == executor.Id)
+                .Select(x => x.FriendNavigation).ToList();
+
+            isFriend = false;
+
+            foreach (var friend in executorFriends)
             {
-                if (user.Id == id)
+                if (friend.Id == id)
                 {
-                    return true;
+                    isFriend = true;
                 }
             }
-            return false;
         }
 
     }

@@ -190,21 +190,19 @@ namespace FaceSpam_social_media.Controllers
             friendsModel.GetAllUsers();
             friendsModel.friendPage = false;
 
-            return RedirectToAction("Friends");
+            return View("Friends", friendsModel);
         }
         
-        public async Task<int> DeleteFriend(int id)
+        public async Task DeleteFriend(int id)
         {
-            int result = await friendsModel.DeleteFriend(id);
+            await friendsModel.DeleteFriend(id);
             mainFormModels.GetFriends();
-            return result;
         }
 
-        public async Task<int> AddFriend(int id)
+        public async Task AddFriend(int id)
         {
-            int result = await friendsModel.AddFriend(id);
+            await friendsModel.AddFriend(id);
             mainFormModels.GetFriends();
-            return result;
         }
 
         public async Task<int> ChangeLike(int postId)

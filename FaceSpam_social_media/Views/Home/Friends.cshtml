@@ -55,7 +55,7 @@
                     <b> <label class="FriendsLabel"> @(Model.friendPage ? "Friends  " : "All users") </label> </b>
 
                     <form method="post" action="@(Model.friendPage ? usersPage : friendPage)">
-                        <button type="submit" name="id" value="@Model.mainUserId" class="AddFriendButton">
+                        <button type="submit" name="id" value="@Model.executor" class="AddFriendButton">
                         <img class="AddFriendIcon" src="@(Model.friendPage ? "../Images/people.png" : "../Images/friends.png")"/>
                         </button>
                     </form>
@@ -85,7 +85,7 @@
                             </form>
 
                             <input type="submit" class="FriendButton" value="Write" />
-                            @if (Model.mainUserId == Model.user.Id)
+                            @if (Model.executor == Model.user.Id)
                             {
                                 /*
                                     @if(Model.mainUserId == Model.user.Id) 
