@@ -163,7 +163,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Main()
         {
             mainFormModels.user = mainFormModels.executor;
-            mainFormModels.GetFriends();
+            mainFormModels.GetUserInfo(false, mainFormModels.executor.Id);
             friendsModel.GetMainFormData(mainFormModels);
 
             return View(mainFormModels);
