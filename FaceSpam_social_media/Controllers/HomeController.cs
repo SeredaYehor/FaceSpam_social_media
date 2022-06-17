@@ -287,10 +287,12 @@ namespace FaceSpam_social_media.Controllers
         }
 
 
+        //Bad function
         public void GetPhotoUrl(IFormFile file)
         {
             settingsModel.imageReference = FileManager.UploadImage(file);
         }
+        
         [HttpPost]
         public async Task<IActionResult> ChangeUserInfo(string email, string name, string description)
         {
