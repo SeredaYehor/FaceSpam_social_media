@@ -18,6 +18,9 @@
                 $(".ChangePhotoImage").append(image);
             });
         }
+    })
+
+    $(".ConfirmButton").click(function () {
         $.ajax({
             type: "POST",
             url: '/Home/GetPhotoUrl',
@@ -26,5 +29,5 @@
             contentType: false,
             processData: false
         });
-    })
+    });
 })
