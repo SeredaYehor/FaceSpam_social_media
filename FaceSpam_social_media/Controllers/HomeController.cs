@@ -286,8 +286,6 @@ namespace FaceSpam_social_media.Controllers
             return View(settingsModel);
         }
 
-
-        //Bad function
         public void GetPhotoUrl(IFormFile file)
         {
             settingsModel.imageReference = FileManager.UploadImage(file);
