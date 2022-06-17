@@ -129,7 +129,8 @@ namespace FaceSpam_social_media
 
         public void GetPosts()
         {
-            user.Posts = _repository.GetAll<Post>().Where(x => x.UserUser == user).ToList();
+            user.Posts = _repository.GetAll<Post>().Where(x => x.UserUser == user)
+		.OrderByDescending(d => d.DatePosting).ToList();
         }
 
         public void GetFriends()
