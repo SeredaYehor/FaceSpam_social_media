@@ -27,35 +27,33 @@ namespace FaceSpam_social_media.Controllers
 
         #region ViewModels
         public static Main mainFormModels = new Main();
-        public static Main userProfileModel = new Main();
         public static MessagesForm messages = new MessagesForm();
         public static FriendsViewModel friendsModel = new FriendsViewModel();
         public static PostCommentsModel commentsModel = new PostCommentsModel();
-        public static LoginModel loginModel = new LoginModel();
-        public static SettingsModel settingsModel = new SettingsModel();
-        public static AuthenticationModel authModel = new AuthenticationModel();
+        public LoginModel loginModel = new LoginModel();
+        public SettingsModel settingsModel = new SettingsModel();
+        public AuthenticationModel authModel = new AuthenticationModel();
         public static UsersManagment usersManagment = new UsersManagment();
-        public static ErrorPageModel errorModel = new ErrorPageModel();
+        public ErrorPageModel errorModel = new ErrorPageModel();
         #endregion
 
         public HomeController(ILogger<HomeController> logger, IUserService userService, 
-            IChatMemberService chatMemberService, IChatService chatService, ILikeService likeService, IPostService postService, IRepository repository)
+            IChatMemberService chatMemberService, IChatService chatService, 
+            ILikeService likeService, IPostService postService, IRepository repository)
         {
+            #region Initialization
             _logger = logger;
             _userService = userService;
             _likeService = likeService;
             _postService = postService;
             _chatService = chatService;
             _chatMemberService = chatMemberService;
+            #endregion
 
             mainFormModels._repository = repository;
-            userProfileModel._repository = repository;
             messages._repository = repository;
             friendsModel._repository = repository;
             commentsModel._repository = repository;
-            loginModel._repository = repository;
-            settingsModel._repository = repository; 
-            authModel._repository = repository;
         }
 
         public IActionResult Index()
@@ -322,12 +320,10 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeUserInfo(string email, string name, string description)
         {
-            await _userService.UpdateUser(mainFormModels.user.Id, name, email, description, settingsModel.imageReference);
-
+            await _userService.UpdateUser(mainFormModels.user.Id, name, 
+                email, description, settingsModel.imageReference);
             mainFormModels.UpdateUserInfo(name, email, description, settingsModel.imageReference);
             mainFormModels.UpdateData(settingsModel.user);
-            commentsModel.user = mainFormModels.user;
-            friendsModel.user = mainFormModels.user;
 
             return RedirectToAction("Main");
         }
@@ -342,12 +338,11 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public async Task<IActionResult> VerifyUserAuthentication(string login, string password, string email)
         {
-            bool repeatCheck = authModel.Verify(login, email);
+            bool repeatCheck = _userService.Verify(login, email);
             if (repeatCheck)
             {
                 string imageReference = "../Images/DefaultUserImage.png";
                 await _userService.AddUser(login, password, email, imageReference);
-
                 mainFormModels.GetUserInfo(_userService, _postService, _likeService, false, -1, login, password);
                 return RedirectToAction("Main");
             }
@@ -371,14 +366,10 @@ namespace FaceSpam_social_media.Controllers
             loginModel.Login = login;
             loginModel.Password = password;
 
-            bool verifyResult = loginModel.Verify(login, password);
+            bool verifyResult = _userService.Verify(login, password);
             if (verifyResult)
             {
                 mainFormModels.GetUserInfo(_userService, _postService, _likeService, false, -1, login, password);
-                mainFormModels.user = mainFormModels.executor;
-                mainFormModels.GetFriends();
-                friendsModel.GetMainFormData(mainFormModels);
-
                 if (mainFormModels.user.IsBanned == true)
                 {
                     errorModel.Error = "Oi, you have been banned";
@@ -392,6 +383,7 @@ namespace FaceSpam_social_media.Controllers
                 return View("ErrorPage", errorModel);
             }
         }
+
         public IActionResult ErrorLoginPage()
         {
             return View("ErrorLoginPage", errorModel);
