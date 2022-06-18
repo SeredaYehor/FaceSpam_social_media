@@ -14,5 +14,6 @@ namespace FaceSpam_social_media.Services
         public Task<int> UpdateStatus(int userId);
         public List<User> GetAllUsers(int exceptId);
         public bool Verify(string login, string email);
+        public bool CheckCopy(string login);
     }
 }
