@@ -34,6 +34,7 @@ namespace FaceSpam_social_media
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ILikeService, LikeService>();
             services.AddScoped<IChatService, ChatService>();
+            services.AddScoped<IChatMemberService, ChatMemberService>();
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
