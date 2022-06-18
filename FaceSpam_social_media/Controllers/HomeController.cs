@@ -23,6 +23,8 @@ namespace FaceSpam_social_media.Controllers
         private readonly IPostService _postService;
         private readonly IChatService _chatService;
         private readonly IChatMemberService _chatMemberService;
+        private readonly IMessageService _messageService;
+        private readonly IFriendService _friendService;
         #endregion
 
         #region ViewModels
@@ -39,7 +41,8 @@ namespace FaceSpam_social_media.Controllers
 
         public HomeController(ILogger<HomeController> logger, IUserService userService, 
             IChatMemberService chatMemberService, IChatService chatService, 
-            ILikeService likeService, IPostService postService, IRepository repository)
+            ILikeService likeService, IPostService postService, IRepository repository,
+            IMessageService messageService, IFriendService friendService)
         {
             #region Initialization
             _logger = logger;
@@ -48,6 +51,8 @@ namespace FaceSpam_social_media.Controllers
             _postService = postService;
             _chatService = chatService;
             _chatMemberService = chatMemberService;
+            _messageService = messageService;
+            _friendService = friendService;
             #endregion
 
             mainFormModels._repository = repository;
@@ -154,21 +159,21 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Comments(int id)
         {
             commentsModel.user = mainFormModels.executor;
-            commentsModel.GetComments(id);
+            commentsModel.GetComments(id, _messageService);
             return View("Comments", commentsModel);
         }
 
         [HttpPost]
         public async Task<int> AddComment(string message)
         {
-            int result = await commentsModel.AddComment(message);
+            int result = await commentsModel.AddComment(message, _messageService);
             return result;
         }
 
         [HttpPost]
         public async Task<int> RemoveComment(int commentId)
         {
-            int result = await commentsModel.RemoveComment(commentId);
+            int result = await commentsModel.RemoveComment(commentId, _messageService);
             return result;
         }
 
@@ -178,7 +183,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Messages(int current = 0)
         {
             messages.user = mainFormModels.executor;
-            messages.GetChatMessages(_chatMemberService, current);
+            messages.GetChatMessages(_chatMemberService, _messageService, current);
             messages.chats = _chatService.GetChats(mainFormModels.executor.Id);
             return View(messages);
         }
@@ -204,7 +209,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult GetChat(int chatId)
         {
             messages.user = mainFormModels.executor;
-            messages.GetChatMessages(_chatMemberService, chatId);
+            messages.GetChatMessages(_chatMemberService, _messageService, chatId);
             return View(messages);
         }
 
@@ -217,13 +222,13 @@ namespace FaceSpam_social_media.Controllers
 
         public async Task<(User, int)> SendMessage(string textboxMessage)
         {
-            int id = await messages.SendMessage(textboxMessage);
+            int id = await messages.SendMessage(textboxMessage, _messageService);
             return (messages.user, id);
         }
 
         public (List<Message>, Chat, int) GetChatMessages(int chatId)
         {
-            messages.GetChatMessages(_chatMemberService, chatId);
+            messages.GetChatMessages(_chatMemberService, _messageService, chatId);
             return (messages.chatMessages,
                 messages.selectedChat, messages.members.Count());
         }
@@ -237,7 +242,7 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public async Task<int> RemoveMessage(int messageId)
         {
-            int result = await messages.RemoveMessage(messageId);
+            int result = await messages.RemoveMessage(messageId, _messageService);
             return result;
         }
         #endregion
