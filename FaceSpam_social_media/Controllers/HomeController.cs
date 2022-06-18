@@ -56,7 +56,6 @@ namespace FaceSpam_social_media.Controllers
             loginModel._repository = repository;
             settingsModel._repository = repository; 
             authModel._repository = repository;
-            usersManagment._repository = repository;
         }
 
         public IActionResult Index()
@@ -78,7 +77,7 @@ namespace FaceSpam_social_media.Controllers
         #region Admin form functions
         public IActionResult Admin()
         {
-            if (usersManagment.Init(mainFormModels.executor))
+            if (usersManagment.Init(_userService, mainFormModels.executor))
             {
                 return View(usersManagment);
             }
@@ -88,7 +87,7 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public async Task<int> UpdateUserStatus(int userId)
         {
-            int result = await usersManagment.UpdateStatus(userId);
+            int result = await _userService.UpdateStatus(userId);
             return result;
         }
         #endregion
