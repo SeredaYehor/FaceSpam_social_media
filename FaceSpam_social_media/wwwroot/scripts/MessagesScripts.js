@@ -43,6 +43,7 @@
         if ($(this).val() == "Invite") {
             $.ajax({
                 type: "POST",
+                data: { exceptId: userId, },
                 url: '/Home/SelectUsers',
                 success: function (members) {
                     for (var i = 0; i < members.length; i++) {
