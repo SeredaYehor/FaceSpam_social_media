@@ -66,7 +66,7 @@
         var date = GetCurrentDate();
         var postObject = '<div class="PostMessage">' +
             '<img src="' + user["imageReference"] + '"class="PostEllipse" />' +
-            '<label style="margin-left: 3px; position: relative; font-size: 18px; color: #3485FF;">' + user["name"] + '</label>' +
+            '<label class="MessageUserName">' + user["name"] + '</label>' +
             '<img src="../images/removeButton.png" class="RemovePost" id="' + postId + '" />' +
             '<br />' +
             '<label class="PostText">' + text + '</label>';

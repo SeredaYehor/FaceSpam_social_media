@@ -177,7 +177,8 @@
                     for (var index = 0; index < messages["item1"].length; index++) { //adding all messages for this chat
                         var messageId = messages["item1"][index]["id"].toString();
                         var dt = new Date(messages["item1"][index]["dateSending"]);
-                        var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+                        var time = dt.getDay() + "/" + dt.getMonth() + "/" + dt.getFullYear() +
+                            " " + dt.getHours() + ":" + dt.getMinutes();
                         var text = messages["item1"][index]["text"].toString();
                         var userName = messages["item1"][index]["userUser"]["name"].toString();
                         var userImg = messages["item1"][index]["userUser"]["imageReference"].toString();
@@ -208,7 +209,8 @@
                     var image = user["item1"]["imageReference"].toString();
                     var id = user["item2"].toString();
                     var dt = new Date();
-                    var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+                    var time = dt.getDay() + "/" + dt.getMonth() + "/" + dt.getFullYear() +
+                        " " + dt.getHours() + ":" + dt.getMinutes();
                     GetMessageObj(id, name, image, time, message); //class of message
                 }
             });
