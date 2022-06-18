@@ -28,6 +28,7 @@
         $.ajax({
             type: "GET",
             url: '/Home/GetChatUsers',
+            data: { chatId: selectedChat },
             success: function (members) {
                 for (var i = 0; i < members.length; i++) {
                     Members.push(members[i]["id"]);
@@ -60,6 +61,7 @@
             $.ajax({
                 type: "GET",
                 url: '/Home/GetChatUsers',
+                data: { chatId: selectedChat },
                 success: function (members) {
                     for (var i = 0; i < members.length; i++) {
                         Members.push(members[i]["id"]);
@@ -82,6 +84,7 @@
                 type: "POST",
                 url: '/Home/RemoveChatMember',
                 data: { memberId: id, },
+                async: false,
                 success: function (counter) {
                     Members.pop(id);
                     $(".MembersCounter").text(counter);
@@ -93,6 +96,7 @@
                 type: "POST",
                 url: '/Home/AddMember',
                 data: { memberId: id, },
+                async: false,
                 success: function (counter) {
                     $(".MembersCounter").text(counter);
                     $(".Popup").hide();
