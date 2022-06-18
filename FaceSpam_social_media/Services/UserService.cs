@@ -74,5 +74,17 @@ namespace FaceSpam_social_media.Services
             selected.Password = "Nice try, stupid little dum-dummy";
             return selected;
         }
+
+        public async Task<int> UpdateStatus(int userId)
+        {
+            User target = _repository.GetAll<User>().Where(x => x.Id == userId).First();
+            bool? status = target.IsBanned;
+            target.IsBanned = !status;
+            target = await _repository.UpdateAsync(target);
+            return target.Id;
+        }
+
+        public List<User> GetAllUsers(int exceptId)
+            => _repository.GetAll<User>().Where(x => x.Id != exceptId).ToList();
     }
 }

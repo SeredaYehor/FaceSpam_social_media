@@ -11,5 +11,7 @@ namespace FaceSpam_social_media.Services
         public bool repeatCheck(string input);
         public List<User> SelectAllUsers(int exceptId);
         public User GetUser(int userId, string name, string password);
+        public Task<int> UpdateStatus(int userId);
+        public List<User> GetAllUsers(int exceptId);
     }
 }
