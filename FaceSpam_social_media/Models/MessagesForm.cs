@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using FaceSpam_social_media.Infrastructure.Data;
 using FaceSpam_social_media.Infrastructure.Repository;
+using FaceSpam_social_media.Services;
 
 namespace FaceSpam_social_media.Models
 {
@@ -26,41 +27,21 @@ namespace FaceSpam_social_media.Models
         public string message { get; set; }
         public int currentChat { get; set; }
 
-        public Chat GetChatMessages(int chatId)
+        public Chat GetChatMessages(IChatMemberService chatMemberService, int chatId)
         {
+            currentChat = 0;
             if (chatId != 0)
             {
                 currentChat = chatId;
                 chatMessages = _repository.GetAll<Message>().Where(x => x.ChatChatId == currentChat)
                     .Include(x => x.UserUser).ToList();
                 selectedChat = chats.Where(x => x.Id == chatId).First();
-                members = _repository.GetAll<ChatMember>().Where(x => x.ChatChatId == currentChat).Select(y => y.UserUser).ToList();
+                members = chatMemberService.GetChatMembers(chatId);
                 return chats.Where(x => x.Id == currentChat).First();
             }
             return new Chat();
         }
 
-        public async Task<int> AddMember(int memberId)
-        {
-            ChatMember newMember = new ChatMember
-            {
-                ChatChatId = selectedChat.Id,
-                UserUserId = memberId
-            };
-            await _repository.AddAsync<ChatMember>(newMember);
-            members.Add(_repository.GetAll<User>().Where(x => x.Id == memberId).First());
-            return members.Count;
-        }
-
-        public async Task<int> RemoveChatMember(int memberId)
-        {
-            User member = members.Where(x => x.Id == memberId).First();
-            ChatMember remove = _repository.GetAll<ChatMember>().Where(x => x.UserUserId == memberId
-            && x.ChatChatId == selectedChat.Id).First();
-            await _repository.DeleteAsync(remove);
-            members.Remove(member);
-            return members.Count;
-        }
         public async Task<int> RemoveMessage(int messageId)
         {
             Message remove = _repository.GetAll<Message>().Where(x => x.Id == messageId)
@@ -81,12 +62,6 @@ namespace FaceSpam_social_media.Models
             });
             chatMessages.Add(newMessage);
             return newMessage.Id;
-        }
-
-        public void SelectChat(int chatId)
-        {
-            selectedChat = chats.Where(x => x.Id == chatId).First();
-            GetChatMessages(chatId);
         }
     }
 }
