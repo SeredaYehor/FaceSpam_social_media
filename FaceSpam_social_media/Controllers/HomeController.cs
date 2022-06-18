@@ -33,7 +33,7 @@ namespace FaceSpam_social_media.Controllers
         public LoginModel loginModel = new LoginModel();
         public SettingsModel settingsModel = new SettingsModel();
         public AuthenticationModel authModel = new AuthenticationModel();
-        public static UsersManagment usersManagment = new UsersManagment();
+        public UsersManagment usersManagment = new UsersManagment();
         public ErrorPageModel errorModel = new ErrorPageModel();
         #endregion
 
@@ -338,8 +338,8 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public async Task<IActionResult> VerifyUserAuthentication(string login, string password, string email)
         {
-            bool repeatCheck = _userService.Verify(login, email);
-            if (repeatCheck)
+            bool repeatCheck = _userService.CheckCopy(login);
+            if (!repeatCheck)
             {
                 string imageReference = "../Images/DefaultUserImage.png";
                 await _userService.AddUser(login, password, email, imageReference);
