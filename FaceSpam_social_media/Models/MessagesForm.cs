@@ -27,14 +27,13 @@ namespace FaceSpam_social_media.Models
         public string message { get; set; }
         public int currentChat { get; set; }
 
-        public Chat GetChatMessages(IChatMemberService chatMemberService, int chatId)
+        public Chat GetChatMessages(IChatMemberService chatMemberService, IMessageService service, int chatId)
         {
             currentChat = 0;
             if (chatId != 0)
             {
                 currentChat = chatId;
-                chatMessages = _repository.GetAll<Message>().Where(x => x.ChatChatId == currentChat)
-                    .Include(x => x.UserUser).ToList();
+                chatMessages = service.GetMessages(chatId);
                 selectedChat = chats.Where(x => x.Id == chatId).First();
                 members = chatMemberService.GetChatMembers(chatId);
                 return chats.Where(x => x.Id == currentChat).First();
@@ -42,24 +41,18 @@ namespace FaceSpam_social_media.Models
             return new Chat();
         }
 
-        public async Task<int> RemoveMessage(int messageId)
+        public async Task<int> RemoveMessage(int messageId, IMessageService service)
         {
-            Message remove = _repository.GetAll<Message>().Where(x => x.Id == messageId)
-                .First();
+            Message remove = await service.DeleteMessage(messageId);
             await _repository.DeleteAsync(remove);
             chatMessages.Remove(chatMessages.Where(x => x.Id == messageId && x.UserUserId == user.Id).First());
             return remove.Id;
         }
 
-        public async Task<int> SendMessage(string inputMessage)
+        public async Task<int> SendMessage(string inputMessage, IMessageService service)
         {
-            var newMessage = await _repository.AddAsync(new Message
-            {
-                Text = inputMessage,
-                ChatChatId = currentChat,
-                DateSending = DateTime.Now,
-                UserUserId = user.Id
-            });
+            var newMessage = await service.AddMessage(currentChat, user.Id, inputMessage);
+
             chatMessages.Add(newMessage);
             return newMessage.Id;
         }

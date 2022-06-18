@@ -4,6 +4,7 @@ using System.Linq;
 using FaceSpam_social_media.Infrastructure.Data;
 using System.Threading.Tasks;
 using FaceSpam_social_media.Infrastructure.Repository;
+using FaceSpam_social_media.Services;
 
 namespace FaceSpam_social_media.Models
 {
@@ -22,10 +23,10 @@ namespace FaceSpam_social_media.Models
         }
 
 
-        public void GetComments(int id)
+        public void GetComments(int id, IMessageService service)
         {
             post = _repository.GetAll<Post>().Where(x => x.Id == id).FirstOrDefault();
-            post.Messages = _repository.GetAll<Message>().Where(x => x.PostPostId == post.Id/*PostId*/).ToList();
+            post.Messages = service.GetMessages(id, true);
             post.UserUser = _repository.GetAll<User>().Where(x=>x.Id == post.UserUserId).FirstOrDefault();
 
             foreach (var comment in post.Messages)
@@ -34,24 +35,17 @@ namespace FaceSpam_social_media.Models
             }
         }
 
-        public async Task<int> RemoveComment(int commentId)
+        public async Task<int> RemoveComment(int commentId, IMessageService service)
         {
-            Message remove = _repository.GetAll<Message>().Where(x => x.Id == commentId).First();
-            await _repository.DeleteAsync(remove);
+            Message remove = await service.DeleteMessage(commentId);
             chatMessages.Remove(remove);
             user.Messages.Remove(remove);
             return remove.Id;
         }
 
-        public async Task<int> AddComment(string message)
+        public async Task<int> AddComment(string message, IMessageService service)
         {
-            var newComment = await _repository.AddAsync(new Message
-            {
-                PostPostId = post.Id,
-                UserUserId = user.Id,
-                Text = message,
-                DateSending = DateTime.Now
-            });
+            var newComment = await service.AddMessage(post.Id, user.Id, message, true);
 
             post.Messages.Add(newComment);
             return newComment.Id;
