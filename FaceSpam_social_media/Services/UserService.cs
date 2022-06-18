@@ -86,5 +86,8 @@ namespace FaceSpam_social_media.Services
 
         public List<User> GetAllUsers(int exceptId)
             => _repository.GetAll<User>().Where(x => x.Id != exceptId).ToList();
+
+        public bool Verify(string login, string email)
+            => _repository.GetAll<User>().Any(u => u.Name == login || u.Email == email);
     }
 }
