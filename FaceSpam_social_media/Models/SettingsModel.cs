@@ -7,7 +7,6 @@ namespace FaceSpam_social_media.Models
 {
     public class SettingsModel
     {
-        public IRepository _repository;
         public SettingsModel()
         {
 
