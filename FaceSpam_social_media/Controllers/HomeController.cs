@@ -16,11 +16,16 @@ namespace FaceSpam_social_media.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
+        #region Database Services
         private readonly IUserService _userService;
         private readonly ILikeService _likeService;
         private readonly IPostService _postService;
         private readonly IChatService _chatService;
+        private readonly IChatMemberService _chatMemberService;
+        #endregion
 
+        #region ViewModels
         public static Main mainFormModels = new Main();
         public static Main userProfileModel = new Main();
         public static MessagesForm messages = new MessagesForm();
@@ -31,15 +36,17 @@ namespace FaceSpam_social_media.Controllers
         public static AuthenticationModel authModel = new AuthenticationModel();
         public static UsersManagment usersManagment = new UsersManagment();
         public static ErrorPageModel errorModel = new ErrorPageModel();
+        #endregion
 
         public HomeController(ILogger<HomeController> logger, IUserService userService, 
-            IChatService chatService, ILikeService likeService, IPostService postService, IRepository repository)
+            IChatMemberService chatMemberService, IChatService chatService, ILikeService likeService, IPostService postService, IRepository repository)
         {
             _logger = logger;
             _userService = userService;
             _likeService = likeService;
             _postService = postService;
             _chatService = chatService;
+            _chatMemberService = chatMemberService;
 
             mainFormModels._repository = repository;
             userProfileModel._repository = repository;
@@ -174,7 +181,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Messages(int current = 0)
         {
             messages.user = mainFormModels.executor;
-            messages.GetChatMessages(current);
+            messages.GetChatMessages(_chatMemberService, current);
             messages.chats = _chatService.GetChats(mainFormModels.executor.Id);
             return View(messages);
         }
@@ -182,21 +189,25 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public async Task<int> RemoveChatMember(int memberId)
         {
-            int members =  await messages.RemoveChatMember(memberId);
+            int members =  await _chatMemberService.RemoveChatMember(
+                messages.selectedChat.Id,
+                memberId);
             return members;
         }
         
         [HttpPost]
         public async Task<int> AddMember(int memberId)
         {
-            int members = await messages.AddMember(memberId);
+            int members = await _chatMemberService.AddChatMember(
+                messages.selectedChat.Id, 
+                memberId);
             return members;
         }
         
         public IActionResult GetChat(int chatId)
         {
             messages.user = mainFormModels.executor;
-            messages.SelectChat(chatId);
+            messages.GetChatMessages(_chatMemberService, chatId);
             return View(messages);
         }
 
@@ -215,14 +226,15 @@ namespace FaceSpam_social_media.Controllers
 
         public (List<Message>, Chat, int) GetChatMessages(int chatId)
         {
-            messages.GetChatMessages(chatId);
+            messages.GetChatMessages(_chatMemberService, chatId);
             return (messages.chatMessages,
-                messages.selectedChat, messages.members.Count);
+                messages.selectedChat, messages.members.Count());
         }
 
-        public List<User> GetChatUsers()
+        public List<User> GetChatUsers(int chatId)
         {
-            return messages.members;
+            List<User> result = _chatMemberService.GetChatMembers(chatId);
+            return result;
         }
 
         [HttpPost]
