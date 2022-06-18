@@ -17,6 +17,9 @@ namespace FaceSpam_social_media.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUserService _userService;
+        private readonly ILikeService _likeService;
+        private readonly IPostService _postService;
+        private readonly IChatService _chatService;
 
         public static Main mainFormModels = new Main();
         public static Main userProfileModel = new Main();
@@ -29,11 +32,14 @@ namespace FaceSpam_social_media.Controllers
         public static UsersManagment usersManagment = new UsersManagment();
         public static ErrorPageModel errorModel = new ErrorPageModel();
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService, IPostService postService,
-            IRepository repository)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, 
+            IChatService chatService, ILikeService likeService, IPostService postService, IRepository repository)
         {
             _logger = logger;
             _userService = userService;
+            _likeService = likeService;
+            _postService = postService;
+            _chatService = chatService;
 
             mainFormModels._repository = repository;
             userProfileModel._repository = repository;
@@ -51,6 +57,18 @@ namespace FaceSpam_social_media.Controllers
             return View();
         }
 
+        public User GetUser()
+        {
+            return mainFormModels.executor;
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        #region Admin form functions
         public IActionResult Admin()
         {
             if (usersManagment.Init(mainFormModels.executor))
@@ -66,12 +84,16 @@ namespace FaceSpam_social_media.Controllers
             int result = await usersManagment.UpdateStatus(userId);
             return result;
         }
+        #endregion
 
-        [HttpPost]
-        public async Task<int> RemoveMessage(int messageId)
+        #region Main form functions
+        public IActionResult Main()
         {
-            int result = await messages.RemoveMessage(messageId);
-            return result;
+            mainFormModels.user = mainFormModels.executor;
+            mainFormModels.GetUserInfo(_userService, _postService, _likeService, false, mainFormModels.executor.Id);
+            friendsModel.GetMainFormData(mainFormModels);
+
+            return View(mainFormModels);
         }
 
         [HttpPost]
@@ -80,7 +102,8 @@ namespace FaceSpam_social_media.Controllers
             int result = 0;
             if (mainFormModels.executor.IsAdmin == true)
             {
-                result = await mainFormModels.RemovePost(postId);
+                result = await _postService.RemovePost(mainFormModels.executor.Id,
+                    postId);
             }
             return result;
         }
@@ -92,11 +115,37 @@ namespace FaceSpam_social_media.Controllers
             int result = 0;
             if (mainFormModels.executor.IsAdmin == true)
             {
-                result = await mainFormModels.RemovePost(postId);
+                result = await _postService.RemovePost(mainFormModels.executor.Id,
+                    postId);
             }
             return result;
         }
 
+        [HttpPost]
+        public IActionResult UserProfile(int id)
+        {
+            mainFormModels.GetUserInfo(_userService, _postService, _likeService, true, id);
+            return View("Main", mainFormModels);
+        }
+
+        [HttpPost]
+        public async Task<(User, int)> AddPost(IFormFile file, string text)
+        {
+            int lastPostId = -1;
+            string reference = FileManager.UploadImage(file);
+            lastPostId = await _postService.AddPost(mainFormModels.executor.Id, text, reference);
+            return (mainFormModels.user, lastPostId);
+        }
+
+        public async Task<int> ChangeLike(int postId)
+        {
+            int count = 0;
+            count = await _likeService.UpdatePostLike(mainFormModels.executor.Id, postId);
+            return count;
+        }
+        #endregion
+
+        #region Comments form functions
         [HttpPost]
         public IActionResult Comments(int id)
         {
@@ -119,23 +168,14 @@ namespace FaceSpam_social_media.Controllers
             return result;
         }
 
-        [HttpPost]
-        public List<User> SelectUsers()
-        {
-            List<User> users = messages.SelectAllUsers();
-            return users;
-        }
+        #endregion
 
-        public User GetUser()
-        {
-            return mainFormModels.executor;
-        }
-
+        #region Messages form functions
         public IActionResult Messages(int current = 0)
         {
             messages.user = mainFormModels.executor;
             messages.GetChatMessages(current);
-            messages.GetChats();
+            messages.chats = _chatService.GetChats(mainFormModels.executor.Id);
             return View(messages);
         }
         
@@ -159,23 +199,41 @@ namespace FaceSpam_social_media.Controllers
             messages.SelectChat(chatId);
             return View(messages);
         }
-        
-        public IActionResult Main()
-        {
-            mainFormModels.user = mainFormModels.executor;
-            mainFormModels.GetUserInfo(false, mainFormModels.executor.Id);
-            friendsModel.GetMainFormData(mainFormModels);
 
-            return View(mainFormModels);
+        [HttpPost]
+        public List<User> SelectUsers(int exceptId)
+        {
+            List<User> users = _userService.SelectAllUsers(exceptId);
+            return users;
+        }
+
+        public async Task<(User, int)> SendMessage(string textboxMessage)
+        {
+            int id = await messages.SendMessage(textboxMessage);
+            return (messages.user, id);
+        }
+
+        public (List<Message>, Chat, int) GetChatMessages(int chatId)
+        {
+            messages.GetChatMessages(chatId);
+            return (messages.chatMessages,
+                messages.selectedChat, messages.members.Count);
+        }
+
+        public List<User> GetChatUsers()
+        {
+            return messages.members;
         }
 
         [HttpPost]
-        public IActionResult UserProfile(int id)
+        public async Task<int> RemoveMessage(int messageId)
         {
-            mainFormModels.GetUserInfo(true, id);
-            return View("Main", mainFormModels);
+            int result = await messages.RemoveMessage(messageId);
+            return result;
         }
+        #endregion
 
+        #region Friends form functions
         public IActionResult Friends(int id)
         {
             friendsModel.GetUserById(id);
@@ -204,80 +262,41 @@ namespace FaceSpam_social_media.Controllers
             await friendsModel.AddFriend(id);
             mainFormModels.GetFriends();
         }
+        #endregion
 
-        public async Task<int> ChangeLike(int postId)
-        {
-            int count = 0;
-            await mainFormModels.UpdatePostLike(postId);
-            count = mainFormModels.CountLikes(postId);
-            return count;
-        }
-        
+        #region Groups panel funct
         [HttpPost]
         public async Task<Chat> CreateGroup(string chatName, string chatDescription, string members, IFormFile file)
         {
             List<int> listMembers = members.Split(',').Select(int.Parse).ToList();
             string reference = FileManager.UploadImage(file);
-            Chat result = await messages.CreateGroup(chatName, chatDescription, listMembers, reference);
+            Chat result = await _chatService.CreateGroup(mainFormModels.executor.Id,
+                chatName, chatDescription, listMembers, reference);
+            messages.chats.Add(result);
             return result;
         }
 
         public async Task QuitGroup()
         {
-            await messages.QuitGroup();
+            await _chatService.QuitGroup(messages.selectedChat.Id,
+                messages.user.Id);
         }
 
         [HttpPost]
         public async Task DeleteGroup(int groupId)
         {
-            await messages.DeleteGroup(groupId);
-        }
-        
-        [HttpPost]
-        public async Task<(User, int)> AddPost(IFormFile file, string text)
-        {
-            int lastPostId = -1;
-            string reference = FileManager.UploadImage(file);
-            lastPostId = await mainFormModels.AddPost(text, reference);
-            return (mainFormModels.user, lastPostId);
-        }
-
-        public async Task<(User, int)> SendMessage(string textboxMessage)
-        {
-            int id = await messages.SendMessage(textboxMessage);
-            return (messages.user, id);
-        }
-
-        public (List<Message>, Chat, int) GetChatMessages(int chatId)
-        {
-            messages.GetChatMessages(chatId);
-            return (messages.chatMessages, 
-                messages.selectedChat, messages.members.Count);
-        }
-        
-        public List<User> GetChatUsers()
-        {
-            return messages.members;
-        }
-        
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            await _chatService.DeleteGroup(groupId);
         }
 
         public IActionResult Groups()
         {
             messages.user = mainFormModels.executor;
-            messages.GetChats();
+            messages.chats = _chatService.GetChats(mainFormModels.executor.Id);
             return View(messages);
         }
-        
-        public IActionResult Login()
-        {
-            return View();
-        }
+        #endregion
 
+        #region Settings form functions
         public IActionResult Settings()
         {
             settingsModel.user = mainFormModels.executor;
@@ -301,7 +320,9 @@ namespace FaceSpam_social_media.Controllers
 
             return RedirectToAction("Main");
         }
+        #endregion
 
+        #region Authentication form functions
         public IActionResult Authentication()
         {
             return View();
@@ -316,7 +337,7 @@ namespace FaceSpam_social_media.Controllers
                 string imageReference = "../Images/DefaultUserImage.png";
                 await _userService.AddUser(login, password, email, imageReference);
 
-                mainFormModels.GetMainUserInfo(login, password);
+                mainFormModels.GetUserInfo(_userService, _postService, _likeService, false, -1, login, password);
                 return RedirectToAction("Main");
             }
             else
@@ -324,6 +345,13 @@ namespace FaceSpam_social_media.Controllers
                 errorModel.Error = "This data is already in use";
                 return View("ErrorPage", errorModel);
             }
+        }
+        #endregion
+
+        #region Login form functions
+        public IActionResult Login()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -335,7 +363,7 @@ namespace FaceSpam_social_media.Controllers
             bool verifyResult = loginModel.Verify(login, password);
             if (verifyResult)
             {
-                mainFormModels.GetUserInfo( false, -1, login, password);
+                mainFormModels.GetUserInfo(_userService, _postService, _likeService, false, -1, login, password);
                 mainFormModels.user = mainFormModels.executor;
                 mainFormModels.GetFriends();
                 friendsModel.GetMainFormData(mainFormModels);
@@ -357,6 +385,6 @@ namespace FaceSpam_social_media.Controllers
         {
             return View("ErrorLoginPage", errorModel);
         }
-
+        #endregion
     }
 }
