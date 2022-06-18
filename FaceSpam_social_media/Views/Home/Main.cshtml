@@ -85,7 +85,7 @@
 
         <div class="MainPanel" style="margin-left: 30px;">
             <div class="Info">
-                <label style="font-size: 32px; margin: 4px 16px; color: white;">@username</label>
+                <label style="width: 95%; overflow: hidden; font-size: 32px; margin: 4px 16px; color: white;">@username</label>
                 <br />
                 <label style="font-size: 18px; margin: 4px 16px; color: #B9B9B9;">@description</label>
             </div>
@@ -108,7 +108,7 @@
                     {
                         <div class="PostMessage">
                             <img src="@Model.user.ImageReference" class="PostEllipse" />
-                            <label style="position: relative; font-size: 18px; color: #3485FF;">@username</label>
+                            <label class="MessageUserName">@username</label>
                             @if (Model.executor.Id == Model.user.Id || Model.executor.IsAdmin == true)
                             {
                                 <img src="~/images/removeButton.png" class="RemovePost" id="@post.Id" />
