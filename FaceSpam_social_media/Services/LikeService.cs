@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
 using FaceSpam_social_media.Infrastructure.Data;
@@ -16,19 +17,33 @@ namespace FaceSpam_social_media.Services
         {
             _repository = repository;
         }
-        /*public void GetLikes()
+
+        public List<Like> GetLikes(int userId)
+        => _repository.GetAll<Like>().Where(x => x.PostPost.UserUserId == userId).ToList();
+
+        public bool CheckLike(int userId, int postId)
+            => _repository.GetAll<Like>().Any(x => x.UserUserId == userId && x.PostPostId == postId);
+
+        public int CountLikes(int postId)
+            => _repository.GetAll<Like>().Where(x => x.PostPost.Id == postId).Count();
+
+        public async Task<int> UpdatePostLike(int userId, int postId)
         {
-            var Likes = _repository.GetAll<Like>().Where(x => x.UserUserId == user.Id).ToList();
-            //user.Likes = context.Likes.Where(x => x.UserUserId == user.Id).ToList();
+            Like update = new Like();
+            bool liked = CheckLike(userId, postId);
+            if (liked)
+            {
+                await _repository.DeleteAsync<Like>(_repository.GetAll<Like>()
+                    .Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
+            }
+            else
+            {
+                update.UserUserId = userId;
+                update.PostPostId = postId;
+                update = await _repository.AddAsync(update);
+            }
+            int result = CountLikes(postId);
+            return result;
         }
-        */
-        /*public async Task<int> AddLike()
-        {
-            
-        }
-        public async Task UpdateLike()
-        {
-           
-        }*/
     }
 }

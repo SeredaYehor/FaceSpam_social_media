@@ -5,6 +5,7 @@ using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
 using FaceSpam_social_media.Infrastructure.Data;
 using FaceSpam_social_media.Infrastructure.Repository;
+using System.Collections.Generic;
 
 namespace FaceSpam_social_media.Services
 {
@@ -16,9 +17,10 @@ namespace FaceSpam_social_media.Services
         {
             _repository = repository;
         }
-        /*public async Task GetPost()
-        {
-        }*/
+
+        public List<Post> GetPosts(User user)
+            => _repository.GetAll<Post>().Where(x => x.UserUser == user)
+            .OrderByDescending(d => d.DatePosting).ToList();
 
         public async Task<Post> AddPost(Post post)
         {
@@ -26,9 +28,44 @@ namespace FaceSpam_social_media.Services
             return newPost;
         }
 
-        /*public async Task UpdatePost()
+        public async Task<int> AddPost(int userId, string message, string reference)
         {
-           
-        }*/
+            var newPost = await _repository.AddAsync(new Post
+            {
+                Text = message,
+                UserUserId = userId,
+                DatePosting = DateTime.Now
+            });
+
+            if (reference != null)
+            {
+                newPost.ImageReference = reference;
+            }
+            return newPost.Id;
+        }
+
+        public async Task RemoveChildRows(int postId, bool removeLikes)
+        {
+            if (removeLikes)
+            {
+                IEnumerable<Like> likesRemove = _repository.GetAll<Like>().Where(x => x.PostPostId == postId);
+                await _repository.DeleteAsyncRange(likesRemove);
+            }
+            else
+            {
+                List<Message> messagesRemove = _repository.GetAll<Message>().Where(x => x.PostPostId == postId).ToList();
+                await _repository.DeleteAsyncRange(messagesRemove);
+            }
+        }
+
+        public async Task<int> RemovePost(int userId, int postId)
+        {
+            await RemoveChildRows(postId, false);
+            await RemoveChildRows(postId, true);
+            Post remove = _repository.GetAll<Post>().Where(x => x.Id == postId && x.UserUserId == userId)
+                .First();
+            await _repository.DeleteAsync(remove);
+            return remove.Id;
+        }
     }
 }
