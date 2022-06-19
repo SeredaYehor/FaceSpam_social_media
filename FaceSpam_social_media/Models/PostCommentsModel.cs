@@ -22,6 +22,10 @@ namespace FaceSpam_social_media.Models
         }
 
 
+        /*public void GetPost(int id)
+        {
+            post = _repository.GetAll<Post>().Where(x => x.Id == id).FirstOrDefault();
+        }*/
         public void GetComments(int id)
         {
             post = _repository.GetAll<Post>().Where(x => x.Id == id).FirstOrDefault();
