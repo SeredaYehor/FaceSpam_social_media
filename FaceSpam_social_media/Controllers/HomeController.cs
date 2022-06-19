@@ -151,7 +151,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Comments(int id)
         {
             commentsModel.user = mainFormModels.executor;
-            commentsModel.GetComments(id, _messageService, _userService, mainFormModels);
+            commentsModel.GetComments(id, _messageService, _userService, _postService);
             return View("Comments", commentsModel);
         }
 
