@@ -28,7 +28,6 @@ namespace FaceSpam_social_media.Models
             }
             return result;
         }
-
         public void GetAllUsers()
         {
             users = _repository.GetAll<User>().Where(x => x.Id != admin.Id).ToList();
@@ -36,11 +35,14 @@ namespace FaceSpam_social_media.Models
 
         public async Task<int> UpdateStatus(int userId)
         {
+            int result = -1;
             User target = users.Where(x => x.Id == userId).First();
             bool? status = target.IsBanned;
             target.IsBanned = !status;
-            target = await _repository.UpdateAsync(target);
-            return target.Id;
+            await _repository.UpdateAsync(target);
+            //context.Users.Update(target);
+            //result = context.SaveChanges();
+            return result;
         }
     }
 }
