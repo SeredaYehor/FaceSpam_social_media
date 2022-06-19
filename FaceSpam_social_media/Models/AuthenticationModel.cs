@@ -7,7 +7,6 @@ namespace FaceSpam_social_media.Models
 {
     public class AuthenticationModel
     {
-        public IRepository _repository;
 
         public AuthenticationModel()
         {
@@ -31,13 +30,6 @@ namespace FaceSpam_social_media.Models
         [StringLength(40, ErrorMessage = "The field must have between {2} and {1} characters.", MinimumLength = 5)]
         [DataType(DataType.EmailAddress, ErrorMessage = "E-mail is not valid.")]
         public string Email { get; set; }
-
-        public bool Verify(string login, string email)
-        {
-            bool result = _repository.GetAll<User>().Any(u => u.Name == login || u.Email == email);
-
-            return result;
-        }
 
     }
 

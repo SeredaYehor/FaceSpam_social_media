@@ -55,5 +55,42 @@ namespace FaceSpam_social_media.Services
 
             await _repository.UpdateAsync(user);
         }
+
+        public List<User> SelectAllUsers(int exceptId)
+            => _repository.GetAll<User>().Where(x => x.Id != exceptId).ToList();
+
+        public User GetUser(int userId, string name = null, string password = null)
+        {
+            User selected;
+            if (userId != -1)
+            {
+                selected = _repository.GetAll<User>().Where(x => x.Id == userId).FirstOrDefault();
+            }
+            else
+            {
+                selected = _repository.GetAll<User>().Where(x => x.Name == name && x.Password == password)
+                .FirstOrDefault();
+            }
+            selected.Password = "Nice try, stupid little dum-dummy";
+            return selected;
+        }
+
+        public async Task<int> UpdateStatus(int userId)
+        {
+            User target = _repository.GetAll<User>().Where(x => x.Id == userId).First();
+            bool? status = target.IsBanned;
+            target.IsBanned = !status;
+            target = await _repository.UpdateAsync(target);
+            return target.Id;
+        }
+
+        public List<User> GetAllUsers(int exceptId)
+            => _repository.GetAll<User>().Where(x => x.Id != exceptId).ToList();
+
+        public bool Verify(string login, string password)
+            => _repository.GetAll<User>().Any(u => u.Name == login && u.Password == password);
+
+        public bool CheckCopy(string login)
+            => _repository.GetAll<User>().Any(u => u.Name == login);
     }
 }

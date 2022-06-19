@@ -28,6 +28,7 @@
         $.ajax({
             type: "GET",
             url: '/Home/GetChatUsers',
+            data: { chatId: selectedChat },
             success: function (members) {
                 for (var i = 0; i < members.length; i++) {
                     Members.push(members[i]["id"]);
@@ -43,6 +44,7 @@
         if ($(this).val() == "Invite") {
             $.ajax({
                 type: "POST",
+                data: { exceptId: userId, },
                 url: '/Home/SelectUsers',
                 success: function (members) {
                     for (var i = 0; i < members.length; i++) {
@@ -59,6 +61,7 @@
             $.ajax({
                 type: "GET",
                 url: '/Home/GetChatUsers',
+                data: { chatId: selectedChat },
                 success: function (members) {
                     for (var i = 0; i < members.length; i++) {
                         Members.push(members[i]["id"]);
@@ -81,6 +84,7 @@
                 type: "POST",
                 url: '/Home/RemoveChatMember',
                 data: { memberId: id, },
+                async: false,
                 success: function (counter) {
                     Members.pop(id);
                     $(".MembersCounter").text(counter);
@@ -92,6 +96,7 @@
                 type: "POST",
                 url: '/Home/AddMember',
                 data: { memberId: id, },
+                async: false,
                 success: function (counter) {
                     $(".MembersCounter").text(counter);
                     $(".Popup").hide();
@@ -172,7 +177,8 @@
                     for (var index = 0; index < messages["item1"].length; index++) { //adding all messages for this chat
                         var messageId = messages["item1"][index]["id"].toString();
                         var dt = new Date(messages["item1"][index]["dateSending"]);
-                        var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+                        var time = dt.getDay() + "/" + dt.getMonth() + "/" + dt.getFullYear() +
+                            " " + dt.getHours() + ":" + dt.getMinutes();
                         var text = messages["item1"][index]["text"].toString();
                         var userName = messages["item1"][index]["userUser"]["name"].toString();
                         var userImg = messages["item1"][index]["userUser"]["imageReference"].toString();
@@ -203,7 +209,8 @@
                     var image = user["item1"]["imageReference"].toString();
                     var id = user["item2"].toString();
                     var dt = new Date();
-                    var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+                    var time = dt.getDay() + "/" + dt.getMonth() + "/" + dt.getFullYear() +
+                        " " + dt.getHours() + ":" + dt.getMinutes();
                     GetMessageObj(id, name, image, time, message); //class of message
                 }
             });
