@@ -101,7 +101,6 @@ body {
     .InputInterface * {
         margin-bottom: 10px;
     }
-
 .ValidationError {
     color: red;
     font-size: 13px;
@@ -112,7 +111,7 @@ body {
 }
 
 .LoginText {
-    min-width: 110px;
+    width: 160px;
 }
 /* Password */
 .Password {
@@ -120,29 +119,27 @@ body {
 }
 
 .PasswordText {
-    max-width: 110px;
+    width: 160px;
 }
-
 .PasswordCheckbox {
     display: flex;
+    align-items: center;
     color: gray;
+    height: 20px;
     font-size: 15px;
-    margin-top: 25px;
-    line-height: 20px;
-    width: 120px;
+    margin-top: 20px;
 }
 
     .PasswordCheckbox input {
         cursor: pointer;
-        font-size: 1px;
         height: 20px;
         width: 20px;
-        margin-right: 5px;
+        margin: 5px;
     }
 /* Button */
 .Button {
     text-align: center;
-    margin-bottom: -35px;
+    margin-bottom: 10px;
 }
 
     .Button input {
@@ -225,15 +222,6 @@ body {
             transition: 0.5s;
         }
 
-    .PasswordCheckbox {
-        width: 130px;
-    }
-
-    #password-checkbox {
-        height: 25px;
-        width: 25px;
-    }
-
     .Button input {
         width: 240px;
         height: 50px;
@@ -277,26 +265,11 @@ body {
         margin-bottom: -30px;
         margin-top: -15px;
     }
-
-    .PasswordCheckbox {
-        position: absolute;
-        margin-top: 50px;
-    }
-
-    #password-checkbox {
-        height: 20px;
-        width: 20px;
-    }
-
-    .Button {
-        margin-top: 45px;
-    }
 }
 
 @media screen and (max-height: 800px) {
     .FaceSpamLogo img {
         width: 450px;
-        margin-top: 10px;
     }
 
     .InputInterface {
@@ -334,16 +307,6 @@ body {
         transition: 0.5s;
     }
 
-    .PasswordCheckbox {
-        margin-right: 50px;
-        white-space: nowrap;
-    }
-
-    .Button {
-        margin-top: 35px;
-        margin-bottom: -25px;
-    }
-
     @media screen and (max-width: 1145px) {
         .Wrapper {
             flex-direction: column;
@@ -365,7 +328,7 @@ body {
 
 @media screen and (max-height: 745px) {
     .FaceSpamLogo img {
-        width: 350px;
+        width: 250px;
     }
 
     .Card {
@@ -398,17 +361,7 @@ body {
         transition: 0.5s;
     }
 
-    .PasswordCheckbox {
-        width: 130px;
-    }
-
-    #password-checkbox {
-        height: 25px;
-        width: 25px;
-    }
-
     .Button input {
-        margin-top: 15px;
         width: 200px;
         height: 40px;
         background: #476DF3;
