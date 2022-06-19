@@ -15,40 +15,23 @@ namespace FaceSpam_social_media.Models
         public List<User> users = new List<User>();
         public List<Message> chatMessages = new List<Message>();
         public int mainUserId;
-        
-        public IRepository _repository;
 
         public PostCommentsModel()
         {
         }
 
 
-        public void GetComments(int id, IMessageService service)
+        public void GetComments(int id, IMessageService messageService, 
+             IUserService userService, Main mainFormModel)
         {
-            post = _repository.GetAll<Post>().Where(x => x.Id == id).FirstOrDefault();
-            post.Messages = service.GetMessages(id, true);
-            post.UserUser = _repository.GetAll<User>().Where(x=>x.Id == post.UserUserId).FirstOrDefault();
+            post = mainFormModel.user.Posts.Where(x=>x.Id == id).FirstOrDefault();
+            post.Messages = messageService.GetMessages(id, true);
+            post.UserUser = userService.GetUser(post.UserUserId);
 
             foreach (var comment in post.Messages)
             {
-                users.Add(_repository.GetAll<User>().Where(x => x.Id == comment.UserUserId).FirstOrDefault());
+                users.Add(userService.GetUser(comment.UserUserId));
             }
-        }
-
-        public async Task<int> RemoveComment(int commentId, IMessageService service)
-        {
-            Message remove = await service.DeleteMessage(commentId);
-            chatMessages.Remove(remove);
-            user.Messages.Remove(remove);
-            return remove.Id;
-        }
-
-        public async Task<int> AddComment(string message, IMessageService service)
-        {
-            var newComment = await service.AddMessage(post.Id, user.Id, message, true);
-
-            post.Messages.Add(newComment);
-            return newComment.Id;
         }
     }
 }

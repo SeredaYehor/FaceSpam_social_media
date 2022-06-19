@@ -12,11 +12,9 @@ namespace FaceSpam_social_media
     {
         public User user;
         public User executor;
-        public List<User> friends;
+        public List<User> follows;
         public string message { get; set; }
-        public bool isFriend;
-
-        public IRepository _repository;
+        public bool isFollowed;
 
         public Main()
         {
@@ -44,13 +42,8 @@ namespace FaceSpam_social_media
             return user.Likes.Any(x => x.UserUserId == userId && x.PostPostId == postId);
         }
 
-        public void GetFriends()
-        {
-            friends = _repository.GetAll<Friend>().Where(x => x.UserUserId == user.Id)
-                .Select(x => x.FriendNavigation).ToList();
-        }
-
-        public void GetUserInfo(IUserService userService, IPostService postService, ILikeService likeService, bool friendDashboard, int userId, string name = null, string password = null)
+        public void GetUserInfo(IUserService userService, IPostService postService, ILikeService likeService, 
+            IFollowService followService, bool friendDashboard, int userId, string name = null, string password = null)
         {
             user = userService.GetUser(userId, name, password);
             if (!friendDashboard)
@@ -58,9 +51,9 @@ namespace FaceSpam_social_media
                 executor = user;
             }
             user.Posts = postService.GetPosts(user);
-            GetFriends();
+            follows = followService.GetFollowingUsers(user.Id);
             user.Likes = likeService.GetLikes(userId);
-            IsFriend(userId);
+            isFollowed = followService.IsFollowed(executor.Id, user.Id);
         }
 
         public void UpdateData(User change)
@@ -68,22 +61,6 @@ namespace FaceSpam_social_media
             executor.Name = change.Name;
             executor.Description = change.Description;
             executor.Email = change.Email;
-        }
-
-        public void IsFriend(int id)
-        {
-            List<User> executorFriends = _repository.GetAll<Friend>().Where(x => x.UserUserId == executor.Id)
-                .Select(x => x.FriendNavigation).ToList();
-
-            isFriend = false;
-
-            foreach (var friend in executorFriends)
-            {
-                if (friend.Id == id)
-                {
-                    isFriend = true;
-                }
-            }
         }
 
     }

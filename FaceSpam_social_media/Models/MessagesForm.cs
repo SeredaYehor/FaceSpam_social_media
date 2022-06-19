@@ -12,8 +12,6 @@ namespace FaceSpam_social_media.Models
     public class MessagesForm
     {
 
-        public IRepository _repository;
-
         public MessagesForm()
         {
         }
@@ -39,22 +37,6 @@ namespace FaceSpam_social_media.Models
                 return chats.Where(x => x.Id == currentChat).First();
             }
             return new Chat();
-        }
-
-        public async Task<int> RemoveMessage(int messageId, IMessageService service)
-        {
-            Message remove = await service.DeleteMessage(messageId);
-            await _repository.DeleteAsync(remove);
-            chatMessages.Remove(chatMessages.Where(x => x.Id == messageId && x.UserUserId == user.Id).First());
-            return remove.Id;
-        }
-
-        public async Task<int> SendMessage(string inputMessage, IMessageService service)
-        {
-            var newMessage = await service.AddMessage(currentChat, user.Id, inputMessage);
-
-            chatMessages.Add(newMessage);
-            return newMessage.Id;
         }
     }
 }
