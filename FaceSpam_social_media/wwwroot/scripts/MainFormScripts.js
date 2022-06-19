@@ -43,12 +43,12 @@
             data: formData,
             contentType: false,
             processData: false,
-            success: function (post) {
-                if (post["item2"] == -1) {
+            success: function (postId) {
+                if (postId == -1) {
                     alert("Error of adding post. You can only upload images of .jpg or .png formats");
                 }
                 else {
-                    AddNewPost(post["item1"], text, post["item2"], formData.get('file'));
+                    AddNewPost(jsUser, text, postId, formData.get('file'));
                 }
                 $("#Browse").text("Browse");
                 formData = new FormData();

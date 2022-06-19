@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
-        $(".MessageArea").hide();
+    $(".MessageArea").hide();
+    var selectedGroup = "";
 
         $(".ChatMessages").on("click", ".RemoveMessage", function () {
             var id = $(this).attr("id");
@@ -16,9 +17,23 @@
             });
         })
 
+    function AddToSignalRGroup(name, id) {
+        $.ajax({
+            type: "POST",
+            url: '/Home/AddToGroup',
+            async: false,
+            data: { hubId: id, groupName: name},
+            success: function () {
+            }
+        });
+    }
+
         $(".GroupPanel").click(function () {
+
             $(".MessageArea").show();
             var value = $(this).children(".GroupName").attr("id"); //get value of attribute 'id'
+            selectedGroup = value;
+            AddToSignalRGroup(selectedGroup, connectionId);
             $(".ChatMessages").empty(); //clear text from textbox
             GetChatMessages(value); //get all messages for selected chat
             $(".GroupPanel").attr("class", "GroupPanel inactive"); //make unselected GroupPanel not active
@@ -31,15 +46,6 @@
             $(".MessageTextBox").val("");
         });
 
-         function GetMessageObj(messageId, name, image, time, text) {
-            messageObject = '<div class="MessageBody">' +
-                '<img src="' + image + '" class="Ellipse" style="width: 50px; height: 50px;"/>' +
-                 '<label class="MessageNickName" >' + name + '<label class="MessageDate">' + time + '</label ></label>' +
-                 '<img src="../images/removeButton.png" class="RemoveMessage" id="' + messageId + '" />' +
-                 '<br /><label class="MessageText">' + text + '</label ></div>';
-             $(".ChatMessages").append(messageObject);
-         }
-
         function GetChatMessages(id) {
             $.ajax({
                 type: "GET",
@@ -48,7 +54,7 @@
                 data: { chatId: id },
                 success: function (messages) { //get array object of Message models
                     for (var index = 0; index < messages.length; index++) { //adding all messages for this chat
-                        var messageId = messages[index]["id"].toString();                      
+                        var messageId = messages[index]["id"].toString();
                         var dt = new Date(messages[index]["dateSending"]);
                         var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                         var text = messages[index]["text"].toString();
@@ -60,11 +66,12 @@
             });
         }
 
-        function SendMessages(message) {
+    function SendMessages(message) {
             $.ajax({ //async call of controller
                 type: "GET",  //request type
                 url: '/Home/SendMessage', //url to controller
-                data: { textboxMessage: message, }, //controller argument
+                data: { textboxMessage: message, groupName: selectedGroup, hubId: connectionId, }, //controller argument
+                async: true,
                 success: function (user) { //get array object of Message models
                     var name = user["item1"]["name"].toString();
                     var image = user["item1"]["imageReference"].toString();
