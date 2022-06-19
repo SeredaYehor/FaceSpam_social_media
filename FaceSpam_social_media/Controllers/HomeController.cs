@@ -24,13 +24,13 @@ namespace FaceSpam_social_media.Controllers
         private readonly IChatService _chatService;
         private readonly IChatMemberService _chatMemberService;
         private readonly IMessageService _messageService;
-        private readonly IFriendService _friendService;
+        private readonly IFollowService _friendService;
         #endregion
 
         #region ViewModels
         public static Main mainFormModels = new Main();
         public static MessagesForm messages = new MessagesForm();
-        public static FriendsViewModel friendsModel = new FriendsViewModel();
+        public static FollowsViewModel followsModel = new FollowsViewModel();
         public static PostCommentsModel commentsModel = new PostCommentsModel();
         public LoginModel loginModel = new LoginModel();
         public SettingsModel settingsModel = new SettingsModel();
@@ -41,8 +41,8 @@ namespace FaceSpam_social_media.Controllers
 
         public HomeController(ILogger<HomeController> logger, IUserService userService, 
             IChatMemberService chatMemberService, IChatService chatService, 
-            ILikeService likeService, IPostService postService, IRepository repository,
-            IMessageService messageService, IFriendService friendService)
+            ILikeService likeService, IPostService postService,
+            IMessageService messageService, IFollowService friendService)
         {
             #region Initialization
             _logger = logger;
@@ -54,11 +54,6 @@ namespace FaceSpam_social_media.Controllers
             _messageService = messageService;
             _friendService = friendService;
             #endregion
-
-            mainFormModels._repository = repository;
-            messages._repository = repository;
-            friendsModel._repository = repository;
-            commentsModel._repository = repository;
         }
 
         public IActionResult Index()
@@ -99,8 +94,8 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Main()
         {
             mainFormModels.user = mainFormModels.executor;
-            mainFormModels.GetUserInfo(_userService, _postService, _likeService, false, mainFormModels.executor.Id);
-            friendsModel.GetMainFormData(mainFormModels);
+            mainFormModels.GetUserInfo(_userService, _postService, _likeService, _friendService, false, mainFormModels.executor.Id);
+            followsModel.GetMainFormData(mainFormModels);
 
             return View(mainFormModels);
         }
@@ -133,7 +128,7 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public IActionResult UserProfile(int id)
         {
-            mainFormModels.GetUserInfo(_userService, _postService, _likeService, true, id);
+            mainFormModels.GetUserInfo(_userService, _postService, _likeService, _friendService, true, id);
             return View("Main", mainFormModels);
         }
 
@@ -159,22 +154,24 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult Comments(int id)
         {
             commentsModel.user = mainFormModels.executor;
-            commentsModel.GetComments(id, _messageService);
+            commentsModel.GetComments(id, _messageService, _userService, mainFormModels);
             return View("Comments", commentsModel);
         }
 
         [HttpPost]
         public async Task<int> AddComment(string message)
         {
-            int result = await commentsModel.AddComment(message, _messageService);
-            return result;
+            Message result = await _messageService
+                .AddMessage(commentsModel.post.Id, commentsModel.user.Id, message, true);
+
+            return result.Id;
         }
 
         [HttpPost]
         public async Task<int> RemoveComment(int commentId)
         {
-            int result = await commentsModel.RemoveComment(commentId, _messageService);
-            return result;
+            Message result = await _messageService.DeleteMessage(commentId);
+            return result.Id;
         }
 
         #endregion
@@ -222,8 +219,8 @@ namespace FaceSpam_social_media.Controllers
 
         public async Task<(User, int)> SendMessage(string textboxMessage)
         {
-            int id = await messages.SendMessage(textboxMessage, _messageService);
-            return (messages.user, id);
+            Message result = await _messageService.AddMessage(messages.currentChat, messages.user.Id, textboxMessage);
+            return (messages.user, result.Id);
         }
 
         public (List<Message>, Chat, int) GetChatMessages(int chatId)
@@ -242,39 +239,40 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public async Task<int> RemoveMessage(int messageId)
         {
-            int result = await messages.RemoveMessage(messageId, _messageService);
-            return result;
+            Message result = await _messageService.DeleteMessage(messageId);
+
+            return result.Id;
         }
         #endregion
 
         #region Friends form functions
-        public IActionResult Friends(int id)
+        public IActionResult Followings(int id)
         {
-            friendsModel.GetUserById(id);
-            friendsModel.allUsers.Clear();
-            friendsModel.friendPage = true;
+            followsModel.user = _userService.GetUser(id);
+            followsModel.follows = _friendService.GetFollowingUsers(id);
+            followsModel.allUsers.Clear();
+            followsModel.friendPage = true;
 
-            return View(friendsModel);
+            return View(followsModel);
         }
 
         public IActionResult UserList()
         {
-            friendsModel.GetAllUsers();
-            friendsModel.friendPage = false;
+            followsModel.allUsers = _userService.GetAllUsers(followsModel.executor);
+            followsModel.follows = _friendService.GetFollowingUsers(followsModel.executor);
+            followsModel.friendPage = false;
 
-            return View("Friends", friendsModel);
+            return View("Followings", followsModel);
         }
         
-        public async Task DeleteFriend(int id)
+        public async Task DeleteFollow(int id)
         {
-            await friendsModel.DeleteFriend(id);
-            mainFormModels.GetFriends();
+            await _friendService.RemoveFollowing(followsModel.executor, id);
         }
 
-        public async Task AddFriend(int id)
+        public async Task AddFollow(int id)
         {
-            await friendsModel.AddFriend(id);
-            mainFormModels.GetFriends();
+            await _friendService.Addfollowing(followsModel.executor, id);
         }
         #endregion
 
@@ -348,7 +346,7 @@ namespace FaceSpam_social_media.Controllers
             {
                 string imageReference = "../Images/DefaultUserImage.png";
                 await _userService.AddUser(login, password, email, imageReference);
-                mainFormModels.GetUserInfo(_userService, _postService, _likeService, false, -1, login, password);
+                mainFormModels.GetUserInfo(_userService, _postService, _likeService, _friendService, false, -1, login, password);
                 return RedirectToAction("Main");
             }
             else
@@ -374,7 +372,7 @@ namespace FaceSpam_social_media.Controllers
             bool verifyResult = _userService.Verify(login, password);
             if (verifyResult)
             {
-                mainFormModels.GetUserInfo(_userService, _postService, _likeService, false, -1, login, password);
+                mainFormModels.GetUserInfo(_userService, _postService, _likeService, _friendService, false, -1, login, password);
                 if (mainFormModels.user.IsBanned == true)
                 {
                     errorModel.Error = "Oi, you have been banned";
