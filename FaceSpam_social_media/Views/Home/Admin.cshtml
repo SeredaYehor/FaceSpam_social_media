@@ -66,18 +66,18 @@
                                 <button class="EnterUserProfile" type="submit" name="id" value="@user.Id">
                                     <img class="UserImage" src="@user.ImageReference" />
                                     <label class="Names"> @user.Name </label>
-                                    @if (user.IsBanned == true)
-                                    {
-                                        <input id="@user.Id" type="submit" class="FriendButton" value="Unban" onclick="DeleteFriend(this)" />
+                                </button>
+                                @if (user.IsBanned == true)
+                                {
+                                    <input id="@user.Id" type="submit" class="FriendButton" value="Unban" onclick="DeleteFriend(this)" />
 
-                                    }
-                                    else
-                                    {
-                                        <input id="@user.Id" type="submit" class="FriendButton" value="Ban" onclick="DeleteFriend(this)" />
-                                    }
-                                    @*Write button does not work. When all formls will be ready it will get the link*@
-                                    <input type="submit" class="FriendButton" value="Write" />
-                                </button>                     
+                                }
+                                else
+                                {
+                                    <input id="@user.Id" type="submit" class="FriendButton" value="Ban" onclick="DeleteFriend(this)" />
+                                }
+                                @*Write button does not work. When all formls will be ready it will get the link*@
+                                <input type="submit" class="FriendButton" value="Write" />
                             </div>
                         }
                     </div>
