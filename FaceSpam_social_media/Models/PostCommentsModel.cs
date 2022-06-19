@@ -22,9 +22,9 @@ namespace FaceSpam_social_media.Models
 
 
         public void GetComments(int id, IMessageService messageService, 
-             IUserService userService, Main mainFormModel)
+             IUserService userService, IPostService postService)
         {
-            post = mainFormModel.user.Posts.Where(x=>x.Id == id).FirstOrDefault();
+            post = postService.GetPostById(id);
             post.Messages = messageService.GetMessages(id, true);
             post.UserUser = userService.GetUser(post.UserUserId);
 
