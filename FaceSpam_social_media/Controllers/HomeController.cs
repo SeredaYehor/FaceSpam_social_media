@@ -9,6 +9,8 @@ using FaceSpam_social_media.Infrastructure.Data;
 using FaceSpam_social_media.Services;
 using FaceSpam_social_media.Infrastructure.Repository;
 using System.Threading.Tasks;
+using FaceSpam_social_media.SignalRHub;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FaceSpam_social_media.Controllers
 {
@@ -19,7 +21,6 @@ namespace FaceSpam_social_media.Controllers
 
         public static Main mainFormModels = new Main();
         public static Main userProfileModel = new Main();
-        public MVCDBContext context = new MVCDBContext();
         public static MessagesForm messages = new MessagesForm();
         public static FriendsViewModel friendsModel = new FriendsViewModel();
         public static PostCommentsModel commentsModel = new PostCommentsModel();
@@ -27,13 +28,14 @@ namespace FaceSpam_social_media.Controllers
         public static SettingsModel settingsModel = new SettingsModel();
         public static AuthenticationModel authModel = new AuthenticationModel();
         public static UsersManagment usersManagment = new UsersManagment();
-        public static ErrorPageModel errorModel = new ErrorPageModel();
-
+        public static IHubContext<MessagesHub> hub;
+         
         public HomeController(ILogger<HomeController> logger, IUserService userService, IPostService postService,
-            IRepository repository)
+            IRepository repository, IHubContext<MessagesHub> hubContext)
         {
             _logger = logger;
             _userService = userService;
+            hub = hubContext;
 
             mainFormModels._repository = repository;
             userProfileModel._repository = repository;
@@ -84,7 +86,6 @@ namespace FaceSpam_social_media.Controllers
             }
             return result;
         }
-
 
         [HttpPost]
         public async Task<int> AdminRemovePost(int postId)
@@ -145,6 +146,7 @@ namespace FaceSpam_social_media.Controllers
         public IActionResult UserProfile(int id)
         {
             mainFormModels.GetUserInfo(true, id);
+
             return View("Main", mainFormModels);
         }
 
@@ -178,11 +180,10 @@ namespace FaceSpam_social_media.Controllers
             return result;
         }
 
-        public async Task<int> ChangeLike(int postId)
+        public async Task<int> ChangeLike(int postId, bool friendLike)
         {
-            int count = 0;
             await mainFormModels.UpdatePostLike(postId);
-            count = mainFormModels.CountLikes(postId);
+            int count = mainFormModels.CountLikes(postId);
             return count;
         }
 
@@ -195,10 +196,18 @@ namespace FaceSpam_social_media.Controllers
             return (mainFormModels.user, lastPostId);
         }
 
-        public async Task<(User, int)> SendMessage(string textboxMessage)
+        public async Task<(User, int)> SendMessage(string textboxMessage, 
+            string groupName, string hubId)
         {
             int id = await messages.SendMessage(textboxMessage);
+            await hub.Clients.GroupExcept(groupName, hubId)
+                .SendAsync("SendMessage", textboxMessage, messages.user, id);
             return (messages.user, id);
+        }
+
+        public async void AddToGroup(string hubId, string groupName)
+        {
+            await hub.Groups.AddToGroupAsync(hubId, groupName);
         }
 
         public List<Message> GetChatMessages(int chatId)
@@ -247,16 +256,15 @@ namespace FaceSpam_social_media.Controllers
             bool repeatCheck = authModel.Verify(login, email);
             if (repeatCheck)
             {
+                return Content("This user is already registered.");
+            }
+            else
+            {
                 string imageReference = "../Images/DefaultUserImage.png";
                 await _userService.AddUser(login, password, email, imageReference);
 
                 mainFormModels.GetMainUserInfo(login, password);
                 return View("Main", mainFormModels);
-            }
-            else
-            {
-                errorModel.Error = "This data is already in use";
-                return View("ErrorPage", errorModel);
             }
         }
 
@@ -269,27 +277,18 @@ namespace FaceSpam_social_media.Controllers
             bool verifyResult = loginModel.Verify(login, password);
             if (verifyResult)
             {
-                mainFormModels.GetUserInfo( false, -1, login, password);
+                mainFormModels.GetUserInfo(false, -1, login, password);
                 mainFormModels.user = mainFormModels.executor;
                 mainFormModels.GetFriends();
                 friendsModel.GetMainFormData(mainFormModels);
 
                 if (mainFormModels.user.IsBanned == true)
                 {
-                    errorModel.Error = "Oi, you have been banned";
-                    return View("ErrorPage", errorModel);
+                    return Content("Oi, you have been banned.");
                 }
                 return View("Main", mainFormModels);
             }
-            else
-            {
-                errorModel.Error = "Wrong login or password";
-                return View("ErrorPage", errorModel);
-            }
-        }
-        public IActionResult ErrorLoginPage()
-        {
-            return View("ErrorLoginPage", errorModel);
+            return Content("Wrong login or password");
         }
 
     }
