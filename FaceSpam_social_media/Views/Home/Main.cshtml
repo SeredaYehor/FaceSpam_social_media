@@ -6,7 +6,7 @@
 <script type="text/javascript">
 </script>
 <script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
-<script type="text/javascript" src="~/scripts/FriendsFormScripts.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/scripts/FollowsFormScripts.js" asp-append-version="true"></script>
 
 @model Main
 @{
@@ -59,15 +59,15 @@
                 }
                 else
                 {
-                    <input type="submit" class="EditProfile" id="@Model.user.Id" value="@(Model.isFriend 
-                        ? "Remove" : "Pal up")" onclick="CheckAction(this)"/>
+                    <input type="submit" class="EditProfile" id="@Model.user.Id" value="@(Model.isFollowed 
+                        ? "Remove" : "Follow")" onclick="CheckAction(this)"/>
                 }
             </div>
 
             <div class="Friends">
-                <label style="font-size: 18px; margin: 4px 16px; color: white;">Friends</label>
+                <label style="font-size: 18px; margin: 4px 16px; color: white;">Followings</label>
                 <div class="FriendList" style="margin-left: 2px; width: 166px; height: 167px; overflow-y: hidden; display: flex">
-                    @foreach (FaceSpam_social_media.Infrastructure.Data.User friend in Model.friends)
+                    @foreach (FaceSpam_social_media.Infrastructure.Data.User friend in Model.follows)
                     {
                         <form method="post" action="/Home/UserProfile">
                             <button type="submit" name="id" value="@friend.Id" class="UserProfileButton">
@@ -76,7 +76,7 @@
                         </form>
                         }
                 </div>
-                @using (Html.BeginForm("Friends", "Home", FormMethod.Post))
+                @using (Html.BeginForm("Followings", "Home", FormMethod.Post))
                 {
                     <button type="submit" class="Button" style="padding: 5px 20px;" name="id" value="@Model.user.Id">more...</button>
                 }
