@@ -56,11 +56,11 @@ namespace FaceSpam_social_media.Services
             }
         }
 
-        public async Task<int> RemovePost(int userId, int postId)
+        public async Task<int> RemovePost(int postId)
         {
             await RemoveChildRows(postId, false);
             await RemoveChildRows(postId, true);
-            Post remove = _repository.GetAll<Post>().Where(x => x.Id == postId && x.UserUserId == userId)
+            Post remove = _repository.GetAll<Post>().Where(x => x.Id == postId)
                 .First();
             await _repository.DeleteAsync(remove);
             return remove.Id;

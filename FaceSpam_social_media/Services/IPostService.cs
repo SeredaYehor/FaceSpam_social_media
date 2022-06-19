@@ -10,6 +10,6 @@ namespace FaceSpam_social_media.Services
         public Post GetPostById(int postId);
         public Task<int> AddPost(int userId, string message, string reference);
         public Task RemoveChildRows(int postId, bool removeLikes);
-        public Task<int> RemovePost(int userId, int postId);
+        public Task<int> RemovePost(int postId);
     }
 }
