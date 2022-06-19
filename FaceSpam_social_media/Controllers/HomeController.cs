@@ -33,7 +33,7 @@ namespace FaceSpam_social_media.Controllers
         public static FollowsViewModel followsModel = new FollowsViewModel();
         public static PostCommentsModel commentsModel = new PostCommentsModel();
         public LoginModel loginModel = new LoginModel();
-        public SettingsModel settingsModel = new SettingsModel();
+        public static SettingsModel settingsModel = new SettingsModel();
         public AuthenticationModel authModel = new AuthenticationModel();
         public UsersManagment usersManagment = new UsersManagment();
         public ErrorPageModel errorModel = new ErrorPageModel();
