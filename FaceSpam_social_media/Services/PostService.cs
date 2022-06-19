@@ -22,6 +22,9 @@ namespace FaceSpam_social_media.Services
             => _repository.GetAll<Post>().Where(x => x.UserUser == user)
             .OrderByDescending(d => d.DatePosting).ToList();
 
+        public Post GetPostById(int postId)
+            => _repository.GetAll<Post>().Where(x=>x.Id == postId).FirstOrDefault();
+
         public async Task<int> AddPost(int userId, string message, string reference)
         {
             Post newPost = new Post
