@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FaceSpam_social_media.SignalRHub;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FaceSpam_social_media
 {
@@ -29,6 +31,7 @@ namespace FaceSpam_social_media
         {
             services.AddControllersWithViews();
             services.AddSQL(Configuration);
+            services.AddSignalR();
             services.AddScoped<IRepository, EntityFrameworkRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPostService, PostService>();
@@ -50,13 +53,12 @@ namespace FaceSpam_social_media
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<MessagesHub>("/SignalRHub");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Login}/{id?}");
