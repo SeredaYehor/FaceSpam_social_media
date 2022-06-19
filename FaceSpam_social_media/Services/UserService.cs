@@ -59,7 +59,7 @@ namespace FaceSpam_social_media.Services
         public List<User> SelectAllUsers(int exceptId)
             => _repository.GetAll<User>().Where(x => x.Id != exceptId).ToList();
 
-        public User GetUser(int userId, string name, string password)
+        public User GetUser(int userId, string name = null, string password = null)
         {
             User selected;
             if (userId != -1)
