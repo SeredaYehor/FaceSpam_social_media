@@ -245,7 +245,7 @@ namespace FaceSpam_social_media.Controllers
         }
         #endregion
 
-        #region Friends form functions
+        #region Followings form functions
         public IActionResult Followings(int id)
         {
             followsModel.user = _userService.GetUser(id);
