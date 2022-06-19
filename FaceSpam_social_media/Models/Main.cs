@@ -30,54 +30,49 @@ namespace FaceSpam_social_media
             if (email != null) { user.Email = email; }
             if (description != null) { user.Description = description; }
         }
-
         public async Task<int> AddPost(string message, string reference)
         {
-            var newPost = await _repository.AddAsync(new Post
-            {
-                Text = message,
-                UserUserId = user.Id,
-                DatePosting = DateTime.Now
-            });
-
-            if (reference != null)
+            Post newPost = new Post();
+            newPost.Text = message;
+            newPost.UserUserId = user.Id;
+            newPost.DatePosting = DateTime.Now;
+            if(reference != null)
             {
                 newPost.ImageReference = reference;
             }
-
+            newPost = await _repository.AddAsync<Post>(newPost);
             user.Posts.Add(newPost);
             return newPost.Id;
         }
 
 
-        private async Task RemoveChildRows(int postId, bool removeLikes)
+        /*private async Task RemoveChildRows(int postId, bool removeLikes)
         {
             if (removeLikes)
             {
-                IEnumerable<Like> likesRemove = _repository.GetAll<Like>().Where(x => x.PostPostId == postId);
-                await _repository.DeleteAsyncRange(likesRemove);
+                List<Like> likesRemove = _repository.GetAll<Like>().Where(x => x.PostPostId == postId).ToList();
+                await _repository.DeleteAsync(likesRemove);
             }
             else
             {
                 List<Message> messagesRemove = _repository.GetAll<Message>().Where(x => x.PostPostId == postId).ToList();
-                await _repository.DeleteAsyncRange(messagesRemove);
+                await _repository.DeleteAsync(messagesRemove);
             }
-        }
-
+        }*/
         public async Task<int> RemovePost(int postId)
         {
-            user.Posts.Remove(user.Posts.Where(x => x.Id == postId && x.UserUserId == user.Id).First());
-            await RemoveChildRows(postId, false);
-            await RemoveChildRows(postId, true);
+            //RemoveChildRows(postId, false);
+            //RemoveChildRows(postId, true);
             Post remove = _repository.GetAll<Post>().Where(x => x.Id == postId && x.UserUserId == user.Id)
                 .First();
             await _repository.DeleteAsync(remove);
+            user.Posts.Remove(user.Posts.Where(x => x.Id == postId && x.UserUserId == user.Id).First());
             return remove.Id;
         }
 
         public void GetLikes()
         {
-            user.Likes = _repository.GetAll<Like>().Where(x => x.PostPost.UserUserId == user.Id).ToList();
+            user.Likes = _repository.GetAll<Like>().Where(x => x.UserUserId == user.Id).ToList();
         }
 
         public int CountLikes(int postId)
@@ -90,28 +85,25 @@ namespace FaceSpam_social_media
             return user.Likes.Any(x => x.UserUserId == userId && x.PostPostId == postId);
         }
 
-        public async Task UpdatePostLike(int postId)
+        public async Task<int> UpdatePostLike(int postId)
         {
-            int userId = executor.Id;
-            bool liked = CheckLike(userId, postId);
-            if (liked)
+            if(CheckLike(user.Id, postId))
             {
                 await _repository.DeleteAsync<Like>(_repository.GetAll<Like>()
-                    .Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
-                user.Likes.Remove(user.Likes.Where(x => x.UserUserId == userId && x.PostPostId == postId).First());
+                    .Where(x => x.UserUserId == user.Id && x.PostPostId == postId).First());
+                user.Likes.Remove(user.Likes
+                    .Where(x => x.UserUserId == user.Id && x.PostPostId == postId).First());
             }
             else
             {
-                Like like = await _repository.AddAsync(new Like
-                {
-                    UserUserId = userId,
-                    PostPostId = postId
-                });
+                Like like = new Like() { UserUserId = user.Id, PostPostId = postId };
+                like = await _repository.AddAsync<Like>(like);
                 user.Likes.Add(like);
             }
+            return CountLikes(postId);
         }
 
-        public void GetUser(ref User current, int userId, string name, string password)
+        public void GetUser(ref User current, int userId, string name = null, string password = null)
         {
             if (userId != -1)
             {
