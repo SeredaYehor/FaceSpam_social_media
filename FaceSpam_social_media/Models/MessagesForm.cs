@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using FaceSpam_social_media.Infrastructure.Data;
 using FaceSpam_social_media.Infrastructure.Repository;
+using FaceSpam_social_media.SignalRHub;
 
 namespace FaceSpam_social_media.Models
 {
@@ -32,7 +33,7 @@ namespace FaceSpam_social_media.Models
 
         public async Task<int> RemoveMessage(int messageId)
         {
-            Message remove = _repository.GetAll<Message>().Where(x => x.Id == messageId)
+            Message remove = _repository.GetAll<Message>().Where(x => x.Id == messageId && x.UserUserId == user.Id)
                 .First();
             await _repository.DeleteAsync(remove);
             chatMessages.Remove(chatMessages.Where(x => x.Id == messageId && x.UserUserId == user.Id).First());
@@ -51,7 +52,6 @@ namespace FaceSpam_social_media.Models
             chatMessages.Add(newMessage);
             return newMessage.Id;
         }
-
         public void GetChats()
         {
             chats = _repository.GetAll<ChatMember>().Where(x => x.UserUserId == user.Id)
