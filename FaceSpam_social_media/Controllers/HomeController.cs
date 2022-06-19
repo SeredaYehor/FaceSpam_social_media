@@ -104,11 +104,8 @@ namespace FaceSpam_social_media.Controllers
         public async Task<int> RemovePost(int postId)
         {
             int result = 0;
-            if (mainFormModels.executor.IsAdmin == true)
-            {
-                result = await _postService.RemovePost(mainFormModels.executor.Id,
+            result = await _postService.RemovePost(mainFormModels.executor.Id,
                     postId);
-            }
             return result;
         }
 
