@@ -10,6 +10,8 @@ using FaceSpam_social_media.Services;
 using FaceSpam_social_media.Infrastructure.Repository;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FaceSpam_social_media.Controllers
 {
@@ -27,20 +29,10 @@ namespace FaceSpam_social_media.Controllers
         private readonly IFollowService _friendService;
         #endregion
 
-        #region ViewModels
-        public static Main mainFormModels = new Main();
-        public static MessagesForm messages = new MessagesForm();
-        public static FollowsViewModel followsModel = new FollowsViewModel();
-        public static PostCommentsModel commentsModel = new PostCommentsModel();
-        public LoginModel loginModel = new LoginModel();
-        public static SettingsModel settingsModel = new SettingsModel();
-        public AuthenticationModel authModel = new AuthenticationModel();
-        public UsersManagment usersManagment = new UsersManagment();
-        public ErrorPageModel errorModel = new ErrorPageModel();
-        #endregion
+        public static Dictionary<int, string> ImageStorage = new Dictionary<int, string>();
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService, 
-            IChatMemberService chatMemberService, IChatService chatService, 
+        public HomeController(ILogger<HomeController> logger, IUserService userService,
+            IChatMemberService chatMemberService, IChatService chatService,
             ILikeService likeService, IPostService postService,
             IMessageService messageService, IFollowService friendService)
         {
@@ -61,9 +53,14 @@ namespace FaceSpam_social_media.Controllers
             return View();
         }
 
-        public User GetUser()
+        public User GetUser(int executorId)
         {
-            return mainFormModels.executor;
+            return _userService.GetUser(executorId);
+        }
+
+        public string[] IdSpliter(string idCollection)
+        {
+            return idCollection.Split("-");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -73,9 +70,12 @@ namespace FaceSpam_social_media.Controllers
         }
 
         #region Admin form functions
-        public IActionResult Admin()
+        public IActionResult Admin(int executorId)
         {
-            if (usersManagment.Init(_userService, mainFormModels.executor))
+            UsersManagment usersManagment = new UsersManagment();
+            usersManagment.admin = _userService.GetUser(executorId);
+
+            if (usersManagment.Init(_userService, usersManagment.admin))
             {
                 return View(usersManagment);
             }
@@ -91,13 +91,15 @@ namespace FaceSpam_social_media.Controllers
         #endregion
 
         #region Main form functions
-        public IActionResult Main()
-        {
-            mainFormModels.user = mainFormModels.executor;
-            mainFormModels.GetUserInfo(_userService, _postService, _likeService, _friendService, false, mainFormModels.executor.Id);
-            followsModel.GetMainFormData(mainFormModels);
 
-            return View(mainFormModels);
+        public IActionResult Main(int executorId)
+        {
+            Main userModel = new Main();
+
+            userModel.GetUserInfo(_userService, _postService, _likeService, _friendService, false, executorId);
+            userModel.executor = userModel.user;
+
+            return View(userModel);
         }
 
         [HttpPost]
@@ -109,43 +111,58 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
-        public IActionResult UserProfile(int id)
+        public IActionResult UserProfile(string id)
         {
-            mainFormModels.GetUserInfo(_userService, _postService, _likeService, _friendService, true, id);
-            return View("Main", mainFormModels);
+            Main profileModel = new Main();
+
+            string[] ids = IdSpliter(id);
+            int executorId = Convert.ToInt32(ids[0]);
+
+            profileModel.executor = _userService.GetUser(executorId);
+            profileModel.GetUserInfo(_userService, _postService, _likeService, _friendService, true, Convert.ToInt32(ids[1]));
+            return View("Main", profileModel);
         }
 
         [HttpPost]
-        public async Task<(User, int)> AddPost(IFormFile file, string text)
+        public async Task<(User, int)> AddPost(IFormFile file, int id, string text)
         {
             int lastPostId = -1;
             string reference = FileManager.UploadImage(file);
-            lastPostId = await _postService.AddPost(mainFormModels.executor.Id, text, reference);
-            return (mainFormModels.user, lastPostId);
+            lastPostId = await _postService.AddPost(id, text, reference);
+
+            User user = _userService.GetUser(id);
+
+            return (user, lastPostId);
         }
 
-        public async Task<int> ChangeLike(int postId)
+        public async Task<int> ChangeLike(int postId, int executorId)
         {
             int count = 0;
-            count = await _likeService.UpdatePostLike(mainFormModels.executor.Id, postId);
+            count = await _likeService.UpdatePostLike(executorId, postId);
             return count;
         }
         #endregion
 
         #region Comments form functions
         [HttpPost]
-        public IActionResult Comments(int id)
+        public IActionResult Comments(string id)
         {
-            commentsModel.user = mainFormModels.executor;
-            commentsModel.GetComments(id, _messageService, _userService, _postService);
+            PostCommentsModel commentsModel = new PostCommentsModel();
+
+            string[] ids = IdSpliter(id);
+
+            commentsModel.user = _userService.GetUser(Convert.ToInt32(ids[0]));
+            commentsModel.GetComments(Convert.ToInt32(ids[1]), _messageService, _userService, _postService);
             return View("Comments", commentsModel);
         }
 
         [HttpPost]
-        public async Task<int> AddComment(string message)
+        public async Task<int> AddComment(string message, int executorId, int postId)
         {
             Message result = await _messageService
-                .AddMessage(commentsModel.post.Id, commentsModel.user.Id, message, true);
+                .AddMessage(postId, executorId, message, true);
+
+            User executor = _userService.GetUser(executorId);
 
             return result.Id;
         }
@@ -160,37 +177,39 @@ namespace FaceSpam_social_media.Controllers
         #endregion
 
         #region Messages form functions
-        public IActionResult Messages(int current = 0)
+        public IActionResult Messages(int executorId, int current = 0)
         {
-            messages.user = mainFormModels.executor;
-            messages.GetChatMessages(_chatMemberService, _messageService, current);
-            messages.chats = _chatService.GetChats(mainFormModels.executor.Id);
+            MessagesForm messages = new MessagesForm();
+
+            messages.user = _userService.GetUser(executorId);
+            messages.GetChatMessages(_chatMemberService, _messageService, _chatService, current);
+            messages.chats = _chatService.GetChats(executorId);
             return View(messages);
         }
-        
+
         [HttpPost]
-        public async Task<int> RemoveChatMember(int memberId)
+        public async Task<int> RemoveChatMember(int memberId, int chatId)
         {
-            int members =  await _chatMemberService.RemoveChatMember(
-                messages.selectedChat.Id,
-                memberId);
+            int members = await _chatMemberService.RemoveChatMember(
+                chatId, memberId);
             return members;
         }
-        
+
         [HttpPost]
-        public async Task<int> AddMember(int memberId)
+        public async Task<int> AddMember(int memberId, int chatId)
         {
             int members = await _chatMemberService.AddChatMember(
-                messages.selectedChat.Id, 
-                memberId);
+                chatId, memberId);
             return members;
         }
-        
-        public IActionResult GetChat(int chatId)
+
+        public IActionResult GetChat(int executorId, int chatId)
         {
-            messages.user = mainFormModels.executor;
-            messages.GetChatMessages(_chatMemberService, _messageService, chatId);
-            return View(messages);
+            MessagesForm chat = new MessagesForm();
+
+            chat.user = _userService.GetUser(executorId);
+            chat.GetChatMessages(_chatMemberService, _messageService, _chatService, chatId);
+            return View(chat);
         }
 
         [HttpPost]
@@ -200,17 +219,19 @@ namespace FaceSpam_social_media.Controllers
             return users;
         }
 
-        public async Task<(User, int)> SendMessage(string textboxMessage)
+        public async Task<(User, int)> SendMessage(string textboxMessage, int chatId, int executorId)
         {
-            Message result = await _messageService.AddMessage(messages.currentChat, messages.user.Id, textboxMessage);
-            return (messages.user, result.Id);
+            Message result = await _messageService.AddMessage(chatId, executorId, textboxMessage);
+            return (_userService.GetUser(executorId), result.Id);
         }
 
         public (List<Message>, Chat, int) GetChatMessages(int chatId)
         {
-            messages.GetChatMessages(_chatMemberService, _messageService, chatId);
-            return (messages.chatMessages,
-                messages.selectedChat, messages.members.Count());
+            MessagesForm chat = new MessagesForm();
+
+            chat.GetChatMessages(_chatMemberService, _messageService, _chatService, chatId);
+            return (chat.chatMessages,
+                chat.selectedChat, chat.members.Count());
         }
 
         public List<User> GetChatUsers(int chatId)
@@ -229,52 +250,62 @@ namespace FaceSpam_social_media.Controllers
         #endregion
 
         #region Followings form functions
-        public IActionResult Followings(int id)
+        public IActionResult Followings(string id)
         {
-            followsModel.user = _userService.GetUser(id);
-            followsModel.follows = _friendService.GetFollowingUsers(id);
-            followsModel.allUsers.Clear();
+            FollowsViewModel followsModel = new FollowsViewModel();
+
+            string[] ids = IdSpliter(id);
+
+            followsModel.executor = Convert.ToInt32(ids[0]);
+            followsModel.user = _userService.GetUser(Convert.ToInt32(ids[1]));
+            followsModel.follows = _friendService.GetFollowingUsers(Convert.ToInt32(ids[1]));
             followsModel.friendPage = true;
 
             return View(followsModel);
         }
 
-        public IActionResult UserList()
+        public IActionResult UserList(string id)
         {
-            followsModel.allUsers = _userService.GetAllUsers(followsModel.executor);
-            followsModel.follows = _friendService.GetFollowingUsers(followsModel.executor);
+            FollowsViewModel followsModel = new FollowsViewModel();
+
+            string[] ids = IdSpliter(id);
+
+            followsModel.user = _userService.GetUser(Convert.ToInt32(ids[1]));
+
+            followsModel.executor = Convert.ToInt32(ids[0]);
+            followsModel.allUsers = _userService.GetAllUsers(Convert.ToInt32(ids[0]));
+            followsModel.follows = _friendService.GetFollowingUsers(Convert.ToInt32(ids[0]));
             followsModel.friendPage = false;
 
             return View("Followings", followsModel);
         }
-        
-        public async Task DeleteFollow(int id)
+
+        public async Task DeleteFollow(int userId, int executorId)
         {
-            await _friendService.RemoveFollowing(followsModel.executor, id);
+            await _friendService.RemoveFollowing(executorId, userId);
         }
 
-        public async Task AddFollow(int id)
+        public async Task AddFollow(int userId, int executorId)
         {
-            await _friendService.Addfollowing(followsModel.executor, id);
+            await _friendService.Addfollowing(executorId, userId);
         }
         #endregion
 
         #region Groups panel funct
         [HttpPost]
-        public async Task<Chat> CreateGroup(string chatName, string chatDescription, string members, IFormFile file)
+        public async Task<Chat> CreateGroup(string chatName, string chatDescription, string members, int executorId, IFormFile file)
         {
             List<int> listMembers = members.Split(',').Select(int.Parse).ToList();
             string reference = FileManager.UploadImage(file);
-            Chat result = await _chatService.CreateGroup(mainFormModels.executor.Id,
+            Chat result = await _chatService.CreateGroup(executorId,
                 chatName, chatDescription, listMembers, reference);
-            messages.chats.Add(result);
             return result;
         }
 
-        public async Task QuitGroup()
+        public async Task QuitGroup(int executorId, int chatId)
         {
-            await _chatService.QuitGroup(messages.selectedChat.Id,
-                messages.user.Id);
+            await _chatService.QuitGroup(chatId,
+                executorId);
         }
 
         [HttpPost]
@@ -283,35 +314,41 @@ namespace FaceSpam_social_media.Controllers
             await _chatService.DeleteGroup(groupId);
         }
 
-        public IActionResult Groups()
+        public IActionResult Groups(int executorId)
         {
-            messages.user = mainFormModels.executor;
-            messages.chats = _chatService.GetChats(mainFormModels.executor.Id);
+            MessagesForm messages = new MessagesForm();
+
+            messages.user = _userService.GetUser(executorId);
+            messages.chats = _chatService.GetChats(executorId);
+
             return View(messages);
         }
         #endregion
 
         #region Settings form functions
-        public IActionResult Settings()
+        public IActionResult Settings(int executorId)
         {
-            settingsModel.user = mainFormModels.executor;
+            SettingsModel settingsModel = new SettingsModel();
+
+            settingsModel.user = _userService.GetUser(executorId);
             return View(settingsModel);
         }
 
-        public void GetPhotoUrl(IFormFile file)
+        public void GetPhotoUrl(IFormFile file, int executorId)
         {
-            settingsModel.imageReference = FileManager.UploadImage(file);
+            string imagePath = FileManager.UploadImage(file);
+            ImageStorage.Add(executorId, imagePath);
         }
-        
-        [HttpPost]
-        public async Task<IActionResult> ChangeUserInfo(string email, string name, string description)
-        {
-            await _userService.UpdateUser(mainFormModels.user.Id, name, 
-                email, description, settingsModel.imageReference);
-            mainFormModels.UpdateUserInfo(name, email, description, settingsModel.imageReference);
-            mainFormModels.UpdateData(settingsModel.user);
 
-            return RedirectToAction("Main");
+        [HttpPost]
+        public async Task<IActionResult> ChangeUserInfo(string email, string name, string description, int executorId)
+        {
+            await _userService.UpdateUser(executorId, name,
+                email, description, ImageStorage[executorId]);
+
+            ImageStorage.Remove(executorId);
+
+            return RedirectToAction("Main", new { executorId = executorId });
         }
         #endregion
 
@@ -324,13 +361,16 @@ namespace FaceSpam_social_media.Controllers
         [HttpPost]
         public async Task<IActionResult> VerifyUserAuthentication(string login, string password, string email)
         {
+            Main mainFormModel = new Main();
+            ErrorPageModel errorModel = new ErrorPageModel();
+
             bool repeatCheck = _userService.CheckCopy(login);
             if (!repeatCheck)
             {
                 string imageReference = "../Images/DefaultUserImage.png";
                 await _userService.AddUser(login, password, email, imageReference);
-                mainFormModels.GetUserInfo(_userService, _postService, _likeService, _friendService, false, -1, login, password);
-                return RedirectToAction("Main");
+                mainFormModel.GetUserInfo(_userService, _postService, _likeService, _friendService, false, -1, login, password);
+                return RedirectToAction("Main", new { executorId = mainFormModel.user.Id });
             }
             else
             {
@@ -347,21 +387,25 @@ namespace FaceSpam_social_media.Controllers
         }
 
         [HttpPost]
+
+        [HttpPost]
         public IActionResult VerifyUserLogin(string login, string password)
         {
-            loginModel.Login = login;
-            loginModel.Password = password;
+
+            Main userModel = new Main();
+            ErrorPageModel errorModel = new ErrorPageModel();
 
             bool verifyResult = _userService.Verify(login, password);
             if (verifyResult)
             {
-                mainFormModels.GetUserInfo(_userService, _postService, _likeService, _friendService, false, -1, login, password);
-                if (mainFormModels.user.IsBanned == true)
+                userModel.GetUserInfo(_userService, _postService, _likeService, _friendService, false, -1, login, password);
+
+                if (userModel.user.IsBanned == true)
                 {
                     errorModel.Error = "Oi, you have been banned";
                     return View("ErrorPage", errorModel);
                 }
-                return RedirectToAction("Main");
+                return RedirectToAction("Main", "Home", new { executorId = userModel.user.Id });
             }
             else
             {
@@ -372,7 +416,7 @@ namespace FaceSpam_social_media.Controllers
 
         public IActionResult ErrorLoginPage()
         {
-            return View("ErrorLoginPage", errorModel);
+            return View("ErrorLoginPage");
         }
         #endregion
     }
