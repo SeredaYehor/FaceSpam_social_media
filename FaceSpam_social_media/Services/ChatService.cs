@@ -22,6 +22,9 @@ namespace FaceSpam_social_media.Services
             => _repository.GetAll<ChatMember>().Where(x => x.UserUserId == userId)
                 .Select(x => x.ChatChat).ToList();
 
+        public Chat GetChatById(int chatId)
+            => _repository.GetAll<Chat>().First(x => x.Id == chatId);
+
         public async Task<Chat> CreateGroup(int userId, string name, string description, List<int> members, string reference)
         {
             Chat created = new Chat()
