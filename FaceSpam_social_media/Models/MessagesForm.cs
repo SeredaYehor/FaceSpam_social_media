@@ -21,20 +21,20 @@ namespace FaceSpam_social_media.Models
         public List<User> members = new List<User>();
         public List<Message> chatMessages = new List<Message>();
         public Chat selectedChat = new Chat();
-        
+
         public string message { get; set; }
         public int currentChat { get; set; }
 
-        public Chat GetChatMessages(IChatMemberService chatMemberService, IMessageService service, int chatId)
+        public Chat GetChatMessages(IChatMemberService chatMemberService, IMessageService messageService, IChatService chatService, int chatId)
         {
             currentChat = 0;
             if (chatId != 0)
             {
                 currentChat = chatId;
-                chatMessages = service.GetMessages(chatId);
-                selectedChat = chats.Where(x => x.Id == chatId).First();
+                chatMessages = messageService.GetMessages(chatId);
+                selectedChat = chatService.GetChatById(chatId);
                 members = chatMemberService.GetChatMembers(chatId);
-                return chats.Where(x => x.Id == currentChat).First();
+                return selectedChat;
             }
             return new Chat();
         }
