@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     $(document).on("click", ".CommentRemove", function () {
         var id = $(this).attr("id");
-        $(this).parent().parent().remove();
+        hubConnection.invoke("Delete", id);
         $.ajax({
             type: "POST",
             url: '/Home/RemoveComment',
@@ -10,14 +10,20 @@
                 if (status == -1) {
                     alert("Error removing comment");
                 }
+                hubConnection.invoke("Remove", status);
             }
         });
     })
 });
 
+function DeleteComment(messageId) {
+    var elem = document.getElementById("Comment_" + messageId);
+    elem.remove();
+}
+
     function GetMessage(messageId, message, time, user, image) {
         messageObject =
-            '<div>' +
+            '<div id="Comment_' + messageId + '">' +
             '<div style="display: flex; align-items: center; flex-direction: row">' +
             '<img src="' + image + '" class="UserImage" />' +
             '<label class="UserName">' + user + '</label>' +
@@ -42,6 +48,7 @@
 
         $.ajax({
             url: "/Home/GetUser",
+            data: { executorId: executorId },
         }).done(function (user) {
             userName = user["name"].toString();
             image = user["imageReference"].toString();
@@ -49,12 +56,12 @@
                 type: "POST",
                 url: "/Home/AddComment",
                 async: false,
-                data: { message: text, },
+                data: { message: text, executorId: executorId, postId: postId },
                 success: function (id) {
                     messageId = id;
                 }
             });
-            GetMessage(messageId, text, time, userName, image);
+            hubConnection.invoke("Send", messageId, userName, image, text);
         });
     }
 

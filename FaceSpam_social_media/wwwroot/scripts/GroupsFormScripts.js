@@ -58,6 +58,7 @@
         formData.set("chatName", $("#name").val());
         formData.set("chatDescription", $("#description").val());
         formData.set("members", addedMembers);
+        formData.set("executorId", userId);
         $(".CreateGroup").hide();
         $(".List").empty();
         $(".GroupImage").empty();
@@ -112,7 +113,7 @@
             type: "POST",
             url: '/Home/DeleteGroup',
             async: true,
-            data: { groupId: id },
+            data: { groupId: id},
             success: function (status) {
             }
         });

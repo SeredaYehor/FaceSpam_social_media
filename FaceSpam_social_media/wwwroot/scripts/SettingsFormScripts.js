@@ -1,6 +1,8 @@
 ﻿$(document).ready(function () {
     var formData = new FormData();
 
+    formData.set('executorId', executorId);
+
     $(".Upload").click(function () {
         document.getElementById('myFile').click();
     })
