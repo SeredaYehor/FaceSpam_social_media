@@ -132,6 +132,7 @@
                 url: '/Home/RemoveMessage',
                 data: { messageId: id, },
                 success: function (status) {
+                    hubConnection.invoke("Remove", status);
                     if (status == 0) {
                         alert("Error removing message");
                     }
@@ -201,8 +202,6 @@
                     var image = user["item1"]["imageReference"].toString();
                     var id = user["item2"];
                     var time = GetTime();
-                    //GetMessageObj(id, name, image, time, message); //class of message
-                    alert(selectedChat);
                     hubConnection.invoke("Send", id, message, name, image, chatId);
                 }
             });
@@ -234,7 +233,7 @@ function GetTime() {
 
 
 function GetMessageObj(messageId, name, image, time, text) {
-    messageObject = '<div class="MessageBody">' +
+    messageObject = '<div class="MessageBody" id="Message_' + messageId + '">' +
         '<img src="' + image + '" class="Ellipse" style="width: 50px; height: 50px;"/>' +
         '<label class="MessageNickName" >' + name + '<label class="MessageDate">' + time + '</label ></label>';
     if (jsUser["name"] == name) {
@@ -242,4 +241,8 @@ function GetMessageObj(messageId, name, image, time, text) {
     }
     messageObject += '<br /><label class="MessageText">' + text + '</label ></div>';
     $(".ChatMessages").append(messageObject);
+}
+
+function RemoveMessage(messageId) {
+    document.getElementById('Message_' + messageId).remove();
 }
