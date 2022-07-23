@@ -8,12 +8,20 @@
 <script type="text/javascript" src="~/scripts/MainFormScripts.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/scripts/FollowsFormScripts.js" asp-append-version="true"></script>
 
+<script>
+
+</script>
+
 @model Main
 @{
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
     string username = Model.user.Name;
     string description = Model.user.Description;
 }
+
+<script type="text/javascript">
+    var executorId = @Model.executor.Id;
+</script>
 
 <body class="Background">
     <div class="bg"></div>
@@ -25,14 +33,14 @@
             {
                 @using (Html.BeginForm(controller, "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" value=@controller />
+                    <button type="submit" class="Button" value="@Model.executor.Id" name="executorId">@controller</button>
                 }
             }
             @if (Model.executor.IsAdmin == true)
             {
                 @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" value="Admin" />
+                    <button type="submit" class="Button" value="@Model.executor.Id" name="executorId">Admin</button>
                 }
             }
             <div class="AdvertisementText">
@@ -54,13 +62,13 @@
                 {
                     @using (Html.BeginForm("Settings", "Home", FormMethod.Post))
                     {
-                        <input type="submit" class="EditProfile" value="Edit profile" />
+                        <button type="submit" class="EditProfile" value="@Model.executor.Id" name="executorId">Edit profile</button>
                     }
                 }
                 else
                 {
-                    <input type="submit" class="EditProfile" id="@Model.user.Id" value="@(Model.isFollowed 
-                        ? "Remove" : "Follow")" onclick="CheckAction(this)"/>
+                    <input type="submit" class="EditProfile" id="@Model.user.Id" value="@(Model.isFollowed
+                        ? "Remove" : "Follow")" onclick="CheckAction(this)" />
                 }
             </div>
 
@@ -70,15 +78,15 @@
                     @foreach (FaceSpam_social_media.Infrastructure.Data.User friend in Model.follows)
                     {
                         <form method="post" action="/Home/UserProfile">
-                            <button type="submit" name="id" value="@friend.Id" class="UserProfileButton">
+                            <button type="submit" name="id" value="@(Model.executor.Id+"-"+friend.Id)" class="UserProfileButton">
                                 <img src="@friend.ImageReference" class="PostEllipse" style="width: 49px; height: 49px;" />
                             </button>
                         </form>
-                        }
+                    }
                 </div>
                 @using (Html.BeginForm("Followings", "Home", FormMethod.Post))
                 {
-                    <button type="submit" class="Button" style="padding: 5px 20px;" name="id" value="@Model.user.Id">more...</button>
+                    <button type="submit" class="Button" style="padding: 5px 20px;" name="id" value="@(Model.executor.Id+"-"+Model.user.Id)">more...</button>
                 }
             </div>
         </div>
@@ -135,7 +143,7 @@
                                         }
                                         <label class="LikeLabel">@Model.CountLikes(post.Id)</label>
                                         <img src="~/images/pencil.svg" />
-                                        <button class="CommentButton" name="id" value="@post.Id" type="submit">comments</button>
+                                        <button class="CommentButton" name="id" value="@(Model.executor.Id+"-"+post.Id)" type="submit">comments</button>
                                         <label class="Date">@post.DatePosting.ToString("dd.MM.yy")</label>
                                     </form>
                                 </div>

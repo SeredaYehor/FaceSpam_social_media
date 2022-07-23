@@ -8,6 +8,10 @@
 <!--Kakaya shlyapa-->
 <!--8 realtime hours wasted for adding this functionality-->
 <script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
+<link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/MessagesStyleSheet.css" asp-append-version="true" />
+<link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
 
 <script type="text/javascript">
     var selectedChat = @Model.currentChat;
@@ -16,12 +20,8 @@
     var userId = @Model.user.Id;
     var jsUser = @Html.Raw(Json.Serialize(Model.user));
 </script>
-<script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
 
 <body>
-    <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/MessagesStyleSheet.css" asp-append-version="true" />
-    <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
 
     <div class="bg"></div>
     <div class="bg bg2"></div>
@@ -32,14 +32,14 @@
             {
                 @using (Html.BeginForm(controller, "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" value=@controller />
+                    <button type="submit" class="Button" value="@Model.user.Id" name="executorId">@controller</button>
                 }
             }
             @if (Model.user.IsAdmin == true)
             {
                 @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" value="Admin" />
+                    <button type="submit" class="Button" value="@Model.user.Id" name="executorId">Admin</button>
                 }
             }
             <div class="AdvertisementText">
@@ -83,8 +83,8 @@
                 @Html.TextAreaFor(model => model.message, new { autocomplete = "off", Class = "MessageTextBox" })
                 <input type="submit" class="ButtonSend" value="Send" />
             </div>
-      </div>
- <div>
+        </div>
+        <div>
             <div class="GroupInfo">
                 <div class="ImageNameGroup">
                     @if (Model.selectedChat != null)
@@ -114,7 +114,7 @@
                     <input type="submit" class="QuitGroup" value="Quit" />
                 </div>
             </div>
-   
+
             <div class="Groups">
                 <div class="SearchField">
                     <input type="text" class="SearchTextBox" />
@@ -146,7 +146,7 @@
     <div class="Popup">
         <div class="PopupNavigation">
             <input type="submit" class="InviteButton" value="Invite">
-            <label style="color: #3485FF;; font-weight: 600; font-size: 24px; margin-left: 10px;">Chat members</label>
+            <label style="color: #3485FF; font-weight: 600; font-size: 24px; margin-left: 10px;">Chat members</label>
             <img src="~/images/removeButton.png" style="margin: 5px 5px; width: 30px; height: 30px;" id="ClosePopup" />
         </div>
         <div class="MembersList">

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="~/css/FriendsViewStyleSheet.css" asp-append-version="true" />
     <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
-    
+
     <div class="bg"></div>
     <div class="bg bg2"></div>
     <div class="bg bg3"></div>
@@ -24,12 +24,15 @@
             {
                 @using (Html.BeginForm(controller, "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" value=@controller />
+                    <button type="submit" class="Button" value="@Model.admin.Id" name="executorId">@controller</button>
                 }
             }
-            @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
+            @if (Model.admin.IsAdmin == true)
             {
-                <input type="submit" class="Button" value="Admin" />
+                @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
+                {
+                    <button type="submit" class="Button" value="@Model.admin.Id" name="executorId">Admin</button>
+                }
             }
             <div class="AdvertisementText">
                 Advertisement
@@ -76,7 +79,6 @@
                                 {
                                     <input id="@user.Id" type="submit" class="FriendButton" value="Ban" onclick="DeleteFriend(this)" />
                                 }
-                                @*Write button does not work. When all formls will be ready it will get the link*@
                                 <input type="submit" class="FriendButton" value="Write" />
                             </div>
                         }

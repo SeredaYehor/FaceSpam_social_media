@@ -3,129 +3,133 @@
     string[] controllers = { "Main", "Messages", "Groups", "Games", "Shop", "Settings" };
 }
 <html>
-    <head>
-        <title>Settings page</title>
-        <link rel="stylesheet" href="~/css/SettingsStyles.css" asp-append-version="true">
-        <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
-        <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
-        
-        <script src="/lib/jquery/dist/jquery.js"></script>
-        <script type="text/javascript">
-        </script>
-        <script type="text/javascript" src="~/scripts/SettingsFormScripts.js" asp-append-version="true"></script>
-    </head>
+<head>
+    <title>Settings page</title>
+    <link rel="stylesheet" href="~/css/SettingsStyles.css" asp-append-version="true">
+    <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
 
-    <body>
-        <div class="bg"></div>
-        <div class="bg bg2"></div>
-        <div class="bg bg3"></div>
-        <div class="Wrapper">
-            <div class="Navigation">
-                @foreach (string controller in controllers)
-                {
-                    @using (Html.BeginForm(controller, "Home", FormMethod.Post))
-                    {
-                        <input type="submit" class="Button" value=@controller />
-                    }
-                }
-                @if (Model.user.IsAdmin == true)
-                {
-                    @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
-                    {
-                        <input type="submit" class="Button" value="Admin" />
-                    }
-                }
-                <div class="AdvertisementText">
-                    Advertisement
-                </div>
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+    </script>
+    <script type="text/javascript" src="~/scripts/SettingsFormScripts.js" asp-append-version="true"></script>
 
-                <div>
-                    <div class="AdvertisementImage">
-                        <img src="~/Images/AdvertisementTest.png" />
-                    </div>
-                </div>
+    <script type="text/javascript">
+            var executorId = @Model.user.Id;
+    </script>
+</head>
+
+<body>
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
+    <div class="Wrapper">
+        <div class="Navigation">
+            @foreach (string controller in controllers)
+            {
+                @using (Html.BeginForm(controller, "Home", FormMethod.Post))
+                {
+                    <button type="submit" class="Button" value="@Model.user.Id" name="executorId">@controller</button>
+                }
+            }
+            @if (Model.user.IsAdmin == true)
+            {
+                @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
+                {
+                    <button type="submit" class="Button" value="@Model.user.Id" name="executorId">Admin</button>
+                }
+            }
+            <div class="AdvertisementText">
+                Advertisement
             </div>
-        
-            <div class="SettingsMainPage">
-                <div class="SettingsName">Settings</div>
 
-                   <form asp-action="ChangeUserInfo">
-                        <div class="ChangeUserInfo">
-                            <div class="ChangeUserInfoInputs">
-                                <div asp-validation-summary="ModelOnly"></div>
-                                <div class="ChangeEmail">
-                                    <input asp-for="email" class="emailTextBox" autocomplete="off" placeholder = "@(Model.user.Email != null ? (@Model.user.Email) : ("Error"))"/>
-                                    <div class="ValidationError">
-                                        <span asp-validation-for="email"></span>
-                                    </div>
-                                    <div class="ChangeText">Press to change email address</div>
-                                </div>
-
-                                <div class="ChangeUsername">
-                                    <input asp-for="name" class="NameTextBox" autocomplete="off" placeholder = "@(Model.user.Name != null ? (@Model.user.Name) : ("Error"))"/>
-                                    <div class="ValidationError">
-                                        <span asp-validation-for="name"></span>
-                                    </div>
-                                    <div class="ChangeText">Press to change username</div>
-                                </div>
-                
-                                    <div class="ChangeAccountDescription">
-                                        <input asp-for="description" class="DescriptionTextBox" autocomplete="off" placeholder = "@(Model.user.Description != null ? (@Model.user.Description) : ("About you.."))" />
-                                        <div class="ValidationError">
-                                            <span asp-validation-for="name"></span>
-                                        </div>
-                                        <div class="ChangeText">Press to change your account description</div>
-                                    </div>
-                            </div>
-
-                            <div class="ChangePhoto">
-                                  <div class="ChangePhotoImage">
-                                        <img src="@Model.user.ImageReference" />
-                                  </div>
-
-                                  <div class="ChangePhotoButton">
-                                        <input type="file" accept="image/*" id="myFile"/>
-                                        <input type="button" class="Upload" value="Upload image"/>
-                                  </div>
-                            </div>
-
-                        </div>
-
-                    <div class="SettingPageButtons">
-                        <div class="ButtonAndText">
-                            <div>
-                                <input type="button" value="Shop account"/>
-                            </div>
-                            <div class="ButtonShopAccountText">
-                                Press to manage your shop account
-                            </div>
-                        </div>
-
-                        <div class="ButtonAndText">
-                            <div>
-                                <input type="button" value="Game account"/>
-                            </div>
-                            <div class="ButtonGameAccountText">
-                                Press to manage your game account
-                            </div>
-                        </div>
-
-                        <div class="ButtonAndText">
-                            <div>
-                                <input type="button" value="Change password"/>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="ConfirmChanges">
-                        <button class="ConfirmButton" id="button">Confirm</button>
-                    </div>
-                </form>
-                @section Scripts {
-                    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-                }
+            <div>
+                <div class="AdvertisementImage">
+                    <img src="~/Images/AdvertisementTest.png" />
+                </div>
             </div>
         </div>
-    </body>
+
+        <div class="SettingsMainPage">
+            <div class="SettingsName">Settings</div>
+
+            <form asp-action="ChangeUserInfo">
+                <div class="ChangeUserInfo">
+                    <div class="ChangeUserInfoInputs">
+                        <div asp-validation-summary="ModelOnly"></div>
+                        <div class="ChangeEmail">
+                            <input asp-for="email" class="emailTextBox" autocomplete="off" placeholder="@(Model.user.Email != null ? (@Model.user.Email) : ("Error"))" />
+                            <div class="ValidationError">
+                                <span asp-validation-for="email"></span>
+                            </div>
+                            <div class="ChangeText">Press to change email address</div>
+                        </div>
+
+                        <div class="ChangeUsername">
+                            <input asp-for="name" class="NameTextBox" autocomplete="off" placeholder="@(Model.user.Name != null ? (@Model.user.Name) : ("Error"))" />
+                            <div class="ValidationError">
+                                <span asp-validation-for="name"></span>
+                            </div>
+                            <div class="ChangeText">Press to change username</div>
+                        </div>
+
+                        <div class="ChangeAccountDescription">
+                            <input asp-for="description" class="DescriptionTextBox" autocomplete="off" placeholder="@(Model.user.Description != null ? (@Model.user.Description) : ("About you.."))" />
+                            <div class="ValidationError">
+                                <span asp-validation-for="name"></span>
+                            </div>
+                            <div class="ChangeText">Press to change your account description</div>
+                        </div>
+                    </div>
+
+                    <div class="ChangePhoto">
+                        <div class="ChangePhotoImage">
+                            <img src="@Model.user.ImageReference" />
+                        </div>
+
+                        <div class="ChangePhotoButton">
+                            <input type="file" accept="image/*" id="myFile" />
+                            <input type="button" class="Upload" value="Upload image" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="SettingPageButtons">
+                    <div class="ButtonAndText">
+                        <div>
+                            <input type="button" value="Shop account" />
+                        </div>
+                        <div class="ButtonShopAccountText">
+                            Press to manage your shop account
+                        </div>
+                    </div>
+
+                    <div class="ButtonAndText">
+                        <div>
+                            <input type="button" value="Game account" />
+                        </div>
+                        <div class="ButtonGameAccountText">
+                            Press to manage your game account
+                        </div>
+                    </div>
+
+                    <div class="ButtonAndText">
+                        <div>
+                            <input type="button" value="Change password" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="ConfirmChanges">
+                    <button class="ConfirmButton" name="executorId" value="@Model.user.Id" id="button">Confirm</button>
+                </div>
+            </form>
+            @section Scripts {
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }
+        </div>
+    </div>
+</body>
 </html>

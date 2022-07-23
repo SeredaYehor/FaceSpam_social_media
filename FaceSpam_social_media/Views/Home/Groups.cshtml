@@ -28,14 +28,14 @@
             {
                 @using (Html.BeginForm(controller, "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" value=@controller />
+                    <button type="submit" class="Button" value="@Model.user.Id" name="executorId">@controller</button>
                 }
             }
             @if (Model.user.IsAdmin == true)
             {
                 @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" value="Admin" />
+                    <button type="submit" class="Button" value="@Model.user.Id" name="executorId">Admin</button>
                 }
             }
             <div class="AdvertisementText">
@@ -81,8 +81,8 @@
                                         <input id="@chat.Id" type="submit" class="GroupQuitButton" value="Quit" onclick="DeleteChat(this)" />
                                     }
                                     &nbsp;
-                                    @using (Html.BeginForm("Messages", "Home", new { current = chat.Id },
-                                       FormMethod.Post))
+                                    @using (Html.BeginForm("Messages", "Home", new { executorId = Model.user.Id, current = chat.Id },
+                                      FormMethod.Post))
                                     {
                                         <input type="submit" class="GroupWriteButton" value="Write" />
                                     }
