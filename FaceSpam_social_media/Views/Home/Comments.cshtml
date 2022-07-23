@@ -10,12 +10,28 @@
 
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="~/scripts/CommentsScriptFile.js" asp-append-version="true"></script>
+<script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
 
 <script type="text/javascript">
     var executorId = @Model.user.Id;
     var postId = @Model.post.Id;
-</script>
 
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/commentshub")
+        .build();
+
+    hubConnection.on("Remove", function (id) {
+        DeleteComment(id);
+    });
+
+    hubConnection.on("Send", function (messageId, userName, image, text) {
+        var time = GetTime();
+        GetMessage(messageId, text, time, userName, image);
+    });
+
+
+    hubConnection.start();
+</script>
 <body>
     <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
     <link rel="stylesheet" href="/css/CommentsViewStyleSheet.css" asp-append-version="true" />
