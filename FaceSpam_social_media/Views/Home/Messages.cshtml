@@ -9,6 +9,7 @@
 <!--8 realtime hours wasted for adding this functionality-->
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="~/scripts/MessagesScripts.js" asp-append-version="true"></script>
+<script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
 <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/MessagesStyleSheet.css" asp-append-version="true" />
 <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
@@ -19,6 +20,22 @@
     var members = @Model.members.Count;
     var userId = @Model.user.Id;
     var jsUser = @Html.Raw(Json.Serialize(Model.user));
+
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/messagehub")
+        .build();
+
+    hubConnection.on("Send", function (messageId, message, userName, image, messageChatId) {
+        if (selectedChat == messageChatId) {
+            GetMessageObj(messageId, userName, image, GetTime(), message);
+        }
+    });
+
+    hubConnection.on("Remove", function (messageId) {
+        RemoveMessage(messageId);
+    });
+
+    hubConnection.start();
 </script>
 
 <body>
@@ -59,7 +76,7 @@
                 {
                     @foreach (var message in Model.chatMessages)
                     {
-                        <div class="MessageBody">
+                        <div class="MessageBody"  id="@("Message_" + message.Id)">
                             <img src="@message.UserUser.ImageReference" class="Ellipse" style="width: 50px; height: 50px;" />
                             <label class="MessageNickName">@message.UserUser.Name<label class="MessageDate">@message.DateSending.ToString("d/M/yyyy H:m")</label></label>
                             @if (message.UserUserId == Model.user.Id)
