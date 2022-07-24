@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using FaceSpam_social_media.Extensions;
 using FaceSpam_social_media.Infrastructure.Repository;
 using FaceSpam_social_media.Services;
+using FaceSpam_social_media.SignalRHub;
 using FaceSpam_social_media.Models;
 using System;
 using System.Collections.Generic;
@@ -38,8 +39,8 @@ namespace FaceSpam_social_media
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IFollowService, FollowService>();
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
-            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -65,6 +66,8 @@ namespace FaceSpam_social_media
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Login}/{id?}");
+                endpoints.MapHub<CommentsHub>("/commentshub");
+                endpoints.MapHub<MessageHub>("/messagehub");
             });
         }
     }
