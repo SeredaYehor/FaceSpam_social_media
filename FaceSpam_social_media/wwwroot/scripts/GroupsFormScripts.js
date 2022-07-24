@@ -42,7 +42,7 @@
             '</div>' +
             '<div class="FriendButtons">' +
             '<input id="' + id + '" type="submit" class="GroupQuitButton" value="Quit" onclick="DeleteChat(this)" />&nbsp;' +
-            '<form action="/Home/Messages?current=' + id + '" method="post">' +
+            '<form action="/Home/Messages?executorId=' + executorId + '&current=' + id + '" method="post">' +
             '<input type="submit" class="GroupWriteButton" value="Write" />' +
             '</form></div></div>';
         $(".GroupsPanels").append(panel);
