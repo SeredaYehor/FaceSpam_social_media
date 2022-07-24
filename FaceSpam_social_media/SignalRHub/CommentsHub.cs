@@ -8,9 +8,9 @@ namespace FaceSpam_social_media.SignalRHub
 {
     public class CommentsHub : Hub
     {
-        public async Task Send(int messageId, string userName, string image, string text)
+        public async Task Send(int messageId, string userName, string image, string text, int authorId)
         {
-            await this.Clients.All.SendAsync("Send", messageId, userName, image, text);
+            await this.Clients.All.SendAsync("Send", messageId, userName, image, text, authorId);
         }
 
         public async Task Remove(int id)

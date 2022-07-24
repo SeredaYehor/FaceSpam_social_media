@@ -21,21 +21,37 @@ function DeleteComment(messageId) {
     elem.remove();
 }
 
-    function GetMessage(messageId, message, time, user, image) {
-        messageObject =
-            '<div id="Comment_' + messageId + '">' +
-            '<div style="display: flex; align-items: center; flex-direction: row">' +
-            '<img src="' + image + '" class="UserImage" />' +
-            '<label class="UserName">' + user + '</label>' +
-            '<label class="Time">' + time + '</label>' +
-            '<img src="../images/removeButton.png" class="CommentRemove" id="' + messageId +  '" />' +
-            '</div>' +
-            '<div>' +
-            '<label class="PostedMessage">' + message + '</label>' +
-            '</div>' +
-            '</div>';
-        $("#comments").append(messageObject);
-    }
+function GetMessage(messageId, message, time, user, image) {
+    messageObject =
+        '<div id="Comment_' + messageId + '">' +
+        '<div style="display: flex; align-items: center; flex-direction: row">' +
+        '<img src="' + image + '" class="UserImage" />' +
+        '<label class="UserName">' + user + '</label>' +
+        '<label class="Time">' + time + '</label>' +
+        '<img src="../images/removeButton.png" class="CommentRemove" id="'
+        + messageId + '" />' +
+        '</div>' +
+        '<div>' +
+        '<label class="PostedMessage">' + message + '</label>' +
+        '</div>' +
+        '</div>';
+    $("#comments").append(messageObject);
+}
+
+function GetMessageWithoutRemove(messageId, message, time, user, image) {
+    messageObject =
+        '<div id="Comment_' + messageId + '">' +
+        '<div style="display: flex; align-items: center; flex-direction: row">' +
+        '<img src="' + image + '" class="UserImage" />' +
+        '<label class="UserName">' + user + '</label>' +
+        '<label class="Time">' + time + '</label>' +
+        '</div>' +
+        '<div>' +
+        '<label class="PostedMessage">' + message + '</label>' +
+        '</div>' +
+        '</div>';
+    $("#comments").append(messageObject);
+}
 
     function AddMessage() {
         var text = document.getElementById("message").value;
@@ -61,7 +77,7 @@ function DeleteComment(messageId) {
                     messageId = id;
                 }
             });
-            hubConnection.invoke("Send", messageId, userName, image, text);
+            hubConnection.invoke("Send", messageId, userName, image, text, Number(executorId));
         });
     }
 

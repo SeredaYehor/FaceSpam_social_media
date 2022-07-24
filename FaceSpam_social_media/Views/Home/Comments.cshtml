@@ -24,9 +24,14 @@
         DeleteComment(id);
     });
 
-    hubConnection.on("Send", function (messageId, userName, image, text) {
+    hubConnection.on("Send", function (messageId, userName, image, text, authorId) {
         var time = GetTime();
-        GetMessage(messageId, text, time, userName, image);
+        if (executorId == authorId) {
+            GetMessage(messageId, text, time, userName, image);
+        }
+        else {
+            GetMessageWithoutRemove(messageId, text, time, userName, image);
+        }
     });
 
 
