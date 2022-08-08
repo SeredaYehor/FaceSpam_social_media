@@ -7,7 +7,7 @@ The aim of this project is to make lightweight social media, which can be simply
 integrated with other services, such as online store, gaming services(Steam) and
 crypto exchange by making modules, which will connect them with facespam.
 
-##Functionality
+## Functionality
 
 >Current version of this project implements this functions:
 >
@@ -25,6 +25,6 @@ crypto exchange by making modules, which will connect them with facespam.
 >
 >`following other users and their posts`
 
-##Usage
+## Usage
 
 ...
