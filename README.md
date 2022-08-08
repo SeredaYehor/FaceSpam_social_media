@@ -13,8 +13,6 @@ crypto exchange by making modules, which will connect them with facespam.
 
 ## Functionality
 
-![Снимок экрана (57)](https://user-images.githubusercontent.com/74448293/183500184-2ef2aaa3-1ed3-4f52-8c0d-c762586e3c90.png)
-
 >Current version of this project implements this functions:
 >
 >`authentication and logging to social media`
@@ -31,7 +29,7 @@ crypto exchange by making modules, which will connect them with facespam.
 >
 >`following other users and their posts`
 
-![Снимок экрана (58)](https://user-images.githubusercontent.com/74448293/183500225-ad1a25d0-7c08-48e7-aabe-3eeea01b60f6.png)
+![Снимок экрана (57)](https://user-images.githubusercontent.com/74448293/183500637-83c97406-c65f-4030-ae3a-b38ae566d5a8.png)
 
 ## Usage
 
