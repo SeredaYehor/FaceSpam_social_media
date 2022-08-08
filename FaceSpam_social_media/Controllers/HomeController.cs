@@ -177,6 +177,8 @@ namespace FaceSpam_social_media.Controllers
         #endregion
 
         #region Messages form functions
+
+        [HttpPost]
         public IActionResult Messages(int executorId, int current = 0)
         {
             MessagesForm messages = new MessagesForm();
