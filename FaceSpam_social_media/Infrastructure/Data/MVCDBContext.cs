@@ -11,7 +11,9 @@ namespace FaceSpam_social_media.Infrastructure.Data
         {
         }
         public MVCDBContext(DbContextOptions options) : base(options)
-        { }
+        {
+            Database.EnsureCreated();
+        }
 
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<ChatMember> ChatMembers { get; set; }
