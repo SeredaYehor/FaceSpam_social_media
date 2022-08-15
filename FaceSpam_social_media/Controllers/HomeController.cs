@@ -338,6 +338,11 @@ namespace FaceSpam_social_media.Controllers
 
         public void GetPhotoUrl(IFormFile file, int executorId)
         {
+            if (ImageStorage.ContainsKey(executorId))
+            {
+                ImageStorage.Remove(executorId);
+            }
+
             string imagePath = FileManager.UploadImage(file);
             ImageStorage.Add(executorId, imagePath);
         }

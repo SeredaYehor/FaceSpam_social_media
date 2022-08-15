@@ -10,12 +10,12 @@ namespace FaceSpam_social_media.Models
 {
     public class FileManager
     {
-        private static async Task AddImageToPost(IFormFile file)
+        private static void AddImageToPost(IFormFile file)
         {
             string path = "./wwwroot/Images/" + file.FileName;
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
-                await file.CopyToAsync(fileStream);
+                file.CopyTo(fileStream);
             }
         }
 
@@ -24,11 +24,6 @@ namespace FaceSpam_social_media.Models
             string image_ref = null;
             if (file != null)
             {
-                string extension = Path.GetExtension(file.FileName);
-                if (extension != ".jpg" && extension != ".png")
-                {
-                    return image_ref;
-                }
                 image_ref = "../Images/" + file.FileName;
                 AddImageToPost(file);
             }
