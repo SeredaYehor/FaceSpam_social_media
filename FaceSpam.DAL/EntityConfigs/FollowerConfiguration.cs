@@ -15,7 +15,7 @@ public class FollowerConfiguration : IEntityTypeConfiguration<Follower>
 
         builder
             .HasOne(x => x.Following)
-            .WithMany(x => x.Followings)
+            .WithMany(x => x.Followers)
             .HasForeignKey(x => x.FollowingId);
     }
 }

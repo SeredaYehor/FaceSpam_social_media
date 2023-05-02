@@ -25,4 +25,6 @@ public class User : BaseEntity
     public virtual ICollection<Post> Posts { get; set; }
 
     public virtual ICollection<Follower> Followings { get; set; }
+
+    public virtual ICollection<Follower> Followers { get; set; }
 }
