@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceSpam_social_media", "FaceSpam_social_media\FaceSpam_social_media.csproj", "{865BAC1E-70D3-4B4D-83D1-27328D85AFBC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceSpam.PL", "FaceSpam.PL\FaceSpam.PL.csproj", "{865BAC1E-70D3-4B4D-83D1-27328D85AFBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceSpam.DAL", "FaceSpam.DAL\FaceSpam.DAL.csproj", "{2022799F-5764-4185-864C-77758200E330}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceSpam.BL", "FaceSpam.BL\FaceSpam.BL.csproj", "{0A7E17E2-DD85-45CE-984C-414049AB6FCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{865BAC1E-70D3-4B4D-83D1-27328D85AFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{865BAC1E-70D3-4B4D-83D1-27328D85AFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{865BAC1E-70D3-4B4D-83D1-27328D85AFBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2022799F-5764-4185-864C-77758200E330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2022799F-5764-4185-864C-77758200E330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2022799F-5764-4185-864C-77758200E330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2022799F-5764-4185-864C-77758200E330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A7E17E2-DD85-45CE-984C-414049AB6FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A7E17E2-DD85-45CE-984C-414049AB6FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A7E17E2-DD85-45CE-984C-414049AB6FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A7E17E2-DD85-45CE-984C-414049AB6FCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
