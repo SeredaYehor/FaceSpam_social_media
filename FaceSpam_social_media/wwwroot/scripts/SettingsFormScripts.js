@@ -1,6 +1,8 @@
 ﻿$(document).ready(function () {
     var formData = new FormData();
 
+    formData.set('executorId', executorId);
+
     $(".Upload").click(function () {
         document.getElementById('myFile').click();
     })
@@ -16,18 +18,16 @@
             fileReader.addEventListener("load", function () {
                 var image = '<img src="' + fileReader.result + '" />';
                 $(".ChangePhotoImage").append(image);
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/GetPhotoUrl',
+                    data: formData,
+                    contentType: false,
+                    processData: false
+                });
             });
         }
     })
 
-    $(".ConfirmButton").click(function () {
-        $.ajax({
-            type: "POST",
-            url: '/Home/GetPhotoUrl',
-            async: false,
-            data: formData,
-            contentType: false,
-            processData: false
-        });
-    });
-})
+});

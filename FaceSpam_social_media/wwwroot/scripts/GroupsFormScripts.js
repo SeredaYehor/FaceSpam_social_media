@@ -42,7 +42,7 @@
             '</div>' +
             '<div class="FriendButtons">' +
             '<input id="' + id + '" type="submit" class="GroupQuitButton" value="Quit" onclick="DeleteChat(this)" />&nbsp;' +
-            '<form action="/Home/Messages?current=' + id + '" method="post">' +
+            '<form action="/Home/Messages?executorId=' + executorId + '&current=' + id + '" method="post">' +
             '<input type="submit" class="GroupWriteButton" value="Write" />' +
             '</form></div></div>';
         $(".GroupsPanels").append(panel);
@@ -58,6 +58,7 @@
         formData.set("chatName", $("#name").val());
         formData.set("chatDescription", $("#description").val());
         formData.set("members", addedMembers);
+        formData.set("executorId", userId);
         $(".CreateGroup").hide();
         $(".List").empty();
         $(".GroupImage").empty();
@@ -112,7 +113,7 @@
             type: "POST",
             url: '/Home/DeleteGroup',
             async: true,
-            data: { groupId: id },
+            data: { groupId: id},
             success: function (status) {
             }
         });

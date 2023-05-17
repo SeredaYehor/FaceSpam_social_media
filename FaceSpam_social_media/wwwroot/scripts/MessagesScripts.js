@@ -11,6 +11,7 @@
         $.ajax({
             type: "GET",
             url: '/Home/QuitGroup',
+            data: { executorId: userId, chatId: selectedChat },
             success: function () {
                 $(".MessageArea").hide();
                 $(".GroupInfo").hide();
@@ -83,7 +84,7 @@
             $.ajax({
                 type: "POST",
                 url: '/Home/RemoveChatMember',
-                data: { memberId: id, },
+                data: { memberId: id, chatId: selectedChat },
                 async: false,
                 success: function (counter) {
                     Members.pop(id);
@@ -95,7 +96,7 @@
             $.ajax({
                 type: "POST",
                 url: '/Home/AddMember',
-                data: { memberId: id, },
+                data: { memberId: id, chatId: selectedChat },
                 async: false,
                 success: function (counter) {
                     $(".MembersCounter").text(counter);
@@ -131,6 +132,7 @@
                 url: '/Home/RemoveMessage',
                 data: { messageId: id, },
                 success: function (status) {
+                    hubConnection.invoke("Remove", status);
                     if (status == 0) {
                         alert("Error removing message");
                     }
@@ -155,38 +157,6 @@
             $(".MessageTextBox").val("");
         });
 
-         function GetMessageObj(messageId, name, image, time, text) {
-             messageObject = '<div class="MessageBody">' +
-                 '<img src="' + image + '" class="Ellipse" style="width: 50px; height: 50px;"/>' +
-                 '<label class="MessageNickName" >' + name + '<label class="MessageDate">' + time + '</label ></label>';
-             if (jsUser["name"] == name) {
-                 messageObject += '<img src="../images/removeButton.png" class="RemoveMessage" id="' + messageId + '" />';
-             }
-             messageObject += '<br /><label class="MessageText">' + text + '</label ></div>';
-             $(".ChatMessages").append(messageObject);
-         }
-
-        function GetChatMessages(id) {
-            $.ajax({
-                type: "GET",
-                url: '/Home/GetChatMessages',
-                async: false,
-                data: { chatId: id },
-                success: function (messages) { //get array object of Message models
-                    SetGroupPanel(messages["item2"], messages["item3"]);
-                    for (var index = 0; index < messages["item1"].length; index++) { //adding all messages for this chat
-                        var messageId = messages["item1"][index]["id"].toString();
-                        var dt = new Date(messages["item1"][index]["dateSending"]);
-                        var time = dt.getDay() + "/" + dt.getMonth() + "/" + dt.getFullYear() +
-                            " " + dt.getHours() + ":" + dt.getMinutes();
-                        var text = messages["item1"][index]["text"].toString();
-                        var userName = messages["item1"][index]["userUser"]["name"].toString();
-                        var userImg = messages["item1"][index]["userUser"]["imageReference"].toString();
-                        GetMessageObj(messageId, userName, userImg, time, text);
-                    }
-                }
-            });
-        }
 
     function SetGroupPanel(groupInfo, members) {
         $(".GroupInfo").children(".ImageNameGroup").children(".GroupImage").attr("style",
@@ -199,19 +169,40 @@
         $(".GroupInfo").attr("style", "");
     }
 
-        function SendMessages(message) {
+    function GetChatMessages(id) {
+        $.ajax({
+            type: "GET",
+            url: '/Home/GetChatMessages',
+            async: false,
+            data: { chatId: id },
+            success: function (messages) { //get array object of Message models
+                SetGroupPanel(messages["item2"], messages["item3"]);
+                for (var index = 0; index < messages["item1"].length; index++) { //adding all messages for this chat
+                    var messageId = messages["item1"][index]["id"].toString();
+                    var dt = new Date(messages["item1"][index]["dateSending"]);
+                    var time = dt.getDay() + "/" + dt.getMonth() + "/" + dt.getFullYear() +
+                        " " + dt.getHours() + ":" + dt.getMinutes();
+                    var text = messages["item1"][index]["text"].toString();
+                    var userName = messages["item1"][index]["userUser"]["name"].toString();
+                    var userImg = messages["item1"][index]["userUser"]["imageReference"].toString();
+                    GetMessageObj(messageId, userName, userImg, time, text);
+                }
+            }
+        });
+    }
+
+    function SendMessages(message) {
+        var chatId = Number(selectedChat);
             $.ajax({ //async call of controller
                 type: "GET",  //request type
                 url: '/Home/SendMessage', //url to controller
-                data: { textboxMessage: message, }, //controller argument
+                data: { textboxMessage: message, chatId: selectedChat, executorId: userId }, //controller argument
                 success: function (user) { //get array object of Message models
                     var name = user["item1"]["name"].toString();
                     var image = user["item1"]["imageReference"].toString();
-                    var id = user["item2"].toString();
-                    var dt = new Date();
-                    var time = dt.getDay() + "/" + dt.getMonth() + "/" + dt.getFullYear() +
-                        " " + dt.getHours() + ":" + dt.getMinutes();
-                    GetMessageObj(id, name, image, time, message); //class of message
+                    var id = user["item2"];
+                    var time = GetTime();
+                    hubConnection.invoke("Send", id, message, name, image, chatId);
                 }
             });
         }
@@ -225,4 +216,33 @@
                 $(".GroupPanel").hide().filter('[id^=' + search + ']').show();
             }
         });
-    });
+});
+
+function GetTime() {
+    var date = new Date();
+
+    var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+    var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+    var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+    var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+    var year = date.getFullYear().toString().substr(-2);
+
+    return day + '.' + month + '.' + year + ' ' + hours + ':' + minutes;
+}
+
+
+
+function GetMessageObj(messageId, name, image, time, text) {
+    messageObject = '<div class="MessageBody" id="Message_' + messageId + '">' +
+        '<img src="' + image + '" class="Ellipse" style="width: 50px; height: 50px;"/>' +
+        '<label class="MessageNickName" >' + name + '<label class="MessageDate">' + time + '</label ></label>';
+    if (jsUser["name"] == name) {
+        messageObject += '<img src="../images/removeButton.png" class="RemoveMessage" id="' + messageId + '" />';
+    }
+    messageObject += '<br /><label class="MessageText">' + text + '</label ></div>';
+    $(".ChatMessages").append(messageObject);
+}
+
+function RemoveMessage(messageId) {
+    document.getElementById('Message_' + messageId).remove();
+}

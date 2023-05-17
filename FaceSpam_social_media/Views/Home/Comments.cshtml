@@ -10,29 +10,55 @@
 
 <script src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="~/scripts/CommentsScriptFile.js" asp-append-version="true"></script>
+<script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
 
+<script type="text/javascript">
+    var executorId = @Model.user.Id;
+    var postId = @Model.post.Id;
+
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/commentshub")
+        .build();
+
+    hubConnection.on("Remove", function (id) {
+        DeleteComment(id);
+    });
+
+    hubConnection.on("Send", function (messageId, userName, image, text, authorId) {
+        var time = GetTime();
+        if (executorId == authorId) {
+            GetMessage(messageId, text, time, userName, image);
+        }
+        else {
+            GetMessageWithoutRemove(messageId, text, time, userName, image);
+        }
+    });
+
+
+    hubConnection.start();
+</script>
 <body>
     <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
     <link rel="stylesheet" href="/css/CommentsViewStyleSheet.css" asp-append-version="true" />
     <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
 
-   <div class="bg"></div>
-   <div class="bg bg2"></div>
-   <div class="bg bg3"></div>
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
     <div class="Wrapper">
         <div class="Navigation">
             @foreach (string controller in controllers)
             {
                 @using (Html.BeginForm(controller, "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" value=@controller />
+                    <button type="submit" class="Button" value="@Model.user.Id" name="executorId">@controller</button>
                 }
             }
             @if (Model.user.IsAdmin == true)
             {
                 @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" value="Admin" />
+                    <button type="submit" class="Button" value="@Model.user.Id" name="executorId">Admin</button>
                 }
             }
             <div class="AdvertisementText">
@@ -68,7 +94,7 @@
                 <div id="comments">
                     @foreach (var comment in Model.post.Messages)
                     {
-                        <div>
+                        <div id="@("Comment_" + comment.Id)">
                             <div style="display: flex; align-items: center; flex-direction: row">
                                 <img src="@Model.users.First(x=>x.Id == comment.UserUserId).ImageReference" class="UserImage" />
                                 <label class="UserName"> @Model.users.First(x => x.Id == comment.UserUserId).Name </label>

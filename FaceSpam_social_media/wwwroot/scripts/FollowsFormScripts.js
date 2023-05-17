@@ -18,7 +18,7 @@ function DeleteFollow(obj, friendPage = false) {
         type: "GET",
         url: "/Home/DeleteFollow",
         async: false,
-        data: { id: user, },
+        data: { userId: user, executorId: executorId },
         success: function () {
             if (friendPage) {
                 var parentDiv = $(obj).parent();
@@ -35,7 +35,7 @@ function AddFollow(obj) {
         type: "GET",
         url: "/Home/AddFollow",
         async: false,
-        data: { id: user, },
+        data: { userId: user, executorId: executorId },
     });
 }
 

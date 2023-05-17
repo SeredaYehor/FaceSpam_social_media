@@ -35,7 +35,9 @@
 
     $("#Write").click(function () {
         var text = $(".Post").val();
+        var userId = $(".Button").val();
         formData.set('text', text);
+        formData.set('id', userId);
         $(".Post").val("");
         $.ajax({
             type: "POST",
@@ -80,7 +82,7 @@
             '<img src="../images/heart.svg" style="margin-right: 5px;" class="HeartImage" id="' + postId + '" />' +
             '<label class="LikeLabel" style="margin-right:5px;">0</label>' +
             '<img src="../images/pencil.svg" style="display: inline-block; margin-right:8px;" />' +
-            '<button class="CommentButton" name="id" value="' + postId + '" type="submit">comments</button>' +
+            '<button class="CommentButton" name="id" value="' + user["id"] + '-' + postId + '" type="submit">comments</button>' +
             '<label class="Date">' + date + '</label></form></div></div>';
         $(".DashboardList").prepend(postObject);
     }
@@ -96,10 +98,12 @@
 
     function UpdateLikes(id) {
         var result = 0;
+        var userId = $(".Button").val();
+
         $.ajax({
             type: "GET",
             url: '/Home/ChangeLike',
-            data: { postId: id },
+            data: { postId: id, executorId: userId },
             async: false,
             success: function (likes) {
                 result = likes;

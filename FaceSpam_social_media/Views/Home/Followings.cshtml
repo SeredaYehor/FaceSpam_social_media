@@ -13,11 +13,15 @@
 <script type="text/javascript"></script>
 <script type="text/javascript" src="~/scripts/FollowsFormScripts.js" asp-append-version="true"></script>
 
+<script type="text/javascript">
+    var executorId = @Model.executor;
+</script>
+
 <body>
     <link rel="stylesheet" href="~/css/FriendsViewStyleSheet.css" asp-append-version="true" />
     <link href="~/css/Navigation.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/BackgroundAnimationStyle.css" rel="stylesheet" asp-append-version="true" />
-    
+
     <div class="bg"></div>
     <div class="bg bg2"></div>
     <div class="bg bg3"></div>
@@ -27,14 +31,14 @@
             {
                 @using (Html.BeginForm(controller, "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" value=@controller />
+                    <button type="submit" class="Button" value="@Model.executor" name="executorId">@controller</button>
                 }
             }
-            @if (Model.user.IsAdmin == true)
+            @if (Model.user.IsAdmin == true && Model.user.Id == Model.executor)
             {
                 @using (Html.BeginForm("Admin", "Home", FormMethod.Post))
                 {
-                    <input type="submit" class="Button" value="Admin" />
+                    <button type="submit" class="Button" value="@Model.executor" name="executorId">Admin</button>
                 }
             }
             <div class="AdvertisementText">
@@ -55,8 +59,8 @@
                     <b> <label class="FriendsLabel"> @(Model.friendPage ? "Followings" : "All users") </label> </b>
 
                     <form method="post" action="@(Model.friendPage ? usersPage : friendPage)">
-                        <button type="submit" name="id" value="@Model.executor" class="AddFriendButton">
-                        <img class="AddFriendIcon" src="@(Model.friendPage ? "../Images/people.png" : "../Images/friends.png")"/>
+                        <button type="submit" name="id" value="@(Model.executor+"-"+Model.user.Id)" class="AddFriendButton">
+                            <img class="AddFriendIcon" src="@(Model.friendPage ? "../Images/people.png" : "../Images/friends.png")" />
                         </button>
                     </form>
 
@@ -78,7 +82,7 @@
                         {
                             <div id="@user.Name" class="FriendLine" style="display: flex; align-items: center; flex-direction: row">
                                 <form method="post" action="/Home/UserProfile">
-                                    <button class="EnterUserProfile" type="submit" name="id" value="@user.Id">
+                                    <button class="EnterUserProfile" type="submit" name="id" value="@(Model.executor+"-"+user.Id)">
                                         <img class="UserImage" src="@user.ImageReference" />
                                         <label class="Names"> @user.Name </label>
                                     </button>
@@ -87,14 +91,6 @@
                                 <input type="submit" class="FriendButton" value="Write" />
                                 @if (Model.executor == Model.user.Id)
                                 {
-                                    /*
-                                        @if(Model.mainUserId == Model.user.Id) 
-                                            {
-                                                <input id="@user.Id" type="submit" class="FriendButton" value="Remove" onclick="DeleteFriend(this)" />
-                                            }
-                                            @*Write button does not work. When all formls will be ready it will get the link*@
-                                            <input type="submit" class="FriendButton" value="Write" />
-                                    */
                                     @if (Model.friendPage)
                                     {
                                         <input id="@user.Id" type="submit" class="FriendButton" value="Remove" onclick="DeleteFollow(this, true)" />
